@@ -4,7 +4,9 @@
  * Menú móvil con <details>/<summary>: accesible y SIN JavaScript de cliente.
  * Marca la página activa con aria-current="page".
  */
+import { Image } from 'astro:assets';
 import { site, navPrincipal } from '../config/site';
+import logo from '../assets/brand/feghadal-logo.png';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
@@ -15,12 +17,15 @@ const isActive = (href: string) =>
   <div
     class="mx-auto flex max-w-[var(--spacing-content)] items-center justify-between gap-4 px-4 py-4"
   >
-    <a
-      href="/"
-      class="text-xl font-bold tracking-wide text-brand-700"
-      aria-label={`${site.nombre} — inicio`}
-    >
-      {site.nombre}
+    <a href="/" aria-label={`${site.nombre} — inicio`} class="inline-flex">
+      <Image
+        src={logo}
+        alt="FEGHADAL — Servicios Generales"
+        width={120}
+        height={120}
+        loading="eager"
+        class="h-12 w-auto sm:h-14"
+      />
     </a>
 
     {/* Navegación de escritorio */}
