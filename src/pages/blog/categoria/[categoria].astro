@@ -1,0 +1,81 @@
+---
+/**
+ * Listado del blog filtrado por categoría (CLAUDE.md §4).
+ * Páginas estáticas por categoría → filtro sin JavaScript.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { breadcrumbJsonLd, type Breadcrumb } from '../../../lib/seo';
+import { slugify } from '../../../lib/text';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const categorias = [...new Set(posts.map((p) => p.data.categoria))];
+  return categorias.map((categoria) => ({
+    params: { categoria: slugify(categoria) },
+    props: {
+      categoria,
+      posts: posts
+        .filter((p) => p.data.categoria === categoria)
+        .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime()),
+    },
+  }));
+}
+
+const { categoria, posts } = Astro.props;
+
+const fmtFecha = (d: Date) =>
+  d.toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const migas: Breadcrumb[] = [
+  { nombre: 'Inicio', href: '/' },
+  { nombre: 'Blog', href: '/blog' },
+  { nombre: categoria, href: `/blog/categoria/${slugify(categoria)}` },
+];
+
+const title = `Blog: ${categoria}`;
+const description = `Artículos de FEGHADAL sobre ${categoria.toLowerCase()}: guías prácticas para empresas en el Perú sobre servicios generales, mantenimiento, limpieza y materiales.`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumbJsonLd(migas, Astro.site!)]}
+>
+  <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-10">
+    <Breadcrumbs items={migas} />
+    <h1 class="mt-6 text-4xl font-bold text-ink">Blog: {categoria}</h1>
+    <p class="mt-3">
+      <a
+        href="/blog"
+        class="text-sm text-brand-700 underline-offset-2 hover:underline"
+      >
+        ← Ver todas las categorías
+      </a>
+    </p>
+
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2">
+      {
+        posts.map((post) => (
+          <li class="flex flex-col rounded-lg border border-line bg-surface p-6">
+            <p class="text-xs uppercase tracking-wide text-accent-700">
+              {post.data.categoria}
+            </p>
+            <h2 class="mt-2 text-lg font-semibold text-brand-700">
+              <a href={`/blog/${post.id}`} class="underline-offset-2 hover:underline">
+                {post.data.titulo}
+              </a>
+            </h2>
+            <p class="mt-2 flex-1 text-sm text-muted">{post.data.descripcionSEO}</p>
+            <p class="mt-4 text-xs text-muted">
+              <time datetime={post.data.fecha.toISOString()}>
+                {fmtFecha(post.data.fecha)}
+              </time>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayout>

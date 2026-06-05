@@ -12,6 +12,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import SolucionLlaveEnMano from '../../components/SolucionLlaveEnMano.astro';
+import CTACotizacion from '../../components/CTACotizacion.astro';
 import {
   serviceJsonLd,
   breadcrumbJsonLd,
@@ -211,19 +212,6 @@ const seoTitle = tituloIncluyeKeyword
       </ul>
     </nav>
 
-    {/* CTA */}
-    <section class="mt-12 rounded-lg bg-brand-700 p-8 text-white md:p-12">
-      <h2 class="text-2xl font-bold">¿Necesitas {data.keywordPrimaria}?</h2>
-      <p class="mt-3 max-w-2xl text-brand-100">
-        Solicita una cotización a medida. Atendemos al sector privado y a entidades
-        públicas en todo el Perú.
-      </p>
-      <a
-        href="/nosotros"
-        class="mt-6 inline-block rounded-md bg-accent-500 px-6 py-3 font-semibold text-white hover:bg-accent-600"
-      >
-        Conoce a FEGHADAL
-      </a>
-    </section>
+    <CTACotizacion titulo={`¿Necesitas ${data.keywordPrimaria}?`} />
   </div>
 </BaseLayout>

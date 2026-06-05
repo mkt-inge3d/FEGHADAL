@@ -26,16 +26,68 @@ export function organizationJsonLd(siteUrl: URL | string) {
     telephone: site.telefono,
     email: site.email,
     image: absoluteUrl(site.ogImagen, siteUrl),
+    // RUC como identificador fiscal verificable (SEO de confianza/local).
+    taxID: site.credenciales.ruc,
+    vatID: site.credenciales.ruc,
     address: {
       '@type': 'PostalAddress',
       streetAddress: site.direccion.calle,
-      addressLocality: site.direccion.ciudad,
+      addressLocality: site.direccion.distrito,
       addressRegion: site.direccion.region,
       postalCode: site.direccion.codigoPostal,
       addressCountry: site.direccion.pais,
     },
     areaServed: site.ambitoServicio,
     ...(site.redes.length > 0 ? { sameAs: site.redes } : {}),
+  };
+}
+
+/**
+ * ContactPoint del negocio para la página de contacto (CLAUDE.md §5).
+ * Se ancla al mismo @id de la organización global.
+ */
+export function contactPointJsonLd(siteUrl: URL | string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': absoluteUrl('/#organization', siteUrl),
+    name: site.nombre,
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'ventas y cotizaciones',
+        telephone: site.telefono,
+        email: site.email,
+        areaServed: 'PE',
+        availableLanguage: ['Spanish'],
+      },
+    ],
+  };
+}
+
+/**
+ * Article para una entrada de blog. Datos desde la collection `blog`.
+ */
+export function articleJsonLd(
+  post: {
+    titulo: string;
+    descripcionSEO: string;
+    fecha: Date;
+    autor: string;
+  },
+  pageUrl: URL | string,
+  siteUrl: URL | string,
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.titulo,
+    description: post.descripcionSEO,
+    datePublished: post.fecha.toISOString(),
+    author: { '@type': 'Organization', name: post.autor },
+    publisher: { '@id': absoluteUrl('/#organization', siteUrl) },
+    mainEntityOfPage: pageUrl.toString(),
+    inLanguage: 'es-PE',
   };
 }
 

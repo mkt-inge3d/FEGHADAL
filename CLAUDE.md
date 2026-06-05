@@ -44,6 +44,19 @@ actuales y su razón:
 
 Si una funcionalidad se puede resolver con HTML/CSS/Astro nativo, **no** se agrega paquete.
 
+### Islas de JavaScript (excepciones a "cero JS")
+Solo existe **una** isla de JS, justificada y documentada:
+- **`CotizacionForm.astro`** — mejora progresiva del formulario de contacto. Sin JS
+  funciona por POST nativo a Web3Forms (con `redirect` a `/gracias`); con JS envía por
+  `fetch` y muestra el estado con `aria-live` sin recargar. Es un script pequeño que
+  Astro incrusta en línea (no genera bundle aparte).
+
+### Servicios externos y variables de entorno
+- **Web3Forms** (envío de formularios sin servidor) — access key en `PUBLIC_WEB3FORMS_KEY`.
+- **WhatsApp** (canal de cotización, `wa.me`) — número en `PUBLIC_WHATSAPP_NUMERO`.
+- Variables con prefijo `PUBLIC_` (se incrustan en el build estático). Ver `.env.example`.
+  En Vercel: Project Settings → Environment Variables.
+
 ---
 
 ## 3. Arquitectura de carpetas
@@ -70,7 +83,10 @@ feghadal/
 │   │   ├── Breadcrumbs.astro  # migas visibles + BreadcrumbList JSON-LD
 │   │   ├── Header.astro       # navegación de los silos
 │   │   ├── Footer.astro       # NAP + enlazado por silo (servicios/sectores/productos)
-│   │   └── SolucionLlaveEnMano.astro  # bloque reutilizable servicio + materiales
+│   │   ├── SolucionLlaveEnMano.astro  # bloque reutilizable servicio + materiales
+│   │   ├── CTACotizacion.astro        # CTA reutilizable → /contacto + WhatsApp
+│   │   ├── CotizacionForm.astro       # formulario Web3Forms (isla JS, a11y)
+│   │   └── WhatsAppButton.astro       # botón flotante wa.me (global)
 │   ├── layouts/
 │   │   └── BaseLayout.astro   # <html>, <head> (SEO + Organization/LocalBusiness), header, footer
 │   ├── pages/
@@ -82,8 +98,14 @@ feghadal/
 │   │   ├── sectores/[slug].astro
 │   │   ├── productos/index.astro
 │   │   ├── productos/[slug].astro
+│   │   ├── proyectos/index.astro
 │   │   ├── proyectos/[slug].astro
-│   │   └── blog/[slug].astro
+│   │   ├── blog/index.astro
+│   │   ├── blog/[slug].astro
+│   │   ├── blog/categoria/[categoria].astro  # filtro por categoría (estático)
+│   │   ├── nosotros.astro
+│   │   ├── contacto.astro
+│   │   └── gracias.astro                      # confirmación del form (noindex)
 │   └── styles/
 │       └── global.css         # @import tailwind + @theme (design tokens)
 └── public/
@@ -120,10 +142,20 @@ calculado).
 - `/servicios/[slug]`
 - `/servicios/[servicio]/[sector]`  (cruces)
 - `/sectores/[slug]`
+- `/productos/[slug]`
 - `/proyectos/[slug]`
-- `/blog/[slug]`
+- `/blog/[slug]` · `/blog/categoria/[categoria]`
+- `/nosotros` · `/contacto` · `/gracias` (noindex)
 
 Slugs en **kebab-case**, sin acentos, derivados de la keyword primaria.
+
+### Capa de conversión (CLAUDE.md §conversión)
+- **`/contacto`** con formulario Web3Forms (select alimentado por las collections).
+- **CTA "Solicita tu cotización"** consistente (componente `CTACotizacion`) en servicios,
+  productos, cruces y sectores → `/contacto` + WhatsApp.
+- **Botón flotante de WhatsApp** global (en `BaseLayout`).
+- **Honestidad (§8):** Proyectos no inventa casos; entradas `esPlantilla` rotuladas y
+  `noindex`; el índice muestra estado real ("casos en desarrollo") y forma de trabajo.
 
 ---
 
@@ -201,13 +233,16 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
 - **sectores**: `titulo, keywordPrimaria, descripcionSEO, resumen, retos[], serviciosRelacionados[], imagen, orden`.
 - **productos**: `titulo, keywordPrimaria, descripcionSEO, resumen, categorias[], imagen, orden`.
 - **cruces**: `servicio (ref), sector (ref), titulo, keywordPrimaria, descripcionSEO, resumen, alcanceEspecifico[], consideraciones[], normativa[], productosRelacionados[], orden` + cuerpo único.
-- **proyectos**: `titulo, cliente, sector, servicios[], alcance, anio, resultado, imagenes[], descripcionSEO`.
+- **proyectos**: `titulo, cliente, sector, servicios[], alcance, anio, resultado, imagenes[], descripcionSEO, esPlantilla`.
 - **blog**: `titulo, descripcionSEO, fecha, categoria, autor, draft`.
 
 ### JSON-LD por tipo de página
 - **servicios** y **cruces** → `Service` (+ `OfferCatalog` del alcance) + `BreadcrumbList`.
 - **productos** → `OfferCatalog` (categorías como `Offer`/`Product`) + `BreadcrumbList`.
-- **sectores** → `BreadcrumbList` (la entidad va como `LocalBusiness` global).
+- **sectores**, **proyectos**, **blog índice** → `BreadcrumbList` (entidad = `LocalBusiness` global).
+- **blog [slug]** → `Article` + `BreadcrumbList`.
+- **contacto** → `ContactPoint` (anclado a la organización) + `BreadcrumbList`.
+- **nosotros** → `BreadcrumbList` (la organización global ya incluye RUC/`taxID`).
 
 > El `slug` es el nombre del archivo (`id` de la collection); no se duplica en el frontmatter.
 
@@ -223,5 +258,8 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
       + enlazado interno por silo (servicios↔sectores↔cruces).
 - [x] **Fase 2c (ampliación)** — Silo PRODUCTOS (5 pillars, CIIU 4663/4752) + enlazado
       cruzado servicios↔productos ("solución llave en mano") + nav/footer actualizados.
-- [ ] **Fase 3** — Silo Autoridad: Nosotros (RNP, certificaciones, SST), Proyectos/portafolio, Blog.
-- [ ] **Fase 4** — Imágenes reales, OG dinámico, auditoría Lighthouse/CWV y a11y.
+- [x] **Fase 3** — Silo AUTORIDAD (Nosotros con credenciales reales, Proyectos honesto con
+      plantilla, Blog con 3 artículos + filtro por categoría) y CAPA DE CONVERSIÓN
+      (contacto + formulario Web3Forms, WhatsApp flotante, CTA de cotización consistente).
+- [ ] **Fase 4 (pre-lanzamiento)** — Auditoría performance/Core Web Vitals, Google Search
+      Console, Perfil de Empresa de Google y checklist de despliegue.

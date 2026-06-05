@@ -1,0 +1,88 @@
+---
+/**
+ * Página de contacto / cotización (capa de conversión, CLAUDE.md §4).
+ * Datos reales (Puente Piedra, horario, RUC) + formulario Web3Forms + WhatsApp.
+ * JSON-LD: ContactPoint (anclado a la organización) + BreadcrumbList.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CotizacionForm from '../components/CotizacionForm.astro';
+import {
+  contactPointJsonLd,
+  breadcrumbJsonLd,
+  type Breadcrumb,
+} from '../lib/seo';
+import { site, whatsappUrl } from '../config/site';
+
+const migas: Breadcrumb[] = [
+  { nombre: 'Inicio', href: '/' },
+  { nombre: 'Contacto', href: '/contacto' },
+];
+
+const jsonLd = [
+  contactPointJsonLd(Astro.site!),
+  breadcrumbJsonLd(migas, Astro.site!),
+];
+
+const title = 'Contacto y cotización de servicios y materiales';
+const description =
+  'Contáctanos para cotizar servicios generales y materiales en Lima Norte. ' +
+  'Escríbenos por WhatsApp o completa el formulario y te respondemos a la brevedad.';
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-10">
+    <Breadcrumbs items={migas} />
+    <h1 class="mt-6 text-4xl font-bold text-ink">Solicita tu cotización</h1>
+    <p class="mt-3 max-w-2xl text-lg text-muted">
+      Cuéntanos qué necesitas y te enviamos una propuesta a medida. También puedes
+      escribirnos directamente por WhatsApp.
+    </p>
+
+    <div class="mt-10 grid gap-12 lg:grid-cols-[2fr_1fr]">
+      {/* Formulario */}
+      <div>
+        <h2 class="sr-only">Formulario de cotización</h2>
+        <CotizacionForm />
+      </div>
+
+      {/* Datos de contacto */}
+      <aside class="space-y-6">
+        <section class="rounded-lg border border-line bg-surface-alt p-6">
+          <h2 class="text-lg font-semibold text-ink">Datos de contacto</h2>
+          <address class="mt-4 space-y-3 text-sm not-italic text-ink">
+            <p>
+              <span class="block text-xs uppercase tracking-wide text-muted">Dirección</span>
+              {site.direccion.distrito}, {site.direccion.ciudad}, Perú
+            </p>
+            <p>
+              <span class="block text-xs uppercase tracking-wide text-muted">Horario</span>
+              {site.horario}
+            </p>
+            <p>
+              <span class="block text-xs uppercase tracking-wide text-muted">Correo</span>
+              <a
+                href={`mailto:${site.email}`}
+                class="text-brand-700 underline-offset-2 hover:underline"
+              >
+                {site.email}
+              </a>
+            </p>
+            <p>
+              <span class="block text-xs uppercase tracking-wide text-muted">RUC</span>
+              {site.credenciales.ruc} · {site.credenciales.sunatEstado} y {site.credenciales.sunatCondicion}
+            </p>
+          </address>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-5 inline-block rounded-md bg-accent-600 px-5 py-3 font-semibold text-white hover:bg-accent-700"
+          >
+            Escríbenos por WhatsApp
+          </a>
+        </section>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

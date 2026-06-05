@@ -1,0 +1,41 @@
+---
+/**
+ * CTA reutilizable "Solicita tu cotización" → /contacto.
+ * Consistente en páginas de servicio, producto, cruce y sector (CLAUDE.md §4).
+ * Ofrece también el atajo a WhatsApp (canal preferido en Perú).
+ */
+import { whatsappUrl } from '../config/site';
+
+interface Props {
+  /** Titular contextual; por defecto uno genérico. */
+  titulo?: string;
+  /** Texto de apoyo opcional. */
+  texto?: string;
+}
+
+const {
+  titulo = '¿Necesitas una cotización?',
+  texto = 'Cuéntanos qué necesitas y te enviamos una propuesta a medida. Atendemos al sector privado y a entidades públicas.',
+} = Astro.props;
+---
+
+<section class="mt-12 rounded-lg bg-brand-700 p-8 text-white md:p-12">
+  <h2 class="text-2xl font-bold">{titulo}</h2>
+  <p class="mt-3 max-w-2xl text-brand-100">{texto}</p>
+  <div class="mt-6 flex flex-wrap gap-4">
+    <a
+      href="/contacto"
+      class="inline-block rounded-md bg-accent-500 px-6 py-3 font-semibold text-white hover:bg-accent-600"
+    >
+      Solicita tu cotización
+    </a>
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-block rounded-md border border-brand-100 px-6 py-3 font-semibold text-white hover:bg-brand-600"
+    >
+      Cotiza por WhatsApp
+    </a>
+  </div>
+</section>

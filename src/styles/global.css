@@ -36,6 +36,7 @@
   --color-surface: #ffffff;
   --color-surface-alt: #f4f7fa;
   --color-line: #dde5ec;         /* bordes/divisores */
+  --color-danger: #b42318;       /* errores: contraste 6:1 sobre blanco (AA) */
 
   /* Tipografía: system stack (cero descargas → mejor LCP/CLS) */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,

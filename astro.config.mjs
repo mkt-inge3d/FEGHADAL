@@ -16,6 +16,12 @@ export default defineConfig({
     sitemap({
       changefreq: 'weekly',
       priority: 0.7,
+      // Excluye páginas noindex del sitemap (confirmación de formulario y
+      // proyectos marcados como plantilla). Al añadir una página noindex,
+      // agrégala también aquí para mantener la coherencia con Search Console.
+      filter: (page) =>
+        !page.includes('/gracias') &&
+        !page.includes('/proyectos/mantenimiento-sede-corporativa'),
     }),
   ],
   vite: {

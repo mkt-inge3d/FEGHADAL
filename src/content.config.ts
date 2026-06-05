@@ -108,6 +108,9 @@ const proyectos = defineCollection({
       resultado: z.string(),
       imagenes: z.array(imagenConAlt(image)).default([]),
       descripcionSEO: z.string().min(120).max(160),
+      // Marca una entrada como PLANTILLA de ejemplo (no es un caso real).
+      // Regla de honestidad: empresa nueva, no inventar casos. Ver CLAUDE.md §8.
+      esPlantilla: z.boolean().default(false),
     }),
 });
 

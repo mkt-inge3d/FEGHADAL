@@ -9,6 +9,7 @@ import '../styles/global.css';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
 import { organizationJsonLd } from '../lib/seo';
 
 interface Props {
@@ -19,9 +20,19 @@ interface Props {
   canonical?: string;
   /** Bloques JSON-LD específicos de la página (Service, BreadcrumbList...). */
   jsonLd?: Record<string, unknown>[];
+  /** Excluir del índice (ej. /gracias). */
+  noindex?: boolean;
 }
 
-const { title, description, type, image, canonical, jsonLd = [] } = Astro.props;
+const {
+  title,
+  description,
+  type,
+  image,
+  canonical,
+  jsonLd = [],
+  noindex = false,
+} = Astro.props;
 
 // Organization/LocalBusiness va en todas las páginas.
 const allJsonLd = [organizationJsonLd(Astro.site!), ...jsonLd];
@@ -41,6 +52,7 @@ const allJsonLd = [organizationJsonLd(Astro.site!), ...jsonLd];
       image={image}
       canonical={canonical}
       jsonLd={allJsonLd}
+      noindex={noindex}
     />
   </head>
   <body class="flex min-h-screen flex-col bg-surface text-ink">
@@ -50,5 +62,6 @@ const allJsonLd = [organizationJsonLd(Astro.site!), ...jsonLd];
       <slot />
     </main>
     <Footer />
+    <WhatsAppButton />
   </body>
 </html>

@@ -17,6 +17,8 @@ interface Props {
   canonical?: string;
   /** Bloques JSON-LD ya serializables (objetos). */
   jsonLd?: Record<string, unknown>[];
+  /** Excluir del índice (ej. página de gracias). */
+  noindex?: boolean;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   image = site.ogImagen,
   canonical,
   jsonLd = [],
+  noindex = false,
 } = Astro.props;
 
 const canonicalUrl = canonical
@@ -38,6 +41,7 @@ const fullTitle = title.includes(site.nombre) ? title : `${title} | ${site.nombr
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl.toString()} />
+{noindex && <meta name="robots" content="noindex, follow" />}
 
 {/* Open Graph */}
 <meta property="og:type" content={type} />

@@ -1,0 +1,221 @@
+---
+/**
+ * Formulario de cotización (capa de conversión, CLAUDE.md §4).
+ * Envío sin servidor con Web3Forms (access key en PUBLIC_WEB3FORMS_KEY).
+ *
+ * Mejora progresiva (ISLA JS justificada — documentada en CLAUDE.md §2):
+ *  - Sin JS: POST nativo a Web3Forms con `redirect` a /gracias.
+ *  - Con JS: envío por fetch y estado accesible con aria-live (sin recargar).
+ *
+ * Accesibilidad (§6): labels asociados, campos required con aria-required,
+ * región de estado role="status" aria-live, foco gestionado, honeypot anti-spam.
+ *
+ * El select "interés" se alimenta de las collections (servicios y productos).
+ */
+import { getCollection } from 'astro:content';
+
+const porOrden = (a: { data: { orden: number } }, b: { data: { orden: number } }) =>
+  a.data.orden - b.data.orden;
+
+const servicios = (await getCollection('servicios')).sort(porOrden);
+const productos = (await getCollection('productos')).sort(porOrden);
+
+const { site } = await import('../config/site');
+const redirectUrl = new URL('/gracias', Astro.site).toString();
+---
+
+<form
+  id="cotizacion-form"
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  novalidate
+  class="space-y-5"
+>
+  {/* Web3Forms: campos de control */}
+  <input type="hidden" name="access_key" value={site.web3formsKey} />
+  <input type="hidden" name="subject" value="Nueva solicitud de cotización — FEGHADAL" />
+  <input type="hidden" name="from_name" value="Web FEGHADAL" />
+  {/* Fallback sin JS: Web3Forms redirige a esta página */}
+  <input type="hidden" name="redirect" value={redirectUrl} />
+  {/* Honeypot anti-spam (oculto a usuarios y lectores de pantalla) */}
+  <input
+    type="checkbox"
+    name="botcheck"
+    class="hidden"
+    style="display:none"
+    tabindex="-1"
+    autocomplete="off"
+    aria-hidden="true"
+  />
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="nombre" class="block text-sm font-medium text-ink">
+        Nombre <span class="text-danger" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        required
+        aria-required="true"
+        autocomplete="name"
+        class="mt-1 block w-full rounded-md border border-line bg-surface px-3 py-2 text-ink"
+      />
+    </div>
+
+    <div>
+      <label for="empresa" class="block text-sm font-medium text-ink">
+        Empresa
+      </label>
+      <input
+        type="text"
+        id="empresa"
+        name="empresa"
+        autocomplete="organization"
+        class="mt-1 block w-full rounded-md border border-line bg-surface px-3 py-2 text-ink"
+      />
+    </div>
+
+    <div>
+      <label for="email" class="block text-sm font-medium text-ink">
+        Correo <span class="text-danger" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        aria-required="true"
+        autocomplete="email"
+        class="mt-1 block w-full rounded-md border border-line bg-surface px-3 py-2 text-ink"
+      />
+    </div>
+
+    <div>
+      <label for="telefono" class="block text-sm font-medium text-ink">
+        Teléfono / WhatsApp
+      </label>
+      <input
+        type="tel"
+        id="telefono"
+        name="telefono"
+        autocomplete="tel"
+        inputmode="tel"
+        class="mt-1 block w-full rounded-md border border-line bg-surface px-3 py-2 text-ink"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label for="interes" class="block text-sm font-medium text-ink">
+      Servicio o producto de interés <span class="text-danger" aria-hidden="true">*</span>
+    </label>
+    <select
+      id="interes"
+      name="interes"
+      required
+      aria-required="true"
+      class="mt-1 block w-full rounded-md border border-line bg-surface px-3 py-2 text-ink"
+    >
+      <option value="">Selecciona una opción…</option>
+      <optgroup label="Servicios">
+        {servicios.map((s) => <option value={s.data.titulo}>{s.data.titulo}</option>)}
+      </optgroup>
+      <optgroup label="Productos">
+        {productos.map((p) => <option value={p.data.titulo}>{p.data.titulo}</option>)}
+      </optgroup>
+      <option value="Varios / No estoy seguro">Varios / No estoy seguro</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="mensaje" class="block text-sm font-medium text-ink">
+      Mensaje <span class="text-danger" aria-hidden="true">*</span>
+    </label>
+    <textarea
+      id="mensaje"
+      name="mensaje"
+      rows="5"
+      required
+      aria-required="true"
+      class="mt-1 block w-full rounded-md border border-line bg-surface px-3 py-2 text-ink"
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white hover:bg-accent-700"
+  >
+    Enviar solicitud
+  </button>
+
+  {/* Región de estado accesible (éxito/error) */}
+  <p id="form-status" role="status" aria-live="polite" tabindex="-1" class="mt-4 text-sm"></p>
+
+  <p class="text-xs text-muted">
+    Los campos marcados con <span class="text-danger">*</span> son obligatorios.
+  </p>
+</form>
+
+<script>
+  const form = document.getElementById('cotizacion-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      status.className = 'mt-4 text-sm';
+
+      // Validación nativa accesible: el navegador anuncia y muestra los errores.
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        const firstInvalid = form.querySelector(':invalid') as HTMLElement | null;
+        firstInvalid?.focus();
+        return;
+      }
+
+      const submitBtn = form.querySelector(
+        'button[type="submit"]',
+      ) as HTMLButtonElement | null;
+      const originalLabel = submitBtn?.textContent ?? 'Enviar solicitud';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando…';
+      }
+      status.textContent = 'Enviando tu solicitud…';
+      status.className = 'mt-4 text-sm text-muted';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          form.reset();
+          status.textContent =
+            '¡Gracias! Recibimos tu solicitud. Te contactaremos a la brevedad.';
+          status.className = 'mt-4 text-sm font-semibold text-accent-700';
+          status.focus();
+        } else {
+          status.textContent =
+            json.message ||
+            'No se pudo enviar. Inténtalo nuevamente o escríbenos por WhatsApp.';
+          status.className = 'mt-4 text-sm font-semibold text-danger';
+        }
+      } catch {
+        status.textContent =
+          'Hubo un problema de conexión. Inténtalo nuevamente o escríbenos por WhatsApp.';
+        status.className = 'mt-4 text-sm font-semibold text-danger';
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
+      }
+    });
+  }
+</script>

@@ -1,37 +1,41 @@
 ---
-titulo: Mantenimiento y limpieza integral de sede corporativa
-cliente: Empresa del sector privado
+titulo: "[Plantilla] Mantenimiento y limpieza integral de sede corporativa"
+cliente: Cliente de ejemplo (reemplazar por caso real)
 sector: oficinas-retail
 servicios:
   - mantenimiento-inmuebles
   - limpieza-empresarial
 alcance: >-
-  Servicio integral mensual de limpieza empresarial y mantenimiento preventivo
-  y correctivo de instalaciones eléctricas, sanitarias y acabados en una sede
-  corporativa de varios pisos, en horarios sin interrupción de la operación.
-anio: 2024
+  EJEMPLO/PLANTILLA. Estructura de cómo se documentará un caso real: servicio
+  integral de limpieza empresarial y mantenimiento preventivo y correctivo en una
+  sede corporativa, en horarios sin interrupción de la operación.
+anio: 2025
 resultado: >-
-  Reducción de incidencias de mantenimiento y mejora sostenida de los estándares
-  de limpieza, con supervisión y reportes mensuales.
+  EJEMPLO/PLANTILLA. Aquí se describirá el resultado verificable del caso real
+  (indicadores, mejoras y referencias del cliente) una vez ejecutado.
 imagenes:
   - src: ../../assets/proyectos/mantenimiento-sede-corporativa.svg
-    alt: Sede corporativa atendida por FEGHADAL con servicios de mantenimiento y limpieza
-descripcionSEO: "Caso de éxito de FEGHADAL: mantenimiento preventivo y limpieza integral en una sede corporativa de oficinas en el Perú, con supervisión mensual."
+    alt: Imagen de ejemplo (plantilla) de un proyecto de mantenimiento y limpieza
+descripcionSEO: "Plantilla de caso de FEGHADAL para documentar proyectos reales de mantenimiento y limpieza integral en sedes corporativas; se reemplaza por casos verificables."
+esPlantilla: true
 ---
+
+> **Plantilla de ejemplo.** FEGHADAL es una empresa nueva; este contenido es una
+> estructura de referencia para documentar **casos reales** y debe reemplazarse por
+> proyectos verificables. No representa un cliente ni un resultado real.
 
 ## Reto
 
-El cliente requería un único proveedor capaz de integrar **limpieza empresarial** y
-**mantenimiento de inmuebles** en una sede corporativa de alto tránsito, sin afectar
-la operación diaria.
+Describe aquí la necesidad del cliente: por qué buscaba un único proveedor capaz de
+integrar **limpieza empresarial** y **mantenimiento de inmuebles** sin afectar su
+operación.
 
 ## Solución
 
-FEGHADAL implementó un programa mensual con personal capacitado, rutinas preventivas
-de instalaciones eléctricas y sanitarias, y limpieza integral en turnos coordinados,
-con supervisión permanente y reportes.
+Describe el programa ejecutado: personal capacitado, rutinas preventivas, turnos
+coordinados, supervisión y reportes.
 
 ## Resultado
 
-Disminución de incidencias correctivas y estándares de limpieza consistentes,
-liberando al cliente de la gestión de múltiples proveedores.
+Describe el resultado **verificable**: indicadores de mejora, reducción de
+incidencias y referencias del cliente.

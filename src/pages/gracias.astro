@@ -1,0 +1,39 @@
+---
+/**
+ * Página de agradecimiento — destino del formulario sin JS (Web3Forms `redirect`).
+ * Con JS, el formulario muestra el estado en línea y no llega aquí.
+ * noindex: no aporta valor SEO y evita indexar una página de confirmación.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { whatsappUrl } from '../config/site';
+
+const title = 'Gracias por contactarnos';
+const description =
+  'Hemos recibido tu solicitud de cotización. El equipo de FEGHADAL te contactará a la brevedad.';
+---
+
+<BaseLayout title={title} description={description} noindex>
+  <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-20 text-center">
+    <h1 class="text-4xl font-bold text-ink">¡Gracias por contactarnos!</h1>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-muted">
+      Hemos recibido tu solicitud. El equipo de FEGHADAL te contactará a la brevedad.
+      Si lo prefieres, también puedes escribirnos por WhatsApp.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <a
+        href="/"
+        class="rounded-md border border-line px-6 py-3 font-semibold text-brand-700 hover:bg-surface-alt"
+      >
+        Volver al inicio
+      </a>
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-md bg-accent-600 px-6 py-3 font-semibold text-white hover:bg-accent-700"
+      >
+        Escríbenos por WhatsApp
+      </a>
+    </div>
+  </div>
+</BaseLayout>
