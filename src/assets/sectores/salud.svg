@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Sector salud FEGHADAL">
+  <rect width="1200" height="675" fill="#0d4a30"/>
+  <rect y="540" width="1200" height="135" fill="#157a4d"/>
+  <g fill="#ffffff" opacity="0.85">
+    <rect x="965" y="150" width="40" height="130"/>
+    <rect x="920" y="195" width="130" height="40"/>
+  </g>
+  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="64" font-weight="700" fill="#ffffff">Sector salud</text>
+  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d0f2e0">Limpieza y saneamiento para entornos clínicos</text>
+  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
+</svg>

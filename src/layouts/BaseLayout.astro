@@ -1,0 +1,54 @@
+---
+/**
+ * Layout base de todas las páginas (CLAUDE.md §3, §5, §6).
+ * - <html lang="es-PE">, skip link, header, main, footer.
+ * - Inyecta SEO + JSON-LD global (Organization/LocalBusiness).
+ * - Las páginas pueden añadir bloques JSON-LD adicionales (Service, Breadcrumb...).
+ */
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { organizationJsonLd } from '../lib/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  type?: 'website' | 'article';
+  image?: string;
+  canonical?: string;
+  /** Bloques JSON-LD específicos de la página (Service, BreadcrumbList...). */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, type, image, canonical, jsonLd = [] } = Astro.props;
+
+// Organization/LocalBusiness va en todas las páginas.
+const allJsonLd = [organizationJsonLd(Astro.site!), ...jsonLd];
+---
+
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEO
+      title={title}
+      description={description}
+      type={type}
+      image={image}
+      canonical={canonical}
+      jsonLd={allJsonLd}
+    />
+  </head>
+  <body class="flex min-h-screen flex-col bg-surface text-ink">
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,45 @@
+---
+/**
+ * Breadcrumbs visibles + markup accesible (CLAUDE.md §5, §6).
+ * El JSON-LD BreadcrumbList correspondiente se emite vía <SEO>; este componente
+ * solo renderiza la navegación visible. Reciben las mismas migas tipadas.
+ */
+import type { Breadcrumb } from '../lib/seo';
+
+interface Props {
+  items: Breadcrumb[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="Migas de pan" class="text-sm">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted">
+    {
+      items.map((item, i) => {
+        const isLast = i === items.length - 1;
+        return (
+          <li class="flex items-center gap-x-2">
+            {isLast ? (
+              <span aria-current="page" class="font-medium text-ink">
+                {item.nombre}
+              </span>
+            ) : (
+              <a
+                href={item.href}
+                class="text-brand-700 underline-offset-2 hover:underline"
+              >
+                {item.nombre}
+              </a>
+            )}
+            {!isLast && (
+              <span aria-hidden="true" class="text-line">
+                /
+              </span>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

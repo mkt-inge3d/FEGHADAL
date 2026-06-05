@@ -1,17 +1,112 @@
 ---
+/**
+ * Home — entrada principal y hub de enlazado a los silos (CLAUDE.md §4).
+ * Lista servicios y sectores desde las collections (nada hardcodeado).
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
 
+const servicios = (await getCollection('servicios')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+const sectores = (await getCollection('sectores')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+
+const title = 'Servicios generales en el Perú: limpieza y mantenimiento';
+const description =
+  'FEGHADAL: empresa peruana de servicios generales. Limpieza integral, ' +
+  'mantenimiento de inmuebles, instalaciones y saneamiento ambiental para ' +
+  'empresas y entidades públicas.';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={title} description={description}>
+  {/* Hero */}
+  <section class="bg-brand-700 text-white">
+    <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-20 md:py-28">
+      <p class="text-sm font-semibold uppercase tracking-wider text-brand-100">
+        Servicios generales · Perú
+      </p>
+      <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
+        Limpieza, mantenimiento y saneamiento para empresas e instituciones
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg text-brand-100">
+        {site.descripcion}
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a
+          href="/servicios"
+          class="rounded-md bg-accent-500 px-6 py-3 font-semibold text-white hover:bg-accent-600"
+        >
+          Ver servicios
+        </a>
+        <a
+          href="/nosotros"
+          class="rounded-md border border-brand-100 px-6 py-3 font-semibold text-white hover:bg-brand-600"
+        >
+          Conócenos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* Servicios */}
+  <section class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <h2 class="text-3xl font-bold text-ink">Nuestros servicios</h2>
+    <p class="mt-2 max-w-2xl text-muted">
+      Soluciones integrales de servicios generales bajo un mismo proveedor.
+    </p>
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        servicios.map((servicio) => (
+          <li class="overflow-hidden rounded-lg border border-line bg-surface">
+            <a href={`/servicios/${servicio.id}`} class="group block">
+              <Image
+                src={servicio.data.imagen.src}
+                alt={servicio.data.imagen.alt}
+                width={600}
+                height={338}
+                class="aspect-video w-full object-cover"
+              />
+              <div class="p-5">
+                <h3 class="text-lg font-semibold text-brand-700 group-hover:underline">
+                  {servicio.data.titulo}
+                </h3>
+                <p class="mt-2 text-sm text-muted">{servicio.data.resumen}</p>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* Sectores */}
+  <section class="bg-surface-alt">
+    <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+      <h2 class="text-3xl font-bold text-ink">Sectores que atendemos</h2>
+      <p class="mt-2 max-w-2xl text-muted">
+        Adaptamos cada servicio a las exigencias específicas de tu sector.
+      </p>
+      <ul class="mt-8 grid gap-6 sm:grid-cols-2">
+        {
+          sectores.map((sector) => (
+            <li class="rounded-lg border border-line bg-surface p-6">
+              <h3 class="text-lg font-semibold text-brand-700">
+                <a
+                  href={`/sectores/${sector.id}`}
+                  class="underline-offset-2 hover:underline"
+                >
+                  {sector.data.titulo}
+                </a>
+              </h3>
+              <p class="mt-2 text-sm text-muted">{sector.data.resumen}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

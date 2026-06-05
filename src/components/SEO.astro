@@ -1,0 +1,66 @@
+---
+/**
+ * Componente SEO reutilizable (CLAUDE.md §5).
+ * Genera meta básicos, Open Graph, Twitter Card, canonical y bloques JSON-LD.
+ * Los JSON-LD se reciben ya construidos desde src/lib/seo.ts (no se arman aquí).
+ */
+import { site } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Tipo Open Graph: 'website' para índices, 'article' para blog/proyectos. */
+  type?: 'website' | 'article';
+  /** Imagen OG absoluta o relativa a la raíz. */
+  image?: string;
+  /** Canonical explícita; por defecto la URL actual. */
+  canonical?: string;
+  /** Bloques JSON-LD ya serializables (objetos). */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  type = 'website',
+  image = site.ogImagen,
+  canonical,
+  jsonLd = [],
+} = Astro.props;
+
+const canonicalUrl = canonical
+  ? new URL(canonical, Astro.site)
+  : new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site).toString();
+const fullTitle = title.includes(site.nombre) ? title : `${title} | ${site.nombre}`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl.toString()} />
+
+{/* Open Graph */}
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.nombre} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl.toString()} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:locale" content="es_PE" />
+
+{/* Twitter Card */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+{/* JSON-LD: un <script> por bloque (Organization, Service, BreadcrumbList, ...) */}
+{
+  jsonLd.map((block) => (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(block)}
+    />
+  ))
+}

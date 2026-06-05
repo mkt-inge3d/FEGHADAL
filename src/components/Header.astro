@@ -1,0 +1,83 @@
+---
+/**
+ * Cabecera con navegación de los 3 silos (CLAUDE.md §4, §6).
+ * Menú móvil con <details>/<summary>: accesible y SIN JavaScript de cliente.
+ * Marca la página activa con aria-current="page".
+ */
+import { site, navPrincipal } from '../config/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+
+<header class="border-b border-line bg-surface">
+  <div
+    class="mx-auto flex max-w-[var(--spacing-content)] items-center justify-between gap-4 px-4 py-4"
+  >
+    <a
+      href="/"
+      class="text-xl font-bold tracking-wide text-brand-700"
+      aria-label={`${site.nombre} — inicio`}
+    >
+      {site.nombre}
+    </a>
+
+    {/* Navegación de escritorio */}
+    <nav aria-label="Navegación principal" class="hidden md:block">
+      <ul class="flex items-center gap-6">
+        {
+          navPrincipal.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'text-base font-medium underline-offset-4 hover:underline',
+                  isActive(item.href) ? 'text-brand-700' : 'text-ink',
+                ]}
+              >
+                {item.titulo}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    {/* Navegación móvil sin JS */}
+    <details class="relative md:hidden">
+      <summary
+        class="flex cursor-pointer list-none items-center gap-2 rounded-md border border-line px-3 py-2 text-sm font-medium text-ink [&::-webkit-details-marker]:hidden"
+        aria-label="Abrir menú de navegación"
+      >
+        <span aria-hidden="true">☰</span> Menú
+      </summary>
+      <nav
+        aria-label="Navegación principal"
+        class="absolute right-0 z-50 mt-2 w-56 rounded-md border border-line bg-surface p-2 shadow-lg"
+      >
+        <ul class="flex flex-col">
+          {
+            navPrincipal.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  class:list={[
+                    'block rounded px-3 py-2 text-base hover:bg-surface-alt',
+                    isActive(item.href)
+                      ? 'font-semibold text-brand-700'
+                      : 'text-ink',
+                  ]}
+                >
+                  {item.titulo}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
