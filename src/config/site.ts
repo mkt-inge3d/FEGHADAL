@@ -44,6 +44,11 @@ export const navPrincipal = [
     descripcion: 'Para quién trabajamos',
   },
   {
+    titulo: 'Productos',
+    href: '/productos',
+    descripcion: 'Materiales y ferretería',
+  },
+  {
     titulo: 'Proyectos',
     href: '/proyectos',
     descripcion: 'Portafolio',

@@ -14,6 +14,9 @@ const servicios = (await getCollection('servicios')).sort(
 const sectores = (await getCollection('sectores')).sort(
   (a, b) => a.data.orden - b.data.orden,
 );
+const productos = (await getCollection('productos')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
 
 const title = 'Servicios generales en el Perú: limpieza y mantenimiento';
 const description =
@@ -108,5 +111,41 @@ const description =
         }
       </ul>
     </div>
+  </section>
+
+  {/* Productos */}
+  <section class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h2 class="text-3xl font-bold text-ink">Productos y materiales</h2>
+        <p class="mt-2 max-w-2xl text-muted">
+          Comercializamos materiales y ferretería. Junto a nuestros servicios,
+          ofrecemos una solución llave en mano.
+        </p>
+      </div>
+      <a
+        href="/productos"
+        class="text-sm font-semibold text-brand-700 underline-offset-2 hover:underline"
+      >
+        Ver todos los productos →
+      </a>
+    </div>
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        productos.map((producto) => (
+          <li class="rounded-lg border border-line bg-surface p-6">
+            <h3 class="text-lg font-semibold text-brand-700">
+              <a
+                href={`/productos/${producto.id}`}
+                class="underline-offset-2 hover:underline"
+              >
+                {producto.data.titulo}
+              </a>
+            </h3>
+            <p class="mt-2 text-sm text-muted">{producto.data.resumen}</p>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 </BaseLayout>

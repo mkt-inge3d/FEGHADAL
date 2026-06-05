@@ -55,10 +55,12 @@ feghadal/
 ├── src/
 │   ├── config/
 │   │   └── site.ts            # NAP, datos de empresa, navegación (constantes tipadas)
-│   ├── content.config.ts      # schemas Zod de las 4 collections (Content Layer API)
+│   ├── content.config.ts      # schemas Zod de las 6 collections (Content Layer API)
 │   ├── content/
 │   │   ├── servicios/         # *.md  (silo SERVICIOS)
 │   │   ├── sectores/          # *.md  (silo SECTORES)
+│   │   ├── productos/         # *.md  (silo PRODUCTOS — materiales/ferretería)
+│   │   ├── cruces/            # *.md  (cruces servicio×sector, contenido único)
 │   │   ├── proyectos/         # *.md  (silo AUTORIDAD)
 │   │   └── blog/              # *.md  (silo AUTORIDAD)
 │   ├── lib/
@@ -66,8 +68,9 @@ feghadal/
 │   ├── components/
 │   │   ├── SEO.astro          # meta tags, OG, canonical, JSON-LD
 │   │   ├── Breadcrumbs.astro  # migas visibles + BreadcrumbList JSON-LD
-│   │   ├── Header.astro       # navegación de los 3 silos
-│   │   └── Footer.astro       # NAP, enlaces, legal
+│   │   ├── Header.astro       # navegación de los silos
+│   │   ├── Footer.astro       # NAP + enlazado por silo (servicios/sectores/productos)
+│   │   └── SolucionLlaveEnMano.astro  # bloque reutilizable servicio + materiales
 │   ├── layouts/
 │   │   └── BaseLayout.astro   # <html>, <head> (SEO + Organization/LocalBusiness), header, footer
 │   ├── pages/
@@ -75,7 +78,10 @@ feghadal/
 │   │   ├── servicios/index.astro             # índice del silo
 │   │   ├── servicios/[slug].astro            # pillar page por servicio
 │   │   ├── servicios/[servicio]/[sector].astro  # cruces servicio×sector
+│   │   ├── sectores/index.astro
 │   │   ├── sectores/[slug].astro
+│   │   ├── productos/index.astro
+│   │   ├── productos/[slug].astro
 │   │   ├── proyectos/[slug].astro
 │   │   └── blog/[slug].astro
 │   └── styles/
@@ -88,17 +94,27 @@ feghadal/
 
 ## 4. Arquitectura de información (silos SEO)
 
-El sitio se organiza en **tres silos** con enlazado interno coherente:
+El sitio se organiza en **cuatro silos** con enlazado interno coherente:
 
 1. **SERVICIOS** (*qué hacemos*) — pillar pages: mantenimiento de inmuebles, limpieza
    empresarial, instalaciones, acabados y obras menores, áreas verdes, saneamiento ambiental.
 2. **SECTORES** (*para quién*) — oficinas/retail, salud, educación, sector público.
-3. **AUTORIDAD** (*confianza*) — proyectos/portafolio, nosotros (RNP, certificaciones, SST),
+3. **PRODUCTOS** (*qué vendemos*, CIIU 4663/4752) — materiales de construcción, ferretería,
+   pinturas, fontanería/gasfitería, vidrios. Se enlazan con los servicios que los usan
+   ("solución llave en mano").
+4. **AUTORIDAD** (*confianza*) — proyectos/portafolio, nosotros (RNP, certificaciones, SST),
    recursos/blog.
 
 **Cruces servicio×sector** (long-tail): `/servicios/[servicio]/[sector]`
-(ej. `/servicios/limpieza-empresarial/salud`). Cada servicio y sector declara sus
-relaciones en el frontmatter para generar enlazado interno automático.
+(ej. `/servicios/limpieza-empresarial/salud`). Se modelan como la collection `cruces`:
+cada cruce es un archivo con **contenido único y genuino** (alcance específico,
+consideraciones y normativa propias). El `getStaticPaths` genera **solo** los cruces que
+existen como archivo → nunca páginas plantilla (anti doorway pages).
+
+**Enlazado cruzado servicios↔productos**: cada servicio declara `productosRelacionados`
+y el componente `SolucionLlaveEnMano` muestra el bloque "servicio + materiales". Las
+páginas de producto enlazan de vuelta a los servicios que los usan (enlace inverso
+calculado).
 
 ### Convención de URLs (limpias y jerárquicas)
 - `/servicios/[slug]`
@@ -181,10 +197,17 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
 - `orden` controla la posición en listados; menor = primero.
 
 ### Schemas (resumen — definición en `src/content.config.ts`)
-- **servicios**: `titulo, keywordPrimaria, descripcionSEO, resumen, alcance[], sectoresRelacionados[], imagen, orden`.
+- **servicios**: `titulo, keywordPrimaria, descripcionSEO, resumen, alcance[], beneficios[], sectoresRelacionados[], productosRelacionados[], imagen, orden`.
 - **sectores**: `titulo, keywordPrimaria, descripcionSEO, resumen, retos[], serviciosRelacionados[], imagen, orden`.
+- **productos**: `titulo, keywordPrimaria, descripcionSEO, resumen, categorias[], imagen, orden`.
+- **cruces**: `servicio (ref), sector (ref), titulo, keywordPrimaria, descripcionSEO, resumen, alcanceEspecifico[], consideraciones[], normativa[], productosRelacionados[], orden` + cuerpo único.
 - **proyectos**: `titulo, cliente, sector, servicios[], alcance, anio, resultado, imagenes[], descripcionSEO`.
 - **blog**: `titulo, descripcionSEO, fecha, categoria, autor, draft`.
+
+### JSON-LD por tipo de página
+- **servicios** y **cruces** → `Service` (+ `OfferCatalog` del alcance) + `BreadcrumbList`.
+- **productos** → `OfferCatalog` (categorías como `Offer`/`Product`) + `BreadcrumbList`.
+- **sectores** → `BreadcrumbList` (la entidad va como `LocalBusiness` global).
 
 > El `slug` es el nombre del archivo (`id` de la collection); no se duplica en el frontmatter.
 
@@ -195,7 +218,10 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
 - [x] **Fase 0** — Repo, GitHub, Vercel, deploy automático.
 - [x] **Fase 1** — Fundación: CLAUDE.md, Tailwind + tokens, 4 collections + ejemplos,
       layout base + SEO, vertical completa (home + pillar "Limpieza empresarial").
-- [ ] **Fase 2** — Resto de pillars de servicios y páginas de sectores.
-- [ ] **Fase 3** — Cruces servicio×sector + enlazado interno automático.
-- [ ] **Fase 4** — Silo Autoridad (nosotros, proyectos, blog).
-- [ ] **Fase 5** — Imágenes reales, OG dinámico, auditoría Lighthouse/CWV y a11y.
+- [x] **Fase 2** — Silos SERVICIOS (6 pillars) y SECTORES (4) completos; índices de silo.
+- [x] **Fase 2b** — Cruces servicio×sector (5 páginas con contenido único, collection `cruces`)
+      + enlazado interno por silo (servicios↔sectores↔cruces).
+- [x] **Fase 2c (ampliación)** — Silo PRODUCTOS (5 pillars, CIIU 4663/4752) + enlazado
+      cruzado servicios↔productos ("solución llave en mano") + nav/footer actualizados.
+- [ ] **Fase 3** — Silo Autoridad: Nosotros (RNP, certificaciones, SST), Proyectos/portafolio, Blog.
+- [ ] **Fase 4** — Imágenes reales, OG dinámico, auditoría Lighthouse/CWV y a11y.

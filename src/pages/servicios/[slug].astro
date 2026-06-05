@@ -2,15 +2,16 @@
 /**
  * Pillar page de servicio (CLAUDE.md §4, §5).
  * Render desde la collection `servicios`. Genera:
- *  - <h1> con keyword primaria, contenido Markdown, alcance.
- *  - Enlazado interno a sectores relacionados (silos).
+ *  - <h1> con keyword primaria, contenido Markdown, alcance y beneficios.
+ *  - Enlazado interno: sectores donde aplica, cruces específicos, hermanas del silo
+ *    y bloque "solución llave en mano" (productos relacionados).
  *  - JSON-LD Service + BreadcrumbList (desde frontmatter, vía src/lib/seo).
- *  - Breadcrumbs visibles + meta/canonical/OG vía <SEO> en el layout.
  */
 import { getCollection, getEntry, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SolucionLlaveEnMano from '../../components/SolucionLlaveEnMano.astro';
 import {
   serviceJsonLd,
   breadcrumbJsonLd,
@@ -29,12 +30,25 @@ const { servicio } = Astro.props;
 const { data } = servicio;
 const { Content } = await render(servicio);
 
-// Resolver sectores relacionados para enlazado interno (silos SEO).
+// Sectores donde aplica este servicio (enlazado de silos).
 const sectoresRelacionados = (
-  await Promise.all(
-    data.sectoresRelacionados.map((ref) => getEntry(ref)),
-  )
+  await Promise.all(data.sectoresRelacionados.map((ref) => getEntry(ref)))
 ).filter((s) => s !== undefined);
+
+// Productos que usa el servicio (solución llave en mano).
+const productosRelacionados = (
+  await Promise.all(data.productosRelacionados.map((ref) => getEntry(ref)))
+).filter((p) => p !== undefined);
+
+// Cruces específicos de este servicio (long-tail).
+const cruces = (await getCollection('cruces')).filter(
+  (c) => c.data.servicio.id === servicio.id,
+);
+
+// Hermanas del silo (otros servicios), ordenadas.
+const hermanas = (await getCollection('servicios'))
+  .filter((s) => s.id !== servicio.id)
+  .sort((a, b) => a.data.orden - b.data.orden);
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -89,6 +103,19 @@ const seoTitle = tituloIncluyeKeyword
         class="prose-feghadal max-w-none [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-ink [&_li]:mt-1 [&_p]:mt-4 [&_p]:leading-relaxed [&_p]:text-ink [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6"
       >
         <Content />
+
+        {
+          data.beneficios.length > 0 && (
+            <section>
+              <h2>Beneficios</h2>
+              <ul>
+                {data.beneficios.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
       </article>
 
       {/* Aside: alcance + enlazado interno */}
@@ -112,11 +139,11 @@ const seoTitle = tituloIncluyeKeyword
         {
           sectoresRelacionados.length > 0 && (
             <nav
-              aria-label="Sectores relacionados"
+              aria-label="Sectores donde aplicamos este servicio"
               class="rounded-lg border border-line p-6"
             >
               <h2 class="text-lg font-semibold text-ink">
-                Sectores relacionados
+                Sectores donde aplicamos este servicio
               </h2>
               <ul class="mt-4 space-y-2">
                 {sectoresRelacionados.map((sector) => (
@@ -136,8 +163,56 @@ const seoTitle = tituloIncluyeKeyword
       </aside>
     </div>
 
+    {/* Cruces específicos (long-tail) */}
+    {
+      cruces.length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-2xl font-bold text-ink">
+            Este servicio por sector
+          </h2>
+          <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+            {cruces.map((cruce) => (
+              <li>
+                <a
+                  href={`/servicios/${cruce.data.servicio.id}/${cruce.data.sector.id}`}
+                  class="group flex h-full flex-col rounded-lg border border-line bg-surface p-5 hover:border-brand-300"
+                >
+                  <span class="font-semibold text-brand-700 group-hover:underline">
+                    {cruce.data.titulo}
+                  </span>
+                  <span class="mt-1 text-sm text-muted">{cruce.data.resumen}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {/* Solución llave en mano (servicio + materiales) */}
+    <SolucionLlaveEnMano productos={productosRelacionados} />
+
+    {/* Otros servicios (hermanas del silo) */}
+    <nav aria-label="Otros servicios" class="mt-12">
+      <h2 class="text-2xl font-bold text-ink">Otros servicios</h2>
+      <ul class="mt-6 flex flex-wrap gap-3">
+        {
+          hermanas.map((h) => (
+            <li>
+              <a
+                href={`/servicios/${h.id}`}
+                class="inline-block rounded-full border border-line px-4 py-2 text-sm text-brand-700 hover:border-brand-300 hover:bg-surface-alt"
+              >
+                {h.data.titulo}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
     {/* CTA */}
-    <section class="mt-16 rounded-lg bg-brand-700 p-8 text-white md:p-12">
+    <section class="mt-12 rounded-lg bg-brand-700 p-8 text-white md:p-12">
       <h2 class="text-2xl font-bold">¿Necesitas {data.keywordPrimaria}?</h2>
       <p class="mt-3 max-w-2xl text-brand-100">
         Solicita una cotización a medida. Atendemos al sector privado y a entidades

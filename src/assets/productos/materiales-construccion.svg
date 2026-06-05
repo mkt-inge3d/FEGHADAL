@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Venta de materiales de construcción FEGHADAL">
+  <rect width="1200" height="675" fill="#173c6e"/>
+  <rect y="540" width="1200" height="135" fill="#157a4d"/>
+  <g fill="#d6a45a">
+    <rect x="900" y="250" width="90" height="40"/>
+    <rect x="1000" y="250" width="90" height="40"/>
+    <rect x="950" y="205" width="90" height="40"/>
+  </g>
+  <rect x="900" y="300" width="190" height="30" fill="#7aa4db" opacity="0.7"/>
+  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700" fill="#ffffff">Materiales de construcción</text>
+  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d6e4f5">Cemento, agregados, fierro y más</text>
+  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
+</svg>

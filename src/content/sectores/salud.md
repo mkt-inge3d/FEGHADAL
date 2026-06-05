@@ -13,6 +13,8 @@ retos:
   - Operación continua sin afectar la atención al paciente
 serviciosRelacionados:
   - limpieza-empresarial
+  - saneamiento-ambiental
+  - mantenimiento-inmuebles
 imagen:
   src: ../../assets/sectores/salud.svg
   alt: Personal de FEGHADAL aplicando protocolos de limpieza en un entorno de salud

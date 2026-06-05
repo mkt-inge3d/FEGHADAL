@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Sector público FEGHADAL">
+  <rect width="1200" height="675" fill="#0b1d37"/>
+  <rect y="540" width="1200" height="135" fill="#1f4d8c"/>
+  <g fill="#a3e4c2">
+    <rect x="900" y="150" width="220" height="20"/>
+    <rect x="915" y="180" width="20" height="120"/>
+    <rect x="965" y="180" width="20" height="120"/>
+    <rect x="1015" y="180" width="20" height="120"/>
+    <rect x="1065" y="180" width="20" height="120"/>
+    <rect x="895" y="310" width="230" height="20"/>
+  </g>
+  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="60" font-weight="700" fill="#ffffff">Sector público</text>
+  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d6e4f5">Servicios generales para el Estado · RNP</text>
+  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
+</svg>

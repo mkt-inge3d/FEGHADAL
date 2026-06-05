@@ -14,6 +14,9 @@ retos:
 serviciosRelacionados:
   - limpieza-empresarial
   - mantenimiento-inmuebles
+  - acabados-y-obras-menores
+  - instalaciones
+  - saneamiento-ambiental
 imagen:
   src: ../../assets/sectores/oficinas-retail.svg
   alt: Oficinas y local retail atendidos por los servicios generales de FEGHADAL

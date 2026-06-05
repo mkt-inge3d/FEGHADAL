@@ -9,6 +9,9 @@ import { glob } from 'astro/loaders';
   Imagen tipada: el campo `imagen` usa el helper `image()` para que Astro procese
   el asset con `astro:assets` (optimización + width/height → evita CLS).
   `alt` es obligatorio en cada imagen (WCAG 2.1 AA, §6).
+
+  Silos: servicios, sectores, productos (+ cruces servicio×sector) y autoridad
+  (proyectos, blog).
 */
 
 const imagenConAlt = (image: SchemaContext['image']) =>
@@ -26,7 +29,11 @@ const servicios = defineCollection({
       descripcionSEO: z.string().min(120).max(160),
       resumen: z.string(),
       alcance: z.array(z.string()).min(1),
+      // Beneficios de negocio del servicio (para la sección "beneficios").
+      beneficios: z.array(z.string()).default([]),
       sectoresRelacionados: z.array(reference('sectores')).default([]),
+      // Enlazado cruzado a productos que usa el servicio (solución llave en mano).
+      productosRelacionados: z.array(reference('productos')).default([]),
       imagen: imagenConAlt(image),
       orden: z.number().int().default(99),
     }),
@@ -45,6 +52,47 @@ const sectores = defineCollection({
       imagen: imagenConAlt(image),
       orden: z.number().int().default(99),
     }),
+});
+
+/*
+  Productos — silo de comercialización de materiales y ferretería (CIIU 4663 y 4752).
+  Cada pillar agrupa categorías; no es un catálogo de SKUs individuales.
+*/
+const productos = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/productos' }),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      keywordPrimaria: z.string(),
+      descripcionSEO: z.string().min(120).max(160),
+      resumen: z.string(),
+      categorias: z.array(z.string()).min(1),
+      imagen: imagenConAlt(image),
+      orden: z.number().int().default(99),
+    }),
+});
+
+/*
+  Cruces servicio×sector (CLAUDE.md §4). Cada entrada es contenido ÚNICO y genuino
+  (anti doorway pages, §regla crítica): alcance específico, consideraciones y normativa
+  propias de ese servicio en ese sector. Solo existen como página los cruces con
+  material real. El routing /servicios/[servicio]/[sector] se genera desde aquí.
+*/
+const cruces = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/cruces' }),
+  schema: z.object({
+    servicio: reference('servicios'),
+    sector: reference('sectores'),
+    titulo: z.string(),
+    keywordPrimaria: z.string(),
+    descripcionSEO: z.string().min(120).max(160),
+    resumen: z.string(),
+    alcanceEspecifico: z.array(z.string()).min(1),
+    consideraciones: z.array(z.string()).min(1),
+    normativa: z.array(z.string()).default([]),
+    productosRelacionados: z.array(reference('productos')).default([]),
+    orden: z.number().int().default(99),
+  }),
 });
 
 const proyectos = defineCollection({
@@ -75,4 +123,11 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { servicios, sectores, proyectos, blog };
+export const collections = {
+  servicios,
+  sectores,
+  productos,
+  cruces,
+  proyectos,
+  blog,
+};

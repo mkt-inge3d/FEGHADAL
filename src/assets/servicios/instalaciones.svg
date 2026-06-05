@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Instalaciones eléctricas FEGHADAL">
+  <rect width="1200" height="675" fill="#173c6e"/>
+  <rect y="540" width="1200" height="135" fill="#1f4d8c"/>
+  <path d="M1000 130 l-70 130 h55 l-40 150 110 -180 h-55 z" fill="#38b478" opacity="0.8"/>
+  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="60" font-weight="700" fill="#ffffff">Instalaciones</text>
+  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d6e4f5">Eléctricas, gasfitería y aire acondicionado</text>
+  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
+</svg>

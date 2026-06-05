@@ -73,6 +73,34 @@ export function serviceJsonLd(
   };
 }
 
+/**
+ * OfferCatalog para una pillar de productos. Las categorías se exponen como
+ * catálogo de oferta (CIIU 4663/4752: comercialización de materiales).
+ */
+export function productJsonLd(
+  producto: {
+    titulo: string;
+    descripcionSEO: string;
+    keywordPrimaria: string;
+    categorias: readonly string[];
+  },
+  pageUrl: URL | string,
+  siteUrl: URL | string,
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'OfferCatalog',
+    name: producto.titulo,
+    description: producto.descripcionSEO,
+    url: pageUrl.toString(),
+    seller: { '@id': absoluteUrl('/#organization', siteUrl) },
+    itemListElement: producto.categorias.map((cat) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Product', name: cat },
+    })),
+  };
+}
+
 export type Breadcrumb = { nombre: string; href: string };
 
 /**

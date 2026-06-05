@@ -13,9 +13,16 @@ alcance:
   - Limpieza de vidrios y fachadas a baja altura
   - Abastecimiento y control de insumos de higiene
   - Manejo y segregación de residuos sólidos
+beneficios:
+  - Imagen impecable ante clientes y visitantes
+  - Espacios más saludables y seguros
+  - Personal capacitado y supervisión permanente
+  - Programas a medida sin interrumpir la operación
 sectoresRelacionados:
   - oficinas-retail
   - salud
+  - educacion
+  - sector-publico
 imagen:
   src: ../../assets/servicios/limpieza-empresarial.svg
   alt: Personal de FEGHADAL realizando limpieza empresarial en oficinas corporativas
