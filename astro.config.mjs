@@ -3,9 +3,9 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// URL canónica del sitio. Cambiar al dominio definitivo cuando esté disponible.
-// Necesaria para sitemap, canonicals y URLs absolutas en JSON-LD/Open Graph.
-const SITE = 'https://feghadal.vercel.app';
+// URL canónica del sitio (dominio definitivo). Necesaria para sitemap, canonicals
+// y URLs absolutas en JSON-LD/Open Graph.
+const SITE = 'https://feghadal.com';
 
 // https://astro.build/config
 export default defineConfig({

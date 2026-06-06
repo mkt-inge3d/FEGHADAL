@@ -29,7 +29,7 @@ export const site = {
   descripcion:
     'Empresa peruana de servicios generales: mantenimiento, limpieza integral, ' +
     'instalaciones y saneamiento ambiental para el sector privado y público.',
-  url: 'https://feghadal.vercel.app',
+  url: 'https://feghadal.com',
 
   // NAP — debe ser idéntico en todo el sitio y en directorios externos (SEO local).
   telefono: '+51 932 262 669', // formato internacional para tel: y JSON-LD
