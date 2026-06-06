@@ -17,7 +17,7 @@ import CotizacionForm from '../components/CotizacionForm.astro';
 import { site, whatsappUrl } from '../config/site';
 import { pasos, pilares, ventajas } from '../config/home';
 import { faqJsonLd } from '../lib/seo';
-import isotipoBlanco from '../assets/brand/isotipo-blanco.png';
+import heroBg from '../assets/brand/bg-feghadal.webp';
 
 const porOrden = (a: { data: { orden: number } }, b: { data: { orden: number } }) =>
   a.data.orden - b.data.orden;
@@ -59,24 +59,25 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
 ---
 
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
-  {/* ===== Hero (CLAUDE.md §7) — fondo NAVY (marca), CTAs en ACENTO ===== */}
-  <section class="relative overflow-hidden bg-brand-700 text-white">
-    {/* Fondo: gradiente navy (placeholder neutro). [COMPLETAR] reemplazar por una
-        FOTO REAL del equipo/trabajos cuando exista — no usar stock genérico. */}
+  {/* ===== Hero (CLAUDE.md §7) — imagen de fondo navy + overlay para legibilidad ===== */}
+  <section class="relative overflow-hidden bg-brand-900 text-white">
+    {/* Imagen de fondo (LCP). Decorativa (alt=""); el contraste lo asegura el overlay. */}
+    <Image
+      src={heroBg}
+      alt=""
+      aria-hidden="true"
+      width={1280}
+      height={720}
+      loading="eager"
+      fetchpriority="high"
+      class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+    />
+    {/* Overlay navy: garantiza contraste AA del texto blanco sobre cualquier zona. */}
     <div
-      class="absolute inset-0 bg-gradient-to-br from-brand-800 via-brand-700 to-brand-600"
+      class="absolute inset-0 bg-gradient-to-r from-brand-900/90 via-brand-900/70 to-brand-900/40"
       aria-hidden="true"
     >
     </div>
-    {/* Marca de agua decorativa (isotipo) — no aporta información. */}
-    <Image
-      src={isotipoBlanco}
-      alt=""
-      aria-hidden="true"
-      width={425}
-      height={469}
-      class="pointer-events-none absolute -right-12 top-1/2 hidden h-[460px] w-auto -translate-y-1/2 opacity-10 lg:block"
-    />
 
     <div class="relative mx-auto max-w-[var(--spacing-content)] px-4 py-20 md:py-28">
       <p class="text-sm font-semibold uppercase tracking-wider text-brand-100">
