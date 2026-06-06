@@ -1,34 +1,83 @@
 ---
 /**
- * Home — entrada principal y hub de enlazado a los silos (CLAUDE.md §4).
- * Lista servicios y sectores desde las collections (nada hardcodeado).
+ * Home — landing principal y hub de enlazado a los silos (CLAUDE.md §4).
+ * Contenido editorial (servicios/sectores/productos/FAQ) desde collections;
+ * copy de marketing (proceso/pilares/ventajas) desde src/config/home.ts.
+ * Conversión: hero con 2 CTAs, proceso, diferenciadores, credenciales, FAQ y
+ * formulario de cotización. JSON-LD FAQPage añadido al layout.
  */
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site } from '../config/site';
+import Icon from '../components/Icon.astro';
+import Credenciales from '../components/Credenciales.astro';
+import FAQ from '../components/FAQ.astro';
+import CotizacionForm from '../components/CotizacionForm.astro';
+import { site, whatsappUrl } from '../config/site';
+import { pasos, pilares, ventajas } from '../config/home';
+import { faqJsonLd } from '../lib/seo';
+import isotipoBlanco from '../assets/brand/isotipo-blanco.png';
 
-const servicios = (await getCollection('servicios')).sort(
-  (a, b) => a.data.orden - b.data.orden,
-);
-const sectores = (await getCollection('sectores')).sort(
-  (a, b) => a.data.orden - b.data.orden,
-);
-const productos = (await getCollection('productos')).sort(
-  (a, b) => a.data.orden - b.data.orden,
-);
+const porOrden = (a: { data: { orden: number } }, b: { data: { orden: number } }) =>
+  a.data.orden - b.data.orden;
+
+const servicios = (await getCollection('servicios')).sort(porOrden);
+const sectores = (await getCollection('sectores')).sort(porOrden);
+const productos = (await getCollection('productos')).sort(porOrden);
+const faqs = (await getCollection('faq')).sort(porOrden);
+
+// Mensajes segmentados del hero (cada uno enlaza a su silo).
+const segmentos = [
+  {
+    icono: 'briefcase' as const,
+    titulo: 'Empresas',
+    texto: 'Limpieza y mantenimiento para tu operación.',
+    href: '/sectores',
+  },
+  {
+    icono: 'check-badge' as const,
+    titulo: 'Sector público',
+    texto: 'Proveedor formal con RNP para el Estado.',
+    href: '/sectores/sector-publico',
+  },
+  {
+    icono: 'cube' as const,
+    titulo: 'Materiales',
+    texto: 'Materiales y ferretería bajo un mismo proveedor.',
+    href: '/productos',
+  },
+];
 
 const title = 'Servicios generales en el Perú: limpieza y mantenimiento';
 const description =
   'FEGHADAL: empresa peruana de servicios generales. Limpieza integral, ' +
   'mantenimiento de inmuebles, instalaciones y saneamiento ambiental para ' +
   'empresas y entidades públicas.';
+
+const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
 ---
 
-<BaseLayout title={title} description={description}>
-  {/* Hero */}
-  <section class="bg-brand-700 text-white">
-    <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-20 md:py-28">
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  {/* ===== Hero (CLAUDE.md §7) ===== */}
+  <section class="relative overflow-hidden bg-brand-700 text-white">
+    {/* Fondo: gradiente de marca (placeholder neutro). [COMPLETAR] reemplazar por
+        una FOTO REAL del equipo/trabajos cuando exista — no usar stock genérico. */}
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-brand-800 via-brand-700 to-brand-600"
+      aria-hidden="true"
+    >
+    </div>
+    {/* Marca de agua decorativa (isotipo) — no aporta información. */}
+    <Image
+      src={isotipoBlanco}
+      alt=""
+      aria-hidden="true"
+      width={425}
+      height={469}
+      class="pointer-events-none absolute -right-12 top-1/2 hidden h-[460px] w-auto -translate-y-1/2 opacity-10 lg:block"
+    />
+
+    <div class="relative mx-auto max-w-[var(--spacing-content)] px-4 py-20 md:py-28">
       <p class="text-sm font-semibold uppercase tracking-wider text-brand-100">
         Servicios generales · Perú
       </p>
@@ -40,23 +89,43 @@ const description =
       </p>
       <div class="mt-8 flex flex-wrap gap-4">
         <a
-          href="/servicios"
+          href="/contacto"
           class="rounded-md bg-accent-500 px-6 py-3 font-semibold text-white hover:bg-accent-600"
+        >
+          Solicita tu cotización
+        </a>
+        <a
+          href="/servicios"
+          class="rounded-md border border-brand-100 px-6 py-3 font-semibold text-white hover:bg-brand-600"
         >
           Ver servicios
         </a>
-        <a
-          href="/nosotros"
-          class="rounded-md border border-brand-100 px-6 py-3 font-semibold text-white hover:bg-brand-600"
-        >
-          Conócenos
-        </a>
       </div>
+
+      {/* Mensajes segmentados */}
+      <ul class="mt-12 grid gap-4 sm:grid-cols-3">
+        {
+          segmentos.map((seg) => (
+            <li>
+              <a
+                href={seg.href}
+                class="flex h-full items-start gap-3 rounded-lg border border-brand-100/30 bg-brand-800/40 p-4 transition hover:border-brand-100/60 hover:bg-brand-800/70"
+              >
+                <Icon name={seg.icono} class="h-6 w-6 shrink-0 text-accent-300" />
+                <span>
+                  <span class="block font-semibold text-white">{seg.titulo}</span>
+                  <span class="mt-0.5 block text-sm text-brand-100">{seg.texto}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
-  {/* Servicios */}
-  <section class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+  {/* ===== Servicios ===== */}
+  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
     <h2 class="text-3xl font-bold text-ink">Nuestros servicios</h2>
     <p class="mt-2 max-w-2xl text-muted">
       Soluciones integrales de servicios generales bajo un mismo proveedor.
@@ -86,9 +155,63 @@ const description =
     </ul>
   </section>
 
-  {/* Sectores */}
+  {/* ===== Cómo trabajamos (CLAUDE.md §1) ===== */}
   <section class="bg-surface-alt">
-    <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <div class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+      <h2 class="text-3xl font-bold text-ink">Cómo trabajamos</h2>
+      <p class="mt-2 max-w-2xl text-muted">
+        Un proceso claro y transparente, del primer contacto a la entrega.
+      </p>
+      <ol class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          pasos.map((paso, i) => (
+            <li class="relative rounded-lg border border-line bg-surface p-6">
+              <span
+                class="absolute right-4 top-4 text-3xl font-bold text-brand-100"
+                aria-hidden="true"
+              >
+                {i + 1}
+              </span>
+              <Icon name={paso.icono} class="h-9 w-9 text-brand-700" />
+              <h3 class="mt-4 text-lg font-semibold text-ink">{paso.titulo}</h3>
+              <p class="mt-2 text-sm text-muted">{paso.descripcion}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="mt-8">
+        <a
+          href="/contacto"
+          class="inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white hover:bg-accent-700"
+        >
+          Empieza tu cotización
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* ===== Por qué FEGHADAL (CLAUDE.md §2) ===== */}
+  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <h2 class="text-3xl font-bold text-ink">Por qué FEGHADAL</h2>
+    <p class="mt-2 max-w-2xl text-muted">
+      Diferenciadores reales que aportan tranquilidad a tu empresa o entidad.
+    </p>
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        pilares.map((pilar) => (
+          <li class="rounded-lg border border-line bg-surface p-6">
+            <Icon name={pilar.icono} class="h-9 w-9 text-accent-600" />
+            <h3 class="mt-4 text-lg font-semibold text-ink">{pilar.titulo}</h3>
+            <p class="mt-2 text-sm text-muted">{pilar.descripcion}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* ===== Sectores ===== */}
+  <section class="bg-surface-alt">
+    <div class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
       <h2 class="text-3xl font-bold text-ink">Sectores que atendemos</h2>
       <p class="mt-2 max-w-2xl text-muted">
         Adaptamos cada servicio a las exigencias específicas de tu sector.
@@ -113,39 +236,138 @@ const description =
     </div>
   </section>
 
-  {/* Productos */}
-  <section class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <h2 class="text-3xl font-bold text-ink">Productos y materiales</h2>
-        <p class="mt-2 max-w-2xl text-muted">
-          Comercializamos materiales y ferretería. Junto a nuestros servicios,
-          ofrecemos una solución llave en mano.
-        </p>
-      </div>
-      <a
-        href="/productos"
-        class="text-sm font-semibold text-brand-700 underline-offset-2 hover:underline"
-      >
-        Ver todos los productos →
-      </a>
-    </div>
+  {/* ===== Ventajas de tercerizar (CLAUDE.md §3) ===== */}
+  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <h2 class="text-3xl font-bold text-ink">Ventajas de tercerizar con FEGHADAL</h2>
+    <p class="mt-2 max-w-2xl text-muted">
+      Externalizar tus servicios generales libera a tu equipo y ordena tus costos.
+    </p>
     <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
-        productos.map((producto) => (
-          <li class="rounded-lg border border-line bg-surface p-6">
-            <h3 class="text-lg font-semibold text-brand-700">
-              <a
-                href={`/productos/${producto.id}`}
-                class="underline-offset-2 hover:underline"
-              >
-                {producto.data.titulo}
-              </a>
-            </h3>
-            <p class="mt-2 text-sm text-muted">{producto.data.resumen}</p>
+        ventajas.map((ventaja) => (
+          <li class="flex gap-4 rounded-lg border border-line bg-surface p-6">
+            <Icon name={ventaja.icono} class="h-8 w-8 shrink-0 text-brand-700" />
+            <div>
+              <h3 class="text-lg font-semibold text-ink">{ventaja.titulo}</h3>
+              <p class="mt-2 text-sm text-muted">{ventaja.descripcion}</p>
+            </div>
           </li>
         ))
       }
     </ul>
+    <div class="mt-8">
+      <a
+        href="/contacto"
+        class="inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white hover:bg-accent-700"
+      >
+        Conversemos sobre tu necesidad
+      </a>
+    </div>
+  </section>
+
+  {/* ===== Productos ===== */}
+  <section class="bg-surface-alt">
+    <div class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 class="text-3xl font-bold text-ink">Productos y materiales</h2>
+          <p class="mt-2 max-w-2xl text-muted">
+            Comercializamos materiales y ferretería. Junto a nuestros servicios,
+            ofrecemos una solución llave en mano.
+          </p>
+        </div>
+        <a
+          href="/productos"
+          class="text-sm font-semibold text-brand-700 underline-offset-2 hover:underline"
+        >
+          Ver todos los productos →
+        </a>
+      </div>
+      <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          productos.map((producto) => (
+            <li class="rounded-lg border border-line bg-surface p-6">
+              <h3 class="text-lg font-semibold text-brand-700">
+                <a
+                  href={`/productos/${producto.id}`}
+                  class="underline-offset-2 hover:underline"
+                >
+                  {producto.data.titulo}
+                </a>
+              </h3>
+              <p class="mt-2 text-sm text-muted">{producto.data.resumen}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* ===== Credenciales y cumplimiento (CLAUDE.md §4) ===== */}
+  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <Credenciales destacado />
+  </section>
+
+  {/* ===== FAQ (CLAUDE.md §5, JSON-LD FAQPage) ===== */}
+  <section class="bg-surface-alt">
+    <div class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+      <FAQ items={faqs} />
+    </div>
+  </section>
+
+  {/* ===== Formulario de cotización (CLAUDE.md §6) ===== */}
+  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <div class="grid gap-12 lg:grid-cols-[2fr_1fr]">
+      <div>
+        <h2 class="text-3xl font-bold text-ink">Solicita tu cotización</h2>
+        <p class="mt-2 max-w-2xl text-muted">
+          Cuéntanos qué necesitas y te enviamos una propuesta a medida. Atendemos al
+          sector privado y a entidades públicas.
+        </p>
+        <div class="mt-8">
+          <CotizacionForm />
+        </div>
+      </div>
+      <aside class="space-y-6">
+        <section class="rounded-lg border border-line bg-surface-alt p-6">
+          <h3 class="text-lg font-semibold text-ink">¿Prefieres escribirnos?</h3>
+          <p class="mt-2 text-sm text-muted">
+            Estamos disponibles por WhatsApp y teléfono en horario de atención.
+          </p>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 inline-block rounded-md bg-accent-600 px-5 py-3 font-semibold text-white hover:bg-accent-700"
+          >
+            Escríbenos por WhatsApp
+          </a>
+          <dl class="mt-6 space-y-3 text-sm">
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-muted">Teléfono</dt>
+              <dd>
+                <a
+                  href={`tel:${site.telefono.replace(/\s+/g, '')}`}
+                  class="font-medium text-brand-700 underline-offset-2 hover:underline"
+                >
+                  {site.telefonoDisplay}
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-muted">Correo</dt>
+              <dd>
+                <a
+                  href={`mailto:${site.email}`}
+                  class="font-medium text-brand-700 underline-offset-2 hover:underline"
+                >
+                  {site.email}
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </section>
+      </aside>
+    </div>
   </section>
 </BaseLayout>

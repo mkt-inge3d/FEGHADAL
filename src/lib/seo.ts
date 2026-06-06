@@ -37,8 +37,17 @@ export function organizationJsonLd(siteUrl: URL | string) {
       postalCode: site.direccion.codigoPostal,
       addressCountry: site.direccion.pais,
     },
-    areaServed: site.ambitoServicio,
-    ...(site.redes.length > 0 ? { sameAs: site.redes } : {}),
+    // areaServed enriquecido: ámbito general + distritos de Lima Norte (SEO local).
+    areaServed: [
+      site.ambitoServicio,
+      ...site.areasServidas.map((nombre) => ({
+        '@type': 'City',
+        name: nombre,
+      })),
+    ],
+    ...(site.redes.length > 0
+      ? { sameAs: site.redes.map((red) => red.url) }
+      : {}),
   };
 }
 
@@ -149,6 +158,27 @@ export function productJsonLd(
     itemListElement: producto.categorias.map((cat) => ({
       '@type': 'Offer',
       itemOffered: { '@type': 'Product', name: cat },
+    })),
+  };
+}
+
+/**
+ * FAQPage para la sección de preguntas frecuentes (CLAUDE.md §5).
+ * Recibe las preguntas/respuestas (texto plano) desde la collection `faq`.
+ */
+export function faqJsonLd(
+  items: { pregunta: string; respuesta: string }[],
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.pregunta,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.respuesta,
+      },
     })),
   };
 }

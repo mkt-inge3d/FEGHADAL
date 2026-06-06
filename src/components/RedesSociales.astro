@@ -1,0 +1,41 @@
+---
+/**
+ * Enlaces a redes sociales configurables por variable de entorno (CLAUDE.md §13).
+ * Solo se muestran las redes con URL definida (regla de honestidad §8: no inventar
+ * perfiles). Si no hay ninguna, el componente no renderiza nada.
+ */
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+
+interface Props {
+  /** Clase del contenedor (para ajustar separación según el lugar de uso). */
+  class?: string;
+  /** Tamaño del icono (clase Tailwind). */
+  iconClass?: string;
+}
+
+const { class: className = 'flex items-center gap-1', iconClass = 'h-5 w-5' } =
+  Astro.props;
+
+const redes = site.redes;
+---
+
+{
+  redes.length > 0 && (
+    <ul class={className} aria-label="Redes sociales de FEGHADAL">
+      {redes.map((red) => (
+        <li>
+          <a
+            href={red.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`FEGHADAL en ${red.nombre}`}
+            class="flex h-11 w-11 items-center justify-center rounded-md text-muted transition hover:bg-surface-alt hover:text-brand-700"
+          >
+            <Icon name={red.icono} class={iconClass} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

@@ -3,13 +3,25 @@
  * Fuente única para NAP (Name/Address/Phone), JSON-LD global, credenciales y menús.
  *
  * Variables de entorno (prefijo PUBLIC_, expuestas en build estático):
- * - PUBLIC_WEB3FORMS_KEY  → access key del formulario de cotización (Web3Forms).
- * - PUBLIC_WHATSAPP_NUMERO → número de WhatsApp en formato internacional sin "+", ej. 51999000111.
- * Ver `.env.example`. Los valores // TODO siguen pendientes de confirmar con el cliente.
+ * - PUBLIC_WEB3FORMS_KEY     → access key del formulario de cotización (Web3Forms).
+ * - PUBLIC_WHATSAPP_NUMERO   → WhatsApp en formato internacional sin "+", ej. 51932262669.
+ * - PUBLIC_FACEBOOK_URL      → URL del perfil de Facebook (opcional; se oculta si vacío).
+ * - PUBLIC_INSTAGRAM_URL     → URL del perfil de Instagram (opcional; se oculta si vacío).
+ * - PUBLIC_GOOGLE_BUSINESS_URL → URL del Perfil de Empresa de Google (opcional).
+ * Ver `.env.example`. Los datos de contacto (tel/WhatsApp/email) ya son los reales.
  */
 
-const WHATSAPP_NUMERO = import.meta.env.PUBLIC_WHATSAPP_NUMERO ?? '51999000111'; // TODO: confirmar número real
+// Número real comercial. `telefono` en formato +51 … para `tel:`/JSON-LD; el
+// display se muestra sin prefijo internacional (uso local en Perú).
+const WHATSAPP_NUMERO = import.meta.env.PUBLIC_WHATSAPP_NUMERO ?? '51932262669';
 const WEB3FORMS_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+
+// Redes sociales por entorno: solo se incluyen las que tengan URL configurada
+// (regla de honestidad §8: no inventar perfiles). Alimentan también `sameAs`.
+const REDES_RAW = [
+  { nombre: 'Facebook', url: import.meta.env.PUBLIC_FACEBOOK_URL ?? '', icono: 'facebook' as const },
+  { nombre: 'Instagram', url: import.meta.env.PUBLIC_INSTAGRAM_URL ?? '', icono: 'instagram' as const },
+];
 
 export const site = {
   nombre: 'FEGHADAL',
@@ -20,18 +32,30 @@ export const site = {
   url: 'https://feghadal.vercel.app',
 
   // NAP — debe ser idéntico en todo el sitio y en directorios externos (SEO local).
-  telefono: '+51 999 000 111', // TODO: confirmar teléfono fijo/comercial
-  email: 'contacto@feghadal.com', // TODO: confirmar correo
+  telefono: '+51 932 262 669', // formato internacional para tel: y JSON-LD
+  telefonoDisplay: '932 262 669', // formato local que se muestra al usuario
+  email: 'contacto@feghadal.com',
   direccion: {
-    calle: 'Puente Piedra', // TODO: confirmar calle y número exactos
+    calle: 'Puente Piedra', // [COMPLETAR] calle y número exactos de la sede comercial
     distrito: 'Puente Piedra',
     ciudad: 'Lima',
     region: 'Lima',
     pais: 'PE',
     codigoPostal: '15118',
   },
-  horario: 'Lunes a sábado, 8:00 a. m. – 6:00 p. m.', // TODO: confirmar horario de atención
+  horario: 'Lunes a sábado, 8:00 a. m. – 6:00 p. m.', // [COMPLETAR] confirmar horario real
   ambitoServicio: 'Lima Norte y Lima Metropolitana, Perú',
+  // Distritos de Lima Norte para reforzar el SEO local (areaServed en JSON-LD).
+  areasServidas: [
+    'Puente Piedra',
+    'Comas',
+    'Carabayllo',
+    'Los Olivos',
+    'San Martín de Porres',
+    'Independencia',
+    'Ancón',
+    'Santa Rosa',
+  ],
 
   // Credenciales (verificables) — clave para confianza y licitación con el Estado.
   credenciales: {
@@ -49,8 +73,10 @@ export const site = {
   },
   web3formsKey: WEB3FORMS_KEY,
 
-  // Redes/perfiles para sameAs en JSON-LD (agregar los reales).
-  redes: [] as string[], // TODO: LinkedIn, Facebook, etc.
+  // Redes sociales con URL configurada (objetos {nombre,url,icono}); vacío si no hay.
+  redes: REDES_RAW.filter((r) => r.url.trim().length > 0),
+  // Perfil de Empresa de Google (SEO local). Vacío hasta que exista; se oculta.
+  googleBusinessUrl: import.meta.env.PUBLIC_GOOGLE_BUSINESS_URL ?? '',
   // Imagen Open Graph por defecto (logo completo sobre fondo blanco, 1200×630).
   ogImagen: '/og-feghadal.png',
 } as const;

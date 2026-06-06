@@ -9,6 +9,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import CTACotizacion from '../../components/CTACotizacion.astro';
+import GaleriaTrabajos from '../../components/GaleriaTrabajos.astro';
 import { breadcrumbJsonLd, type Breadcrumb } from '../../lib/seo';
 
 const todos = await getCollection('proyectos');
@@ -128,6 +129,14 @@ const description =
         </section>
       )
     }
+
+    {/* Galería de trabajos: estructura lista; estado vacío honesto hasta tener fotos reales (§9) */}
+    <div class="reveal mt-12">
+      <GaleriaTrabajos
+        titulo="Galería de trabajos"
+        intro="Documentaremos aquí, con fotografías reales, los servicios ejecutados por nuestro equipo."
+      />
+    </div>
 
     <CTACotizacion />
   </div>

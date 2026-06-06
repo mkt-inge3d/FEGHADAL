@@ -1,0 +1,79 @@
+---
+/**
+ * Bloque "Credenciales y cumplimiento" reutilizable (CLAUDE.md §4, silo AUTORIDAD).
+ * Pensado para que un evaluador de licitación encuentre todo rápido y verificable:
+ * razón social, RUC, estado/condición SUNAT, RNP y compromiso con SST.
+ * Deja un espacio honesto "en proceso" para certificaciones/homologaciones futuras.
+ * Datos desde site.ts (fuente única). Reutilizado en home y /nosotros.
+ */
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+
+interface Props {
+  /** Si true, envuelve en fondo claro alterno (uso en home). */
+  destacado?: boolean;
+}
+
+const { destacado = false } = Astro.props;
+
+const items = [
+  { etiqueta: 'Razón social', valor: site.nombreLegal },
+  { etiqueta: 'RUC', valor: site.credenciales.ruc },
+  {
+    etiqueta: 'SUNAT',
+    valor: `${site.credenciales.sunatEstado} y ${site.credenciales.sunatCondicion}`,
+  },
+  { etiqueta: 'RNP', valor: 'Inscritos (OSCE)' },
+];
+---
+
+<section
+  aria-labelledby="credenciales-titulo"
+  class:list={[
+    'rounded-lg',
+    destacado ? 'border border-line bg-surface-alt p-6 md:p-8' : '',
+  ]}
+>
+  <div class="flex items-start gap-3">
+    <Icon name="check-badge" class="h-8 w-8 shrink-0 text-brand-700" />
+    <div>
+      <h2 id="credenciales-titulo" class="text-2xl font-bold text-ink">
+        Credenciales y cumplimiento
+      </h2>
+      <p class="mt-2 max-w-2xl text-muted">
+        Empresa formal y verificable. Datos comprobables ante SUNAT y el OSCE (RNP),
+        con enfoque en Seguridad y Salud en el Trabajo (SST).
+      </p>
+    </div>
+  </div>
+
+  <dl class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      items.map((item) => (
+        <div class="rounded-md border border-line bg-surface p-4">
+          <dt class="text-xs uppercase tracking-wide text-muted">{item.etiqueta}</dt>
+          <dd class="mt-1 font-semibold text-ink">{item.valor}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+    <p class="flex items-start gap-2 text-sm text-ink">
+      <Icon name="shield-check" class="h-5 w-5 shrink-0 text-accent-600" />
+      <span>
+        <strong>Seguridad y Salud en el Trabajo (SST):</strong> trabajamos con
+        protocolos y respaldo documentario para cada servicio.
+      </span>
+    </p>
+    {/* Espacio honesto "en proceso" para acreditaciones futuras */}
+    <p class="flex items-start gap-2 rounded-md border border-dashed border-line p-3 text-sm text-muted">
+      <Icon name="arrow-trending-up" class="h-5 w-5 shrink-0 text-muted" />
+      <span>
+        <strong class="text-ink">En proceso:</strong> certificaciones ISO y
+        homologaciones de proveedores. Las incorporaremos aquí conforme las
+        obtengamos.
+      </span>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+# Galería de trabajos ejecutados.
+#
+# Esta carpeta está PREPARADA para fotos reales de trabajos de FEGHADAL.
+# Hasta que existan, la galería muestra un estado vacío honesto en la web.
+#
+# Para añadir un trabajo, crea un archivo .md aquí, por ejemplo
+# "mantenimiento-edificio-los-olivos.md", con este frontmatter:
+#
+# ---
+# titulo: Mantenimiento de fachada — Los Olivos
+# descripcion: Limpieza y pintado de fachada de 4 pisos.
+# servicio: Mantenimiento de inmuebles
+# imagen:
+#   src: ../../assets/galeria/trabajo-1.jpg   # foto REAL del trabajo
+#   alt: Fachada de edificio recién pintada en Los Olivos
+# orden: 1
+# ---
+#
+# REGLA DE HONESTIDAD (CLAUDE.md §8): solo fotos reales de trabajos propios.
+# Nunca uses fotos de stock haciéndolas pasar por trabajos de FEGHADAL.

@@ -45,17 +45,32 @@ actuales y su razón:
 Si una funcionalidad se puede resolver con HTML/CSS/Astro nativo, **no** se agrega paquete.
 
 ### Islas de JavaScript (excepciones a "cero JS")
-Solo existe **una** isla de JS, justificada y documentada:
+Existen **dos** islas de JS, mínimas, justificadas y documentadas:
 - **`CotizacionForm.astro`** — mejora progresiva del formulario de contacto. Sin JS
   funciona por POST nativo a Web3Forms (con `redirect` a `/gracias`); con JS envía por
   `fetch` y muestra el estado con `aria-live` sin recargar. Es un script pequeño que
   Astro incrusta en línea (no genera bundle aparte).
+- **Reveal on-scroll (`BaseLayout.astro`)** — `IntersectionObserver` mínimo que revela
+  secciones (clase `.reveal`) al entrar al viewport. Doble salvaguarda para no ocultar
+  contenido nunca de forma indebida: (1) solo actúa si hay JS (clase `.js` añadida en
+  `<head>` antes del paint → sin flash) y (2) solo bajo `prefers-reduced-motion:
+  no-preference`. Sin JS o con movimiento reducido, todo es visible desde el inicio.
+  Animación corta (<400ms), solo `opacity`/`transform` (no degrada CWV). El contenido
+  siempre está en el DOM (los crawlers lo ven).
 
 ### Servicios externos y variables de entorno
 - **Web3Forms** (envío de formularios sin servidor) — access key en `PUBLIC_WEB3FORMS_KEY`.
 - **WhatsApp** (canal de cotización, `wa.me`) — número en `PUBLIC_WHATSAPP_NUMERO`.
+- **Redes sociales** (opcionales) — `PUBLIC_FACEBOOK_URL`, `PUBLIC_INSTAGRAM_URL`. Si no
+  hay valor, el icono no se muestra y la red no entra en `sameAs` (regla de honestidad).
+- **Perfil de Empresa de Google** (opcional) — `PUBLIC_GOOGLE_BUSINESS_URL`; si está,
+  el mapa de /contacto enlaza a la ficha.
 - Variables con prefijo `PUBLIC_` (se incrustan en el build estático). Ver `.env.example`.
   En Vercel: Project Settings → Environment Variables.
+- **Datos de contacto (reales):** teléfono/WhatsApp **+51 932 262 669** (display
+  "932 262 669"), correo **contacto@feghadal.com**. Centralizados en `src/config/site.ts`
+  (`telefono` en formato internacional para `tel:`/JSON-LD; `telefonoDisplay` para mostrar).
+  NUNCA hardcodear estos valores en componentes ni contenido.
 
 ---
 
@@ -67,7 +82,8 @@ feghadal/
 ├── astro.config.mjs           # site URL, sitemap, plugin Tailwind
 ├── src/
 │   ├── config/
-│   │   └── site.ts            # NAP, datos de empresa, navegación (constantes tipadas)
+│   │   ├── site.ts            # NAP, datos de empresa, navegación, redes (constantes tipadas)
+│   │   └── home.ts            # copy de marketing de la home (pasos/pilares/ventajas, tipado)
 │   ├── content.config.ts      # schemas Zod de las 6 collections (Content Layer API)
 │   ├── content/
 │   │   ├── servicios/         # *.md  (silo SERVICIOS)
@@ -75,14 +91,23 @@ feghadal/
 │   │   ├── productos/         # *.md  (silo PRODUCTOS — materiales/ferretería)
 │   │   ├── cruces/            # *.md  (cruces servicio×sector, contenido único)
 │   │   ├── proyectos/         # *.md  (silo AUTORIDAD)
-│   │   └── blog/              # *.md  (silo AUTORIDAD)
+│   │   ├── blog/              # *.md  (silo AUTORIDAD)
+│   │   ├── faq/               # *.md  (preguntas frecuentes → FAQPage)
+│   │   └── galeria/           # *.md  (trabajos ejecutados; vacía hasta tener fotos reales)
 │   ├── lib/
-│   │   └── seo.ts             # generadores de JSON-LD desde frontmatter
+│   │   ├── seo.ts             # generadores de JSON-LD desde frontmatter
+│   │   └── icon-names.ts      # tipo IconName (catálogo de iconos)
 │   ├── components/
 │   │   ├── SEO.astro          # meta tags, OG, canonical, JSON-LD
 │   │   ├── Breadcrumbs.astro  # migas visibles + BreadcrumbList JSON-LD
-│   │   ├── Header.astro       # navegación de los silos
-│   │   ├── Footer.astro       # NAP + enlazado por silo (servicios/sectores/productos)
+│   │   ├── Header.astro       # navegación de los silos (wordmark) + redes (móvil)
+│   │   ├── Footer.astro       # NAP + enlazado por silo + redes sociales
+│   │   ├── Icon.astro         # iconos SVG inline por nombre (sin JS, sin deps)
+│   │   ├── RedesSociales.astro        # redes por env; se ocultan si no hay URL
+│   │   ├── Credenciales.astro         # bloque "credenciales y cumplimiento" (home + nosotros)
+│   │   ├── FAQ.astro                   # acordeón <details> accesible (datos de collection faq)
+│   │   ├── GaleriaTrabajos.astro       # galería con estado vacío honesto (collection galeria)
+│   │   ├── MapaContacto.astro          # mapa Google embebido, carga diferida (LCP)
 │   │   ├── SolucionLlaveEnMano.astro  # bloque reutilizable servicio + materiales
 │   │   ├── CTACotizacion.astro        # CTA reutilizable → /contacto + WhatsApp
 │   │   ├── CotizacionForm.astro       # formulario Web3Forms (isla JS, a11y)
@@ -184,9 +209,12 @@ meta básicos, **Open Graph**, **Twitter Card**, **canonical** y bloques **JSON-
 - `@astrojs/sitemap` genera `/sitemap-index.xml`. `draft: true` en blog excluye del build.
 
 ### Core Web Vitals (objetivo: verde)
-- **LCP**: imágenes optimizadas con `<Image>`, `loading="eager"` solo para el hero.
-- **CLS**: width/height explícitos en imágenes; reservar espacio.
-- **INP**: cero JS de cliente por defecto → INP intrínsecamente bajo.
+- **LCP**: imágenes optimizadas con `<Image>`, `loading="eager"` solo para el hero. El
+  hero usa fondo de gradiente (placeholder), no imagen pesada. El mapa de /contacto usa
+  `loading="lazy"` para no competir por el LCP.
+- **CLS**: width/height explícitos en imágenes; reservar espacio (aspect-ratio en mapa y
+  galería). El reveal on-scroll usa solo `opacity`/`transform` (sin reflow).
+- **INP**: JS mínimo (dos islas pequeñas) → INP intrínsecamente bajo.
 
 ---
 
@@ -220,8 +248,14 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
 
 ## 8. Reglas de contenido
 
-- **Todo** el contenido vive en `src/content/**` (Markdown/MDX tipado). **Nada** hardcodeado
-  en componentes ni páginas.
+- **Todo** el contenido editorial vive en `src/content/**` (Markdown/MDX tipado). **Nada**
+  hardcodeado en componentes ni páginas.
+- **Excepción acotada (copy de marketing con iconos):** los bloques de la home
+  *Cómo trabajamos* (pasos), *Por qué FEGHADAL* (pilares) y *Ventajas de tercerizar*
+  (ventajas) viven en `src/config/home.ts`, tipados y en una sola fuente. Motivo: son
+  módulos de UI acoplados a iconos (`Icon.astro`) y a un layout fijo, no contenido que el
+  cliente edite con frecuencia. El criterio: **contenido editorial → collection; copy de
+  UI/marketing con iconos → `src/config`** (igual que NAP y navegación en `site.ts`).
 - Cada entrada debe traer su `descripcionSEO` y `keywordPrimaria` (donde aplique).
 - Tono: profesional, orientado a B2B y contrataciones públicas; afirmaciones verificables
   (no inventar certificaciones ni clientes reales sin confirmación del cliente).
@@ -235,6 +269,9 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
 - **cruces**: `servicio (ref), sector (ref), titulo, keywordPrimaria, descripcionSEO, resumen, alcanceEspecifico[], consideraciones[], normativa[], productosRelacionados[], orden` + cuerpo único.
 - **proyectos**: `titulo, cliente, sector, servicios[], alcance, anio, resultado, imagenes[], descripcionSEO, esPlantilla`.
 - **blog**: `titulo, descripcionSEO, fecha, categoria, autor, draft`.
+- **faq**: `pregunta, respuesta (texto plano), orden`. Alimenta la sección FAQ y el `FAQPage`.
+- **galeria**: `titulo, descripcion?, servicio?, imagen{src,alt}, orden`. Vacía hasta tener
+  fotos REALES; el componente muestra estado vacío honesto (nunca stock como propio).
 
 ### JSON-LD por tipo de página
 - **servicios** y **cruces** → `Service` (+ `OfferCatalog` del alcance) + `BreadcrumbList`.
@@ -243,6 +280,9 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
 - **blog [slug]** → `Article` + `BreadcrumbList`.
 - **contacto** → `ContactPoint` (anclado a la organización) + `BreadcrumbList`.
 - **nosotros** → `BreadcrumbList` (la organización global ya incluye RUC/`taxID`).
+- **home** → `FAQPage` (desde la collection `faq`, vía `faqJsonLd`).
+- **LocalBusiness global** → `areaServed` enriquecido: ámbito general + distritos de Lima
+  Norte (`@type: City`) desde `site.areasServidas`; `sameAs` desde las redes configuradas.
 
 > El `slug` es el nombre del archivo (`id` de la collection); no se duplica en el frontmatter.
 
@@ -261,5 +301,15 @@ Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
 - [x] **Fase 3** — Silo AUTORIDAD (Nosotros con credenciales reales, Proyectos honesto con
       plantilla, Blog con 3 artículos + filtro por categoría) y CAPA DE CONVERSIÓN
       (contacto + formulario Web3Forms, WhatsApp flotante, CTA de cotización consistente).
-- [ ] **Fase 4 (pre-lanzamiento)** — Auditoría performance/Core Web Vitals, Google Search
-      Console, Perfil de Empresa de Google y checklist de despliegue.
+- [x] **Fase 4 (confianza, conversión y presentación)** — Datos reales centralizados
+      (tel/WhatsApp/correo) + redes/GBP por env. Home enriquecida: hero con 2 CTAs y
+      mensajes segmentados, "Cómo trabajamos", "Por qué FEGHADAL", "Ventajas de tercerizar",
+      bloque "Credenciales y cumplimiento" (reutilizado en /nosotros), FAQ con `FAQPage`
+      JSON-LD y formulario de cotización. Galería de trabajos (estructura + estado vacío
+      honesto) en /proyectos. /contacto con mapa diferido y `LocalBusiness` reforzado
+      (areaServed Lima Norte). /nosotros con sección "Responsable técnico" [COMPLETAR].
+      Animaciones reveal on-scroll (2.ª isla JS, reduced-motion + anti-flash). Sistema de
+      iconos `Icon.astro`. Redes en header/footer. `npm run build` + `astro check` OK.
+- [ ] **Fase 5 (pre-lanzamiento)** — Auditoría performance/Core Web Vitals (Lighthouse),
+      validación de structured data, Google Search Console, alta del Perfil de Empresa de
+      Google y checklist de despliegue. Completar datos del dueño (ver más abajo).

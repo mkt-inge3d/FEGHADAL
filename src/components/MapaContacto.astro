@@ -1,0 +1,46 @@
+---
+/**
+ * Mapa de ubicación para /contacto (CLAUDE.md §5 SEO local).
+ * Rendimiento: el iframe usa loading="lazy" para NO afectar el LCP (se carga al
+ * acercarse al viewport). Reservamos el alto (aspect ratio) para evitar CLS.
+ * Accesibilidad: el iframe lleva `title`; se ofrece además un enlace textual.
+ *
+ * Usa el embed público de Google Maps (sin API key). La consulta es a nivel de
+ * distrito (Puente Piedra) hasta confirmar la dirección exacta de la sede.
+ */
+import { site } from '../config/site';
+
+const consulta = `${site.direccion.distrito}, ${site.direccion.ciudad}, Perú`;
+const mapaSrc = `https://www.google.com/maps?q=${encodeURIComponent(consulta)}&output=embed`;
+// Enlace "ver en Maps": Perfil de Empresa de Google si existe; si no, búsqueda.
+const verEnMapsUrl =
+  site.googleBusinessUrl ||
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consulta)}`;
+---
+
+<section aria-labelledby="ubicacion-titulo" class="reveal">
+  <h2 id="ubicacion-titulo" class="text-lg font-semibold text-ink">Ubicación</h2>
+  <p class="mt-2 text-sm text-muted">
+    Base en {site.direccion.distrito}, {site.direccion.ciudad}. Operamos en {site.ambitoServicio}.
+  </p>
+
+  <div class="mt-4 aspect-video w-full overflow-hidden rounded-lg border border-line">
+    <iframe
+      src={mapaSrc}
+      title={`Mapa de ubicación de FEGHADAL en ${site.direccion.distrito}`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      class="h-full w-full"
+      style="border:0"
+    ></iframe>
+  </div>
+
+  <a
+    href={verEnMapsUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="mt-3 inline-block text-sm font-medium text-brand-700 underline-offset-2 hover:underline"
+  >
+    {site.googleBusinessUrl ? 'Ver nuestra ficha en Google →' : 'Cómo llegar (Google Maps) →'}
+  </a>
+</section>

@@ -44,6 +44,8 @@ const allJsonLd = [organizationJsonLd(Astro.site!), ...jsonLd];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    {/* Marca JS disponible ANTES del paint: habilita el reveal sin flash de contenido. */}
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <SEO
@@ -64,5 +66,31 @@ const allJsonLd = [organizationJsonLd(Astro.site!), ...jsonLd];
     </main>
     <Footer />
     <WhatsAppButton />
+
+    {/* Reveal on-scroll (isla JS mínima, documentada en CLAUDE.md §2). Respeta
+        prefers-reduced-motion; si no hay soporte, muestra todo de inmediato. */}
+    <script>
+      const prefiereMovimiento = window.matchMedia(
+        '(prefers-reduced-motion: no-preference)',
+      ).matches;
+      const elementos = document.querySelectorAll('.reveal');
+
+      if (prefiereMovimiento && 'IntersectionObserver' in window) {
+        const observador = new IntersectionObserver(
+          (entradas, obs) => {
+            for (const entrada of entradas) {
+              if (entrada.isIntersecting) {
+                entrada.target.classList.add('is-visible');
+                obs.unobserve(entrada.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+        );
+        elementos.forEach((el) => observador.observe(el));
+      } else {
+        elementos.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
   </body>
 </html>

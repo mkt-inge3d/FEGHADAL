@@ -65,6 +65,28 @@ html {
   border-radius: 2px;
 }
 
+/*
+  Reveal on-scroll sutil (CLAUDE.md §8). Doble salvaguarda para NO ocultar
+  contenido nunca de forma indebida (SEO/accesibilidad y Core Web Vitals):
+   1) Solo se oculta si hay JS (clase `.js` en <html>, añadida antes del paint).
+   2) Solo bajo prefers-reduced-motion: no-preference (opt-out del usuario).
+  Sin JS o con movimiento reducido, todo es visible desde el inicio.
+  Animación corta (<400ms) y solo opacity/transform (compositor, sin reflow).
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.35s ease-out,
+      transform 0.35s ease-out;
+  }
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Skip link: oculto hasta recibir foco por teclado */
 .skip-link {
   position: absolute;

@@ -1,0 +1,75 @@
+---
+/**
+ * Galería de trabajos ejecutados (CLAUDE.md §4 + regla de honestidad §8).
+ * Lee la collection `galeria`. Mientras no haya FOTOS REALES, muestra un estado
+ * vacío honesto — NUNCA fotos de stock haciéndolas pasar por trabajos propios.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+interface Props {
+  titulo?: string;
+  intro?: string;
+}
+
+const {
+  titulo = 'Nuestros trabajos',
+  intro = 'Un vistazo a servicios ejecutados por nuestro equipo.',
+} = Astro.props;
+
+const trabajos = (await getCollection('galeria')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+---
+
+<section aria-labelledby="galeria-titulo">
+  <h2 id="galeria-titulo" class="text-3xl font-bold text-ink">{titulo}</h2>
+  <p class="mt-2 max-w-2xl text-muted">{intro}</p>
+
+  {
+    trabajos.length > 0 ? (
+      <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {trabajos.map((trabajo) => (
+          <li class="overflow-hidden rounded-lg border border-line bg-surface">
+            <Image
+              src={trabajo.data.imagen.src}
+              alt={trabajo.data.imagen.alt}
+              width={600}
+              height={450}
+              loading="lazy"
+              class="aspect-[4/3] w-full object-cover"
+            />
+            <div class="p-5">
+              <h3 class="font-semibold text-ink">{trabajo.data.titulo}</h3>
+              {trabajo.data.servicio && (
+                <p class="mt-1 text-xs uppercase tracking-wide text-brand-700">
+                  {trabajo.data.servicio}
+                </p>
+              )}
+              {trabajo.data.descripcion && (
+                <p class="mt-2 text-sm text-muted">{trabajo.data.descripcion}</p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="mt-8 rounded-lg border border-dashed border-line bg-surface-alt p-10 text-center">
+        <p class="text-lg font-semibold text-ink">
+          Próximamente nuestros trabajos
+        </p>
+        <p class="mx-auto mt-2 max-w-xl text-muted">
+          Estamos documentando con fotografías reales los servicios que ejecutamos.
+          Mientras tanto, cuéntanos tu proyecto y con gusto te compartimos
+          referencias y una propuesta.
+        </p>
+        <a
+          href="/contacto"
+          class="mt-6 inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white hover:bg-accent-700"
+        >
+          Solicita tu cotización
+        </a>
+      </div>
+    )
+  }
+</section>

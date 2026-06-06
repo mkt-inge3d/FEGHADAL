@@ -126,6 +126,38 @@ const blog = defineCollection({
   }),
 });
 
+/*
+  FAQ — preguntas frecuentes (CLAUDE.md §8: contenido editorial en collection).
+  Alimentan la sección de FAQ en home/contacto y el JSON-LD FAQPage (§5).
+  `respuesta` es texto plano (válido para acceptedAnswer.text del FAQPage).
+*/
+const faq = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/faq' }),
+  schema: z.object({
+    pregunta: z.string(),
+    respuesta: z.string(),
+    orden: z.number().int().default(99),
+  }),
+});
+
+/*
+  Galería de trabajos ejecutados (CLAUDE.md §8 + regla de honestidad).
+  Vacía hasta tener FOTOS REALES. El componente muestra estado vacío honesto
+  ("Próximamente nuestros trabajos") si no hay entradas. NUNCA fotos de stock
+  haciéndolas pasar por trabajos propios.
+*/
+const galeria = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/galeria' }),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      descripcion: z.string().optional(),
+      servicio: z.string().optional(),
+      imagen: imagenConAlt(image),
+      orden: z.number().int().default(99),
+    }),
+});
+
 export const collections = {
   servicios,
   sectores,
@@ -133,4 +165,6 @@ export const collections = {
   cruces,
   proyectos,
   blog,
+  faq,
+  galeria,
 };

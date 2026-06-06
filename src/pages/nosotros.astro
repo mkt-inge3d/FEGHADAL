@@ -1,12 +1,14 @@
 ---
 /**
  * Página institucional /nosotros (CLAUDE.md §4 silo AUTORIDAD).
- * Refuerza identidad, propuesta de valor integral y CREDENCIALES verificables
- * (RUC, SUNAT, RNP, SST) — clave para confianza y licitación.
+ * Refuerza identidad, propuesta de valor integral, CREDENCIALES verificables
+ * (componente reutilizable) y E-E-A-T (responsable técnico, preparado con
+ * marcadores [COMPLETAR] — sin inventar nombres ni credenciales).
  * JSON-LD: la entidad va como LocalBusiness global (con RUC); aquí, BreadcrumbList.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Credenciales from '../components/Credenciales.astro';
 import CTACotizacion from '../components/CTACotizacion.astro';
 import { breadcrumbJsonLd, type Breadcrumb } from '../lib/seo';
 import { site } from '../config/site';
@@ -14,15 +16,6 @@ import { site } from '../config/site';
 const migas: Breadcrumb[] = [
   { nombre: 'Inicio', href: '/' },
   { nombre: 'Nosotros', href: '/nosotros' },
-];
-
-const credenciales = [
-  { etiqueta: 'Razón social', valor: site.nombreLegal },
-  { etiqueta: 'RUC', valor: site.credenciales.ruc },
-  { etiqueta: 'Estado SUNAT', valor: site.credenciales.sunatEstado },
-  { etiqueta: 'Condición SUNAT', valor: site.credenciales.sunatCondicion },
-  { etiqueta: 'RNP', valor: site.credenciales.rnp },
-  { etiqueta: 'Ámbito', valor: site.ambitoServicio },
 ];
 
 const title = 'Nosotros: empresa de servicios generales y materiales';
@@ -40,83 +33,79 @@ const description =
     <Breadcrumbs items={migas} />
     <h1 class="mt-6 text-4xl font-bold text-ink">Sobre FEGHADAL</h1>
 
-    <div class="mt-8 grid gap-12 lg:grid-cols-[2fr_1fr]">
-      <div class="space-y-8">
-        <section>
-          <h2 class="text-2xl font-bold text-ink">Quiénes somos</h2>
-          <p class="mt-3 leading-relaxed text-ink">
-            <strong>{site.nombreLegal}</strong> es una empresa peruana de
-            <strong>servicios generales</strong> y
-            <strong>comercialización de materiales y ferretería</strong>. Nuestra
-            propuesta de valor es integral: ejecutamos el trabajo y proveemos los
-            materiales necesarios bajo un mismo proveedor, una verdadera
-            <strong>solución llave en mano</strong> que simplifica la gestión de
-            nuestros clientes.
-          </p>
-          <p class="mt-4 leading-relaxed text-ink">
-            Integramos limpieza empresarial, mantenimiento de edificios,
-            instalaciones, acabados, áreas verdes y saneamiento ambiental, con
-            atención al sector privado y a entidades del Estado.
-          </p>
-        </section>
+    <div class="mt-8 max-w-3xl space-y-8">
+      <section>
+        <h2 class="text-2xl font-bold text-ink">Quiénes somos</h2>
+        <p class="mt-3 leading-relaxed text-ink">
+          <strong>{site.nombreLegal}</strong> es una empresa peruana de
+          <strong>servicios generales</strong> y
+          <strong>comercialización de materiales y ferretería</strong>. Nuestra
+          propuesta de valor es integral: ejecutamos el trabajo y proveemos los
+          materiales necesarios bajo un mismo proveedor, una verdadera
+          <strong>solución llave en mano</strong> que simplifica la gestión de
+          nuestros clientes.
+        </p>
+        <p class="mt-4 leading-relaxed text-ink">
+          Integramos limpieza empresarial, mantenimiento de edificios,
+          instalaciones, acabados, áreas verdes y saneamiento ambiental, con
+          atención al sector privado y a entidades del Estado.
+        </p>
+      </section>
 
-        <section>
-          <h2 class="text-2xl font-bold text-ink">Misión y enfoque</h2>
-          <p class="mt-3 leading-relaxed text-ink">
-            Brindar servicios y materiales de calidad que mantengan las instalaciones
-            de nuestros clientes limpias, operativas y seguras, con un enfoque firme en
-            tres pilares:
-          </p>
-          <ul class="mt-4 list-disc space-y-1 pl-6 text-ink">
-            <li><strong>Calidad:</strong> personal capacitado, supervisión y reportes.</li>
-            <li><strong>Seguridad:</strong> cumplimiento de seguridad y salud en el trabajo (SST).</li>
-            <li><strong>Cumplimiento:</strong> formalidad, trazabilidad y respaldo documentario.</li>
-          </ul>
-        </section>
+      <section>
+        <h2 class="text-2xl font-bold text-ink">Misión y enfoque</h2>
+        <p class="mt-3 leading-relaxed text-ink">
+          Brindar servicios y materiales de calidad que mantengan las instalaciones
+          de nuestros clientes limpias, operativas y seguras, con un enfoque firme en
+          tres pilares:
+        </p>
+        <ul class="mt-4 list-disc space-y-1 pl-6 text-ink">
+          <li><strong>Calidad:</strong> personal capacitado, supervisión y reportes.</li>
+          <li><strong>Seguridad:</strong> cumplimiento de seguridad y salud en el trabajo (SST).</li>
+          <li><strong>Cumplimiento:</strong> formalidad, trazabilidad y respaldo documentario.</li>
+        </ul>
+      </section>
 
-        <section>
-          <h2 class="text-2xl font-bold text-ink">Ámbito de operación</h2>
-          <p class="mt-3 leading-relaxed text-ink">
-            Operamos en <strong>{site.ambitoServicio}</strong>, con base en el distrito
-            de {site.direccion.distrito}.
-          </p>
-        </section>
-
-        {/* Bloque preparado para sumar certificaciones/homologaciones */}
-        <section class="rounded-lg border border-dashed border-line p-6">
-          <h2 class="text-2xl font-bold text-ink">Certificaciones y homologaciones</h2>
-          <p class="mt-3 text-muted">
-            Estamos ampliando nuestras acreditaciones. Este espacio está preparado para
-            incorporar certificaciones, homologaciones de proveedores y constancias
-            conforme las obtengamos. ¿Necesitas un documento específico para un proceso?
-            <a href="/contacto" class="text-brand-700 underline-offset-2 hover:underline">
-              Escríbenos</a>.
-          </p>
-        </section>
-      </div>
-
-      {/* Credenciales verificables */}
-      <aside>
-        <section class="rounded-lg border border-line bg-surface-alt p-6">
-          <h2 class="text-lg font-semibold text-ink">Credenciales</h2>
-          <dl class="mt-4 space-y-3">
-            {
-              credenciales.map((c) => (
-                <div>
-                  <dt class="text-xs uppercase tracking-wide text-muted">
-                    {c.etiqueta}
-                  </dt>
-                  <dd class="text-sm font-medium text-ink">{c.valor}</dd>
-                </div>
-              ))
-            }
-          </dl>
-          <p class="mt-4 text-xs text-muted">
-            Datos verificables ante SUNAT y el OSCE (RNP).
-          </p>
-        </section>
-      </aside>
+      <section>
+        <h2 class="text-2xl font-bold text-ink">Ámbito de operación</h2>
+        <p class="mt-3 leading-relaxed text-ink">
+          Operamos en <strong>{site.ambitoServicio}</strong>, con base en el distrito
+          de {site.direccion.distrito}.
+        </p>
+      </section>
     </div>
+
+    {/* Credenciales y cumplimiento (reutilizado de la home) */}
+    <div class="reveal mt-12">
+      <Credenciales destacado />
+    </div>
+
+    {/* Responsable técnico (E-E-A-T) — PREPARADO, sin inventar datos (§12, §honestidad) */}
+    <section class="reveal mt-12 rounded-lg border border-dashed border-line p-6 md:p-8">
+      <h2 class="text-2xl font-bold text-ink">Responsable técnico</h2>
+      <p class="mt-2 max-w-2xl text-muted">
+        Esta sección está preparada para presentar a la persona que lidera la parte
+        técnica de FEGHADAL, reforzando la experiencia y confianza (E-E-A-T).
+      </p>
+      <dl class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">Nombre</dt>
+          <dd class="mt-1 font-medium text-ink">[COMPLETAR]</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">Cargo</dt>
+          <dd class="mt-1 font-medium text-ink">[COMPLETAR]</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">Perfil</dt>
+          <dd class="mt-1 font-medium text-ink">[COMPLETAR — breve experiencia]</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-muted">LinkedIn (opcional)</dt>
+          <dd class="mt-1 font-medium text-ink">[COMPLETAR]</dd>
+        </div>
+      </dl>
+    </section>
 
     <CTACotizacion
       titulo="Trabajemos juntos"

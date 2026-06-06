@@ -7,6 +7,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import CotizacionForm from '../components/CotizacionForm.astro';
+import MapaContacto from '../components/MapaContacto.astro';
 import {
   contactPointJsonLd,
   breadcrumbJsonLd,
@@ -52,12 +53,13 @@ const description =
           <h2 class="text-lg font-semibold text-ink">Datos de contacto</h2>
           <address class="mt-4 space-y-3 text-sm not-italic text-ink">
             <p>
-              <span class="block text-xs uppercase tracking-wide text-muted">Dirección</span>
-              {site.direccion.distrito}, {site.direccion.ciudad}, Perú
-            </p>
-            <p>
-              <span class="block text-xs uppercase tracking-wide text-muted">Horario</span>
-              {site.horario}
+              <span class="block text-xs uppercase tracking-wide text-muted">Teléfono / WhatsApp</span>
+              <a
+                href={`tel:${site.telefono.replace(/\s+/g, '')}`}
+                class="text-brand-700 underline-offset-2 hover:underline"
+              >
+                {site.telefonoDisplay}
+              </a>
             </p>
             <p>
               <span class="block text-xs uppercase tracking-wide text-muted">Correo</span>
@@ -67,6 +69,14 @@ const description =
               >
                 {site.email}
               </a>
+            </p>
+            <p>
+              <span class="block text-xs uppercase tracking-wide text-muted">Dirección</span>
+              {site.direccion.distrito}, {site.direccion.ciudad}, Perú
+            </p>
+            <p>
+              <span class="block text-xs uppercase tracking-wide text-muted">Horario</span>
+              {site.horario}
             </p>
             <p>
               <span class="block text-xs uppercase tracking-wide text-muted">RUC</span>
@@ -82,6 +92,9 @@ const description =
             Escríbenos por WhatsApp
           </a>
         </section>
+
+        {/* Mapa de ubicación (carga diferida para no afectar el LCP) */}
+        <MapaContacto />
       </aside>
     </div>
   </div>

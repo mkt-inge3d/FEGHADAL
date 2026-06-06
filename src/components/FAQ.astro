@@ -1,0 +1,49 @@
+---
+/**
+ * Sección de preguntas frecuentes (CLAUDE.md §5). Acordeón accesible con
+ * <details>/<summary> nativos: funciona SIN JavaScript y por teclado.
+ * El JSON-LD FAQPage lo emite la página vía <SEO> (faqJsonLd), no este componente.
+ * Recibe las entradas ya ordenadas para no leer la collection dos veces.
+ */
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  items: CollectionEntry<'faq'>[];
+  titulo?: string;
+  intro?: string;
+}
+
+const {
+  items,
+  titulo = 'Preguntas frecuentes',
+  intro = 'Resolvemos las dudas más comunes sobre nuestros servicios, materiales y cobertura.',
+} = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section aria-labelledby="faq-titulo">
+      <h2 id="faq-titulo" class="text-3xl font-bold text-ink">
+        {titulo}
+      </h2>
+      <p class="mt-2 max-w-2xl text-muted">{intro}</p>
+
+      <div class="mt-8 divide-y divide-line border-y border-line">
+        {items.map((item) => (
+          <details class="group">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left text-lg font-semibold text-ink [&::-webkit-details-marker]:hidden">
+              <span>{item.data.pregunta}</span>
+              <span
+                aria-hidden="true"
+                class="shrink-0 text-2xl leading-none text-brand-700 transition-transform group-open:rotate-45"
+              >
+                +
+              </span>
+            </summary>
+            <p class="pb-5 pr-8 leading-relaxed text-muted">{item.data.respuesta}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  )
+}
