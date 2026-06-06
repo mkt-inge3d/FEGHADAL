@@ -6,7 +6,7 @@
  */
 import { Image } from 'astro:assets';
 import { site, navPrincipal } from '../config/site';
-import logo from '../assets/brand/feghadal-logo.png';
+import wordmark from '../assets/brand/wordmark.png';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
@@ -19,12 +19,12 @@ const isActive = (href: string) =>
   >
     <a href="/" aria-label={`${site.nombre} — inicio`} class="inline-flex">
       <Image
-        src={logo}
+        src={wordmark}
         alt="FEGHADAL — Servicios Generales"
-        width={120}
-        height={120}
+        width={945}
+        height={85}
         loading="eager"
-        class="h-12 w-auto sm:h-14"
+        class="h-6 w-auto sm:h-7"
       />
     </a>
 

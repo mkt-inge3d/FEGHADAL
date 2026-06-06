@@ -51,8 +51,8 @@ export const site = {
 
   // Redes/perfiles para sameAs en JSON-LD (agregar los reales).
   redes: [] as string[], // TODO: LinkedIn, Facebook, etc.
-  // Imagen Open Graph por defecto (logo de marca en /public).
-  ogImagen: '/feghadal-logo.png',
+  // Imagen Open Graph por defecto (logo completo sobre fondo blanco, 1200×630).
+  ogImagen: '/og-feghadal.png',
 } as const;
 
 /** Navegación principal: los silos SEO + conversión (CLAUDE.md §4). */
