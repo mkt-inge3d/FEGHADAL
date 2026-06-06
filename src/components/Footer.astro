@@ -49,7 +49,7 @@ const columnas = [
           <h2 class="text-sm font-semibold text-ink">
             <a
               href={col.base}
-              class="underline-offset-2 hover:text-brand-700 hover:underline"
+              class="text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
             >
               {col.titulo}
             </a>
@@ -59,7 +59,7 @@ const columnas = [
               <li>
                 <a
                   href={`${col.base}/${item.id}`}
-                  class="text-sm text-muted underline-offset-2 hover:text-brand-700 hover:underline"
+                  class="text-sm text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
                 >
                   {item.data.titulo}
                 </a>
@@ -77,7 +77,7 @@ const columnas = [
         <p>
           <a
             href={`tel:${site.telefono.replace(/\s+/g, '')}`}
-            class="underline-offset-2 hover:text-brand-700 hover:underline"
+            class="text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
           >
             {site.telefonoDisplay}
           </a>
@@ -85,7 +85,7 @@ const columnas = [
         <p>
           <a
             href={`mailto:${site.email}`}
-            class="underline-offset-2 hover:text-brand-700 hover:underline"
+            class="text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
           >
             {site.email}
           </a>

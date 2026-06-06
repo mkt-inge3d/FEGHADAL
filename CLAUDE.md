@@ -232,17 +232,46 @@ meta básicos, **Open Graph**, **Twitter Card**, **canonical** y bloques **JSON-
 
 ---
 
-## 7. Design tokens
+## 7. Design tokens — PALETA CORPORATIVA OFICIAL
 
-Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4.
-**No usar valores mágicos** en componentes; consumir siempre los tokens.
+Centralizados en `src/styles/global.css` mediante `@theme` de Tailwind v4 (este proyecto
+**no** usa `tailwind.config.js`; en v4 el theme vive en CSS). **No usar valores mágicos**
+en componentes; consumir siempre los tokens. Paleta derivada del logo:
 
-- **Color de marca** (`--color-brand-*`): azul corporativo (confianza/institucional).
-- **Color de acento** (`--color-accent-*`): verde (servicios/saneamiento ambiental).
-- **Neutros** (`--color-ink`, `--color-muted`, `--color-surface`): texto y fondos.
-- Todos los pares texto/fondo deben cumplir contraste AA (§6).
+| Rol | Token | Hex |
+|---|---|---|
+| **Marca / navy primario** | `brand-700` | `#152C50` |
+| **Navy profundo (texto/oscuro)** | `brand-800` / `ink` | `#0F1B2D` |
+| **Acento / acción** | `accent-600` | `#1036D9` |
+| **Acento hover** | `accent-700` | `#0C2BAE` |
+| **Acento soft (realces)** | `accent-50` | `#E8EDFD` |
+| **Fondo base** | `surface` | `#FFFFFF` |
+| **Superficie alterna** | `surface-alt` | `#F4F6FA` |
+| **Borde** | `line` | `#CBD3E1` |
+| **Texto tenue** | `muted` | `#51607A` |
+| **Éxito / aviso / error / info** | `success`/`warning`/`error`/`info` | `#15803D` / `#B45309` / `#B91C1C` / `#1036D9` |
+
+`brand-*` (navy) y `accent-*` (azul) son escalas completas 50–900 para estados/hover.
+El token `danger` es alias de `error`. `whatsapp`/`whatsapp-700` (#25D366) es el color del
+**canal** WhatsApp, exclusivo del botón flotante (excepción de marca, documentada).
+
+### Reglas de uso del color (OBLIGATORIAS)
+- **Azul acento = solo ACCIÓN**: botones, enlaces, foco visible, iconos/detalles. **Nunca**
+  como fondo de secciones grandes (para fondos oscuros grandes se usa navy).
+- **Navy**: header/footer, títulos (`text-brand-700`), fondos oscuros grandes (hero, CTA).
+- **Cuerpo de texto**: `text-ink` (#0F1B2D) sobre blanco; texto secundario `text-muted`.
+- **Foco visible** (`:focus-visible`): anillo de 3px en `accent-600`, offset 2px.
+- **Contraste**: todas las combinaciones cumplen WCAG 2.1 AA (la mayoría AAA). No degradar
+  con opacidades que bajen el contraste de los textos.
+
+### Estilo visual y movimiento (referencia: estética moderna y elegante)
+- **Radios**: tarjetas `rounded-xl`/`rounded-2xl`; sombras suaves tintadas con navy
+  (`shadow-card`, `shadow-card-lg`).
+- **Easing de marca**: `--ease-smooth` = `cubic-bezier(0.25,0.46,0.45,0.94)`.
+- **Reveal on-scroll** (`.reveal` → fade-up de 30px en 0.7s) con cascada opcional en grids
+  (`.stagger`). Microinteracciones de ~0.18s en enlaces/botones; `.hover-lift` (elevación +
+  sombra) en tarjetas. Todo bajo `prefers-reduced-motion: no-preference` (ver §2/§8).
 - **Tipografía**: system font stack (cero descargas → mejor LCP/CLS).
-- **Espaciado y radios**: escala de Tailwind; contenedor centrado con ancho máximo legible.
 
 ---
 

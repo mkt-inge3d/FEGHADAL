@@ -80,13 +80,13 @@ const jsonLd = [
           Combinamos
           <a
             href={`/servicios/${servicio.id}`}
-            class="text-brand-700 underline-offset-2 hover:underline"
+            class="text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
             >{servicio.data.titulo}</a
           >
           con la experiencia en el
           <a
             href={`/sectores/${sector.id}`}
-            class="text-brand-700 underline-offset-2 hover:underline"
+            class="text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
             >{sector.data.titulo.toLowerCase()}</a
           >.
         </p>
@@ -173,19 +173,19 @@ const jsonLd = [
     >
       <a
         href={`/servicios/${servicio.id}`}
-        class="rounded-lg border border-line p-5 hover:border-brand-300"
+        class="hover-lift group rounded-xl border border-line bg-surface p-5 shadow-card hover:border-brand-300"
       >
         <span class="text-sm text-muted">Servicio</span>
-        <span class="mt-1 block font-semibold text-brand-700">
+        <span class="mt-1 block font-semibold text-brand-700 group-hover:text-accent-600">
           {servicio.data.titulo}
         </span>
       </a>
       <a
         href={`/sectores/${sector.id}`}
-        class="rounded-lg border border-line p-5 hover:border-brand-300"
+        class="hover-lift group rounded-xl border border-line bg-surface p-5 shadow-card hover:border-brand-300"
       >
         <span class="text-sm text-muted">Sector</span>
-        <span class="mt-1 block font-semibold text-brand-700">
+        <span class="mt-1 block font-semibold text-brand-700 group-hover:text-accent-600">
           {sector.data.titulo}
         </span>
       </a>

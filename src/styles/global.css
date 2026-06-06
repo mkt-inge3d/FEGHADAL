@@ -1,42 +1,59 @@
 @import "tailwindcss";
 
 /*
-  Design tokens centralizados (CLAUDE.md §7).
-  No usar valores mágicos en componentes: consumir siempre estos tokens
-  (ej. text-brand-700, bg-accent-600). Pares texto/fondo validados para WCAG AA.
+  Design tokens centralizados (CLAUDE.md §7) — PALETA CORPORATIVA OFICIAL (del logo).
+  No usar valores mágicos en componentes: consumir siempre estos tokens.
+  Todas las combinaciones cumplen WCAG 2.1 AA (la mayoría AAA). No degradar con
+  opacidades que bajen el contraste.
+
+  Reglas de uso (resumen):
+   - brand = NAVY: header/footer, títulos, fondos oscuros grandes (hero, CTA).
+   - accent = AZUL: SOLO acción (botones, enlaces, foco, detalles). Nunca como
+     fondo de secciones grandes.
+   - Cuerpo de texto: ink (#0F1B2D) sobre blanco; texto tenue: muted (#51607A).
 */
 @theme {
-  /* Marca: azul corporativo (confianza / institucional) */
-  --color-brand-50: #eef4fb;
-  --color-brand-100: #d6e4f5;
-  --color-brand-200: #adc8ea;
-  --color-brand-300: #7aa4db;
-  --color-brand-400: #4a80c9;
-  --color-brand-500: #2b62ad;
-  --color-brand-600: #1f4d8c;   /* texto sobre blanco: contraste 7.1:1 (AA/AAA) */
-  --color-brand-700: #173c6e;   /* contraste 9.8:1 */
-  --color-brand-800: #112c52;
-  --color-brand-900: #0b1d37;
+  /* Marca: NAVY corporativo (primario #152C50 en -700; navy-deep #0F1B2D en -800) */
+  --color-brand-50: #eef1f7;
+  --color-brand-100: #d5deec;   /* texto/bordes claros sobre navy */
+  --color-brand-200: #adbfd9;
+  --color-brand-300: #7f99bd;
+  --color-brand-400: #4f6c98;
+  --color-brand-500: #2c4a78;
+  --color-brand-600: #1d3760;
+  --color-brand-700: #152c50;   /* PRIMARIO navy — contraste 12.2:1 sobre blanco (AAA) */
+  --color-brand-800: #0f1b2d;   /* navy-deep (texto/fondos muy oscuros) */
+  --color-brand-900: #0a1320;
 
-  /* Acento: verde (servicios / saneamiento ambiental) */
-  --color-accent-50: #ecfaf2;
-  --color-accent-100: #d0f2e0;
-  --color-accent-200: #a3e4c2;
-  --color-accent-300: #6bcf9d;
-  --color-accent-400: #38b478;
-  --color-accent-500: #1f9a61;
-  --color-accent-600: #157a4d;   /* texto sobre blanco: contraste 4.7:1 (AA) */
-  --color-accent-700: #11603d;
-  --color-accent-800: #0d4a30;
-  --color-accent-900: #093322;
+  /* Acento: AZUL de acción (primario #1036D9 en -600; hover #0C2BAE en -700; soft #E8EDFD en -50) */
+  --color-accent-50: #e8edfd;   /* soft: callouts/realces sutiles */
+  --color-accent-100: #d3ddfb;
+  --color-accent-200: #aec2f7;
+  --color-accent-300: #809cf2;
+  --color-accent-400: #4a6dea;
+  --color-accent-500: #2348e0;
+  --color-accent-600: #1036d9;  /* PRIMARIO acción — contraste 7.0:1 sobre blanco (AAA) */
+  --color-accent-700: #0c2bae;  /* hover */
+  --color-accent-800: #0a2389;
+  --color-accent-900: #0b1f6b;
 
   /* Neutros (texto y superficies) */
-  --color-ink: #16202b;          /* texto principal: contraste 14:1 sobre blanco */
-  --color-muted: #4d5a68;        /* texto secundario: contraste 7.4:1 (AA) */
-  --color-surface: #ffffff;
-  --color-surface-alt: #f4f7fa;
-  --color-line: #dde5ec;         /* bordes/divisores */
-  --color-danger: #b42318;       /* errores: contraste 6:1 sobre blanco (AA) */
+  --color-ink: #0f1b2d;          /* texto principal — contraste 16:1 sobre blanco */
+  --color-muted: #51607a;        /* texto secundario — contraste 7.0:1 (AAA) */
+  --color-surface: #ffffff;      /* fondo base */
+  --color-surface-alt: #f4f6fa;  /* superficie alterna */
+  --color-line: #cbd3e1;         /* bordes/divisores */
+
+  /* Estados (texto sobre blanco, todos AA o mejor) */
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-error: #b91c1c;
+  --color-danger: #b91c1c;       /* alias de error (compatibilidad de uso existente) */
+  --color-info: #1036d9;
+
+  /* Canal WhatsApp — color de marca del canal (no de FEGHADAL); solo para el FAB. */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-700: #1aa850;
 
   /* Tipografía: system stack (cero descargas → mejor LCP/CLS) */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
@@ -44,6 +61,13 @@
 
   /* Contenedor legible */
   --spacing-content: 72rem;
+
+  /* Sombras suaves en capas (estilo moderno; tintadas con el navy) */
+  --shadow-card: 0 1px 3px rgba(15, 27, 45, 0.08);
+  --shadow-card-lg: 0 16px 40px -12px rgba(15, 27, 45, 0.22);
+
+  /* Easing de marca (curva suave) para animaciones elegantes */
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Base accesible */
@@ -58,31 +82,73 @@ html {
   html { scroll-behavior: auto; }
 }
 
-/* Foco visible inequívoco en todo elemento interactivo (WCAG 2.1 AA, §6) */
+/* Microinteracciones suaves en enlaces y botones (baja especificidad con :where,
+   no pisa utilidades). Da el pulido moderno de la referencia (~0.2s ease). */
+@media (prefers-reduced-motion: no-preference) {
+  :where(a, button, summary, [role='button']) {
+    transition:
+      color 0.18s ease,
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.18s ease;
+  }
+}
+
+/* Foco visible inequívoco en acento (WCAG 2.1 AA, §6, regla de paleta) */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 3px solid var(--color-brand-500);
+  outline: 3px solid var(--color-accent-600);
   outline-offset: 2px;
   border-radius: 2px;
 }
 
 /*
-  Reveal on-scroll sutil (CLAUDE.md §8). Doble salvaguarda para NO ocultar
-  contenido nunca de forma indebida (SEO/accesibilidad y Core Web Vitals):
-   1) Solo se oculta si hay JS (clase `.js` en <html>, añadida antes del paint).
-   2) Solo bajo prefers-reduced-motion: no-preference (opt-out del usuario).
-  Sin JS o con movimiento reducido, todo es visible desde el inicio.
-  Animación corta (<400ms) y solo opacity/transform (compositor, sin reflow).
+  Reveal on-scroll elegante (CLAUDE.md §8). Estilo "fade-up": entra desde abajo con
+  desvanecido suave. Doble salvaguarda para no ocultar contenido nunca de forma
+  indebida (SEO/CWV): (1) solo si hay JS (clase `.js` en <html>, antes del paint);
+  (2) solo bajo prefers-reduced-motion: no-preference. Solo opacity/transform.
 */
 @media (prefers-reduced-motion: no-preference) {
   .js .reveal {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(30px);
     transition:
-      opacity 0.35s ease-out,
-      transform 0.35s ease-out;
+      opacity 0.7s var(--ease-smooth),
+      transform 0.7s var(--ease-smooth);
   }
   .js .reveal.is-visible {
     opacity: 1;
+    transform: none;
+  }
+
+  /* Cascada (stagger) para grids: los hijos .reveal entran escalonados. */
+  .js .stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+  .js .stagger > .reveal:nth-child(2) { transition-delay: 0.07s; }
+  .js .stagger > .reveal:nth-child(3) { transition-delay: 0.14s; }
+  .js .stagger > .reveal:nth-child(4) { transition-delay: 0.21s; }
+  .js .stagger > .reveal:nth-child(5) { transition-delay: 0.28s; }
+  .js .stagger > .reveal:nth-child(6) { transition-delay: 0.35s; }
+}
+
+/*
+  Elevación al pasar el cursor (tarjetas). Microinteracción moderna y sutil.
+  Desactivada con movimiento reducido. Usar en tarjetas con borde/fondo propio.
+*/
+.hover-lift {
+  transition:
+    transform 0.4s var(--ease-smooth),
+    box-shadow 0.4s var(--ease-smooth),
+    border-color 0.4s var(--ease-smooth);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-lg);
+  border-color: var(--color-brand-300);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift,
+  .hover-lift:hover {
+    transition: none;
     transform: none;
   }
 }

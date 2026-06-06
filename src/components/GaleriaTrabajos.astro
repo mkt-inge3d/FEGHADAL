@@ -23,14 +23,14 @@ const trabajos = (await getCollection('galeria')).sort(
 ---
 
 <section aria-labelledby="galeria-titulo">
-  <h2 id="galeria-titulo" class="text-3xl font-bold text-ink">{titulo}</h2>
+  <h2 id="galeria-titulo" class="text-3xl font-bold text-brand-700">{titulo}</h2>
   <p class="mt-2 max-w-2xl text-muted">{intro}</p>
 
   {
     trabajos.length > 0 ? (
-      <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {trabajos.map((trabajo) => (
-          <li class="overflow-hidden rounded-lg border border-line bg-surface">
+          <li class="reveal hover-lift overflow-hidden rounded-xl border border-line bg-surface shadow-card">
             <Image
               src={trabajo.data.imagen.src}
               alt={trabajo.data.imagen.alt}

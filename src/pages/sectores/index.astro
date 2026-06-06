@@ -30,16 +30,18 @@ const description =
 >
   <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-10">
     <Breadcrumbs items={migas} />
-    <h1 class="mt-6 text-4xl font-bold text-ink">Sectores que atendemos</h1>
-    <p class="mt-3 max-w-2xl text-lg text-muted">
-      Adaptamos cada servicio a las exigencias específicas de tu sector, con personal
-      capacitado y cumplimiento normativo.
-    </p>
+    <div class="reveal">
+      <h1 class="mt-6 text-4xl font-bold text-brand-700">Sectores que atendemos</h1>
+      <p class="mt-3 max-w-2xl text-lg text-muted">
+        Adaptamos cada servicio a las exigencias específicas de tu sector, con personal
+        capacitado y cumplimiento normativo.
+      </p>
+    </div>
 
-    <ul class="mt-10 grid gap-6 sm:grid-cols-2">
+    <ul class="stagger mt-10 grid gap-6 sm:grid-cols-2">
       {
         sectores.map((sector) => (
-          <li class="overflow-hidden rounded-lg border border-line bg-surface">
+          <li class="reveal hover-lift overflow-hidden rounded-xl border border-line bg-surface shadow-card">
             <a href={`/sectores/${sector.id}`} class="group block">
               <Image
                 src={sector.data.imagen.src}
@@ -49,7 +51,7 @@ const description =
                 class="aspect-video w-full object-cover"
               />
               <div class="p-5">
-                <h2 class="text-lg font-semibold text-brand-700 group-hover:underline">
+                <h2 class="text-lg font-semibold text-brand-700 group-hover:text-accent-600">
                   {sector.data.titulo}
                 </h2>
                 <p class="mt-2 text-sm text-muted">{sector.data.resumen}</p>

@@ -151,7 +151,7 @@ const seoTitle = tituloIncluyeKeyword
                   <li>
                     <a
                       href={`/sectores/${sector.id}`}
-                      class="text-sm text-brand-700 underline-offset-2 hover:underline"
+                      class="text-sm text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
                     >
                       {sector.data.titulo}
                     </a>
@@ -171,14 +171,14 @@ const seoTitle = tituloIncluyeKeyword
           <h2 class="text-2xl font-bold text-ink">
             Este servicio por sector
           </h2>
-          <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+          <ul class="stagger mt-6 grid gap-4 sm:grid-cols-2">
             {cruces.map((cruce) => (
-              <li>
+              <li class="reveal">
                 <a
                   href={`/servicios/${cruce.data.servicio.id}/${cruce.data.sector.id}`}
-                  class="group flex h-full flex-col rounded-lg border border-line bg-surface p-5 hover:border-brand-300"
+                  class="hover-lift group flex h-full flex-col rounded-xl border border-line bg-surface p-5 shadow-card hover:border-brand-300"
                 >
-                  <span class="font-semibold text-brand-700 group-hover:underline">
+                  <span class="font-semibold text-brand-700 group-hover:text-accent-600">
                     {cruce.data.titulo}
                   </span>
                   <span class="mt-1 text-sm text-muted">{cruce.data.resumen}</span>
@@ -202,7 +202,7 @@ const seoTitle = tituloIncluyeKeyword
             <li>
               <a
                 href={`/servicios/${h.id}`}
-                class="inline-block rounded-full border border-line px-4 py-2 text-sm text-brand-700 hover:border-brand-300 hover:bg-surface-alt"
+                class="inline-block rounded-full border border-line px-4 py-2 text-sm text-accent-600 hover:border-accent-400 hover:bg-accent-50 hover:text-accent-700"
               >
                 {h.data.titulo}
               </a>

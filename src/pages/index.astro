@@ -5,6 +5,7 @@
  * copy de marketing (proceso/pilares/ventajas) desde src/config/home.ts.
  * Conversión: hero con 2 CTAs, proceso, diferenciadores, credenciales, FAQ y
  * formulario de cotización. JSON-LD FAQPage añadido al layout.
+ * Animaciones: reveal "fade-up" con stagger en grids y hover-lift en tarjetas (§7/§8).
  */
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
@@ -58,10 +59,10 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
 ---
 
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
-  {/* ===== Hero (CLAUDE.md §7) ===== */}
+  {/* ===== Hero (CLAUDE.md §7) — fondo NAVY (marca), CTAs en ACENTO ===== */}
   <section class="relative overflow-hidden bg-brand-700 text-white">
-    {/* Fondo: gradiente de marca (placeholder neutro). [COMPLETAR] reemplazar por
-        una FOTO REAL del equipo/trabajos cuando exista — no usar stock genérico. */}
+    {/* Fondo: gradiente navy (placeholder neutro). [COMPLETAR] reemplazar por una
+        FOTO REAL del equipo/trabajos cuando exista — no usar stock genérico. */}
     <div
       class="absolute inset-0 bg-gradient-to-br from-brand-800 via-brand-700 to-brand-600"
       aria-hidden="true"
@@ -90,7 +91,7 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
       <div class="mt-8 flex flex-wrap gap-4">
         <a
           href="/contacto"
-          class="rounded-md bg-accent-500 px-6 py-3 font-semibold text-white hover:bg-accent-600"
+          class="rounded-md bg-accent-600 px-6 py-3 font-semibold text-white shadow-card hover:-translate-y-0.5 hover:bg-accent-700"
         >
           Solicita tu cotización
         </a>
@@ -102,14 +103,14 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
         </a>
       </div>
 
-      {/* Mensajes segmentados */}
+      {/* Mensajes segmentados (glassmorphism sobre navy) */}
       <ul class="mt-12 grid gap-4 sm:grid-cols-3">
         {
           segmentos.map((seg) => (
             <li>
               <a
                 href={seg.href}
-                class="flex h-full items-start gap-3 rounded-lg border border-brand-100/30 bg-brand-800/40 p-4 transition hover:border-brand-100/60 hover:bg-brand-800/70"
+                class="flex h-full items-start gap-3 rounded-xl border border-white/15 bg-white/5 p-4 backdrop-blur transition hover:-translate-y-1 hover:border-white/30 hover:bg-white/10"
               >
                 <Icon name={seg.icono} class="h-6 w-6 shrink-0 text-accent-300" />
                 <span>
@@ -125,15 +126,17 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
   </section>
 
   {/* ===== Servicios ===== */}
-  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
-    <h2 class="text-3xl font-bold text-ink">Nuestros servicios</h2>
-    <p class="mt-2 max-w-2xl text-muted">
-      Soluciones integrales de servicios generales bajo un mismo proveedor.
-    </p>
-    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <section class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <div class="reveal">
+      <h2 class="text-3xl font-bold text-brand-700">Nuestros servicios</h2>
+      <p class="mt-2 max-w-2xl text-muted">
+        Soluciones integrales de servicios generales bajo un mismo proveedor.
+      </p>
+    </div>
+    <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         servicios.map((servicio) => (
-          <li class="overflow-hidden rounded-lg border border-line bg-surface">
+          <li class="reveal hover-lift overflow-hidden rounded-xl border border-line bg-surface shadow-card">
             <a href={`/servicios/${servicio.id}`} class="group block">
               <Image
                 src={servicio.data.imagen.src}
@@ -143,7 +146,7 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
                 class="aspect-video w-full object-cover"
               />
               <div class="p-5">
-                <h3 class="text-lg font-semibold text-brand-700 group-hover:underline">
+                <h3 class="text-lg font-semibold text-brand-700 group-hover:text-accent-600">
                   {servicio.data.titulo}
                 </h3>
                 <p class="mt-2 text-sm text-muted">{servicio.data.resumen}</p>
@@ -157,32 +160,34 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
 
   {/* ===== Cómo trabajamos (CLAUDE.md §1) ===== */}
   <section class="bg-surface-alt">
-    <div class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
-      <h2 class="text-3xl font-bold text-ink">Cómo trabajamos</h2>
-      <p class="mt-2 max-w-2xl text-muted">
-        Un proceso claro y transparente, del primer contacto a la entrega.
-      </p>
-      <ol class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+      <div class="reveal">
+        <h2 class="text-3xl font-bold text-brand-700">Cómo trabajamos</h2>
+        <p class="mt-2 max-w-2xl text-muted">
+          Un proceso claro y transparente, del primer contacto a la entrega.
+        </p>
+      </div>
+      <ol class="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {
           pasos.map((paso, i) => (
-            <li class="relative rounded-lg border border-line bg-surface p-6">
+            <li class="reveal hover-lift relative rounded-xl border border-line bg-surface p-6 shadow-card">
               <span
                 class="absolute right-4 top-4 text-3xl font-bold text-brand-100"
                 aria-hidden="true"
               >
                 {i + 1}
               </span>
-              <Icon name={paso.icono} class="h-9 w-9 text-brand-700" />
-              <h3 class="mt-4 text-lg font-semibold text-ink">{paso.titulo}</h3>
+              <Icon name={paso.icono} class="h-9 w-9 text-accent-600" />
+              <h3 class="mt-4 text-lg font-semibold text-brand-700">{paso.titulo}</h3>
               <p class="mt-2 text-sm text-muted">{paso.descripcion}</p>
             </li>
           ))
         }
       </ol>
-      <div class="mt-8">
+      <div class="reveal mt-8">
         <a
           href="/contacto"
-          class="inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white hover:bg-accent-700"
+          class="inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white shadow-card hover:-translate-y-0.5 hover:bg-accent-700"
         >
           Empieza tu cotización
         </a>
@@ -191,17 +196,19 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
   </section>
 
   {/* ===== Por qué FEGHADAL (CLAUDE.md §2) ===== */}
-  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
-    <h2 class="text-3xl font-bold text-ink">Por qué FEGHADAL</h2>
-    <p class="mt-2 max-w-2xl text-muted">
-      Diferenciadores reales que aportan tranquilidad a tu empresa o entidad.
-    </p>
-    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+  <section class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <div class="reveal">
+      <h2 class="text-3xl font-bold text-brand-700">Por qué FEGHADAL</h2>
+      <p class="mt-2 max-w-2xl text-muted">
+        Diferenciadores reales que aportan tranquilidad a tu empresa o entidad.
+      </p>
+    </div>
+    <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {
         pilares.map((pilar) => (
-          <li class="rounded-lg border border-line bg-surface p-6">
+          <li class="reveal hover-lift rounded-xl border border-line bg-surface p-6 shadow-card">
             <Icon name={pilar.icono} class="h-9 w-9 text-accent-600" />
-            <h3 class="mt-4 text-lg font-semibold text-ink">{pilar.titulo}</h3>
+            <h3 class="mt-4 text-lg font-semibold text-brand-700">{pilar.titulo}</h3>
             <p class="mt-2 text-sm text-muted">{pilar.descripcion}</p>
           </li>
         ))
@@ -211,19 +218,21 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
 
   {/* ===== Sectores ===== */}
   <section class="bg-surface-alt">
-    <div class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
-      <h2 class="text-3xl font-bold text-ink">Sectores que atendemos</h2>
-      <p class="mt-2 max-w-2xl text-muted">
-        Adaptamos cada servicio a las exigencias específicas de tu sector.
-      </p>
-      <ul class="mt-8 grid gap-6 sm:grid-cols-2">
+    <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+      <div class="reveal">
+        <h2 class="text-3xl font-bold text-brand-700">Sectores que atendemos</h2>
+        <p class="mt-2 max-w-2xl text-muted">
+          Adaptamos cada servicio a las exigencias específicas de tu sector.
+        </p>
+      </div>
+      <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2">
         {
           sectores.map((sector) => (
-            <li class="rounded-lg border border-line bg-surface p-6">
+            <li class="reveal hover-lift rounded-xl border border-line bg-surface p-6 shadow-card">
               <h3 class="text-lg font-semibold text-brand-700">
                 <a
                   href={`/sectores/${sector.id}`}
-                  class="underline-offset-2 hover:underline"
+                  class="underline-offset-2 hover:text-accent-600 hover:underline"
                 >
                   {sector.data.titulo}
                 </a>
@@ -237,28 +246,30 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
   </section>
 
   {/* ===== Ventajas de tercerizar (CLAUDE.md §3) ===== */}
-  <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
-    <h2 class="text-3xl font-bold text-ink">Ventajas de tercerizar con FEGHADAL</h2>
-    <p class="mt-2 max-w-2xl text-muted">
-      Externalizar tus servicios generales libera a tu equipo y ordena tus costos.
-    </p>
-    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <section class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+    <div class="reveal">
+      <h2 class="text-3xl font-bold text-brand-700">Ventajas de tercerizar con FEGHADAL</h2>
+      <p class="mt-2 max-w-2xl text-muted">
+        Externalizar tus servicios generales libera a tu equipo y ordena tus costos.
+      </p>
+    </div>
+    <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         ventajas.map((ventaja) => (
-          <li class="flex gap-4 rounded-lg border border-line bg-surface p-6">
-            <Icon name={ventaja.icono} class="h-8 w-8 shrink-0 text-brand-700" />
+          <li class="reveal hover-lift flex gap-4 rounded-xl border border-line bg-surface p-6 shadow-card">
+            <Icon name={ventaja.icono} class="h-8 w-8 shrink-0 text-accent-600" />
             <div>
-              <h3 class="text-lg font-semibold text-ink">{ventaja.titulo}</h3>
+              <h3 class="text-lg font-semibold text-brand-700">{ventaja.titulo}</h3>
               <p class="mt-2 text-sm text-muted">{ventaja.descripcion}</p>
             </div>
           </li>
         ))
       }
     </ul>
-    <div class="mt-8">
+    <div class="reveal mt-8">
       <a
         href="/contacto"
-        class="inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white hover:bg-accent-700"
+        class="inline-block rounded-md bg-accent-600 px-6 py-3 font-semibold text-white shadow-card hover:-translate-y-0.5 hover:bg-accent-700"
       >
         Conversemos sobre tu necesidad
       </a>
@@ -267,10 +278,10 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
 
   {/* ===== Productos ===== */}
   <section class="bg-surface-alt">
-    <div class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
-      <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
+      <div class="reveal flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 class="text-3xl font-bold text-ink">Productos y materiales</h2>
+          <h2 class="text-3xl font-bold text-brand-700">Productos y materiales</h2>
           <p class="mt-2 max-w-2xl text-muted">
             Comercializamos materiales y ferretería. Junto a nuestros servicios,
             ofrecemos una solución llave en mano.
@@ -278,19 +289,19 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
         </div>
         <a
           href="/productos"
-          class="text-sm font-semibold text-brand-700 underline-offset-2 hover:underline"
+          class="text-sm font-semibold text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
         >
           Ver todos los productos →
         </a>
       </div>
-      <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
           productos.map((producto) => (
-            <li class="rounded-lg border border-line bg-surface p-6">
+            <li class="reveal hover-lift rounded-xl border border-line bg-surface p-6 shadow-card">
               <h3 class="text-lg font-semibold text-brand-700">
                 <a
                   href={`/productos/${producto.id}`}
-                  class="underline-offset-2 hover:underline"
+                  class="underline-offset-2 hover:text-accent-600 hover:underline"
                 >
                   {producto.data.titulo}
                 </a>
@@ -319,7 +330,7 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
   <section class="reveal mx-auto max-w-[var(--spacing-content)] px-4 py-16">
     <div class="grid gap-12 lg:grid-cols-[2fr_1fr]">
       <div>
-        <h2 class="text-3xl font-bold text-ink">Solicita tu cotización</h2>
+        <h2 class="text-3xl font-bold text-brand-700">Solicita tu cotización</h2>
         <p class="mt-2 max-w-2xl text-muted">
           Cuéntanos qué necesitas y te enviamos una propuesta a medida. Atendemos al
           sector privado y a entidades públicas.
@@ -329,8 +340,8 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
         </div>
       </div>
       <aside class="space-y-6">
-        <section class="rounded-lg border border-line bg-surface-alt p-6">
-          <h3 class="text-lg font-semibold text-ink">¿Prefieres escribirnos?</h3>
+        <section class="rounded-xl border border-line bg-surface-alt p-6">
+          <h3 class="text-lg font-semibold text-brand-700">¿Prefieres escribirnos?</h3>
           <p class="mt-2 text-sm text-muted">
             Estamos disponibles por WhatsApp y teléfono en horario de atención.
           </p>
@@ -338,7 +349,7 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-4 inline-block rounded-md bg-accent-600 px-5 py-3 font-semibold text-white hover:bg-accent-700"
+            class="mt-4 inline-block rounded-md bg-whatsapp px-5 py-3 font-semibold text-white hover:bg-whatsapp-700"
           >
             Escríbenos por WhatsApp
           </a>
@@ -348,7 +359,7 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
               <dd>
                 <a
                   href={`tel:${site.telefono.replace(/\s+/g, '')}`}
-                  class="font-medium text-brand-700 underline-offset-2 hover:underline"
+                  class="font-medium text-accent-600 underline-offset-2 hover:underline"
                 >
                   {site.telefonoDisplay}
                 </a>
@@ -359,7 +370,7 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
               <dd>
                 <a
                   href={`mailto:${site.email}`}
-                  class="font-medium text-brand-700 underline-offset-2 hover:underline"
+                  class="font-medium text-accent-600 underline-offset-2 hover:underline"
                 >
                   {site.email}
                 </a>

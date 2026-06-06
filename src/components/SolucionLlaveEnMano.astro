@@ -34,9 +34,9 @@ const { productos, contexto } = Astro.props;
           <li>
             <a
               href={`/productos/${producto.id}`}
-              class="group flex h-full flex-col rounded-md border border-line bg-surface p-4 hover:border-accent-400"
+              class="hover-lift group flex h-full flex-col rounded-xl border border-line bg-surface p-4 shadow-card hover:border-accent-400"
             >
-              <span class="font-semibold text-brand-700 group-hover:underline">
+              <span class="font-semibold text-brand-700 group-hover:text-accent-600">
                 {producto.data.titulo}
               </span>
               <span class="mt-1 text-sm text-muted">
