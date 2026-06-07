@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Saneamiento ambiental FEGHADAL">
-  <rect width="1200" height="675" fill="#093322"/>
-  <rect y="540" width="1200" height="135" fill="#157a4d"/>
-  <circle cx="1000" cy="230" r="95" fill="#1f9a61" opacity="0.7"/>
-  <path d="M1000 165 c40 45 60 80 60 110 a60 60 0 1 1 -120 0 c0 -30 20 -65 60 -110 z" fill="#a3e4c2"/>
-  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="700" fill="#ffffff">Saneamiento ambiental</text>
-  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d0f2e0">Fumigación, desinfección y control de plagas</text>
-  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
-</svg>

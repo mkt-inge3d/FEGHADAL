@@ -27,7 +27,7 @@ productosRelacionados:
   - materiales-construccion
   - pinturas
 imagen:
-  src: ../../assets/servicios/mantenimiento-inmuebles.svg
+  src: ../../assets/servicios/mantenimiento-inmuebles.png
   alt: Técnico de FEGHADAL ejecutando mantenimiento preventivo en un inmueble
 orden: 2
 ---

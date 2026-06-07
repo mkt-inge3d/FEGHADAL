@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Mantenimiento de inmuebles FEGHADAL">
-  <rect width="1200" height="675" fill="#112c52"/>
-  <rect y="540" width="1200" height="135" fill="#1f4d8c"/>
-  <rect x="900" y="120" width="120" height="200" fill="#2b62ad" opacity="0.6"/>
-  <rect x="1040" y="180" width="90" height="140" fill="#38b478" opacity="0.6"/>
-  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="60" font-weight="700" fill="#ffffff">Mantenimiento de inmuebles</text>
-  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d6e4f5">Preventivo y correctivo para edificaciones</text>
-  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
-</svg>

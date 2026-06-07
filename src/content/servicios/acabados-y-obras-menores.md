@@ -26,7 +26,7 @@ productosRelacionados:
   - materiales-construccion
   - vidrios
 imagen:
-  src: ../../assets/servicios/acabados-y-obras-menores.svg
+  src: ../../assets/servicios/acabados-y-obras-menores.png
   alt: Personal de FEGHADAL ejecutando trabajos de pintura y acabados en una empresa
 orden: 4
 ---

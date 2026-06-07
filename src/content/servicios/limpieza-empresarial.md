@@ -24,7 +24,7 @@ sectoresRelacionados:
   - educacion
   - sector-publico
 imagen:
-  src: ../../assets/servicios/limpieza-empresarial.svg
+  src: ../../assets/servicios/limpieza-empresarial.png
   alt: Personal de FEGHADAL realizando limpieza empresarial en oficinas corporativas
 orden: 1
 ---

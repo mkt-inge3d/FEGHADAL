@@ -22,7 +22,7 @@ sectoresRelacionados:
   - sector-publico
   - oficinas-retail
 imagen:
-  src: ../../assets/servicios/areas-verdes.svg
+  src: ../../assets/servicios/areas-verdes.png
   alt: Personal de FEGHADAL realizando mantenimiento de áreas verdes en una empresa
 orden: 5
 ---

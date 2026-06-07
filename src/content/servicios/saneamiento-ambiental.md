@@ -23,7 +23,7 @@ sectoresRelacionados:
   - educacion
   - oficinas-retail
 imagen:
-  src: ../../assets/servicios/saneamiento-ambiental.svg
+  src: ../../assets/servicios/saneamiento-ambiental.png
   alt: Técnico de FEGHADAL realizando saneamiento ambiental y fumigación en una empresa
 orden: 6
 ---
