@@ -229,16 +229,22 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
       <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2">
         {
           sectores.map((sector) => (
-            <li class="reveal hover-lift rounded-xl border border-line bg-surface p-6 shadow-card">
-              <h3 class="text-lg font-semibold text-brand-700">
-                <a
-                  href={`/sectores/${sector.id}`}
-                  class="underline-offset-2 hover:text-accent-600 hover:underline"
-                >
-                  {sector.data.titulo}
-                </a>
-              </h3>
-              <p class="mt-2 text-sm text-muted">{sector.data.resumen}</p>
+            <li class="reveal hover-lift overflow-hidden rounded-xl border border-line bg-surface shadow-card">
+              <a href={`/sectores/${sector.id}`} class="group block">
+                <Image
+                  src={sector.data.imagen.src}
+                  alt={sector.data.imagen.alt}
+                  width={600}
+                  height={338}
+                  class="aspect-video w-full object-cover"
+                />
+                <div class="p-6">
+                  <h3 class="text-lg font-semibold text-brand-700 group-hover:text-accent-600">
+                    {sector.data.titulo}
+                  </h3>
+                  <p class="mt-2 text-sm text-muted">{sector.data.resumen}</p>
+                </div>
+              </a>
             </li>
           ))
         }

@@ -18,7 +18,7 @@ serviciosRelacionados:
   - instalaciones
   - saneamiento-ambiental
 imagen:
-  src: ../../assets/sectores/oficinas-retail.svg
+  src: ../../assets/sectores/oficinas-retail.png
   alt: Oficinas y local retail atendidos por los servicios generales de FEGHADAL
 orden: 1
 ---

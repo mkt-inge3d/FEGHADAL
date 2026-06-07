@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Sector educación FEGHADAL">
-  <rect width="1200" height="675" fill="#1f4d8c"/>
-  <rect y="540" width="1200" height="135" fill="#173c6e"/>
-  <path d="M880 210 l120 -50 120 50 -120 50 z" fill="#a3e4c2"/>
-  <rect x="940" y="240" width="120" height="60" fill="#7aa4db" opacity="0.7"/>
-  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="62" font-weight="700" fill="#ffffff">Educación</text>
-  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d6e4f5">Colegios, institutos y universidades</text>
-  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
-</svg>

@@ -18,7 +18,7 @@ serviciosRelacionados:
   - saneamiento-ambiental
   - areas-verdes
 imagen:
-  src: ../../assets/sectores/sector-publico.svg
+  src: ../../assets/sectores/sector-publico.png
   alt: Edificación de una entidad del Estado atendida por FEGHADAL
 orden: 4
 ---

@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Sector oficinas y retail FEGHADAL">
-  <rect width="1200" height="675" fill="#1f4d8c"/>
-  <rect y="540" width="1200" height="135" fill="#173c6e"/>
-  <rect x="930" y="110" width="80" height="210" fill="#7aa4db" opacity="0.6"/>
-  <rect x="1030" y="160" width="80" height="160" fill="#38b478" opacity="0.6"/>
-  <text x="80" y="320" font-family="Segoe UI, Arial, sans-serif" font-size="64" font-weight="700" fill="#ffffff">Oficinas y retail</text>
-  <text x="80" y="385" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#d6e4f5">Servicios generales para espacios comerciales</text>
-  <text x="80" y="615" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="2">FEGHADAL</text>
-</svg>

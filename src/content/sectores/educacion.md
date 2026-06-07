@@ -17,7 +17,7 @@ serviciosRelacionados:
   - areas-verdes
   - saneamiento-ambiental
 imagen:
-  src: ../../assets/sectores/educacion.svg
+  src: ../../assets/sectores/educacion.png
   alt: Campus educativo atendido por los servicios generales de FEGHADAL
 orden: 3
 ---

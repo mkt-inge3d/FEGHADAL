@@ -16,7 +16,7 @@ serviciosRelacionados:
   - saneamiento-ambiental
   - mantenimiento-inmuebles
 imagen:
-  src: ../../assets/sectores/salud.svg
+  src: ../../assets/sectores/salud.png
   alt: Personal de FEGHADAL aplicando protocolos de limpieza en un entorno de salud
 orden: 2
 ---
