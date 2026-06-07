@@ -1,0 +1,86 @@
+---
+/**
+ * Catálogo por categoría (CLAUDE.md §tienda). Página estática por categoría
+ * (SEO). Grid de productos con "agregar al pedido" + filtro entre categorías.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductoCard from '../../components/ProductoCard.astro';
+import Carrito from '../../components/Carrito.astro';
+import { breadcrumbJsonLd, type Breadcrumb } from '../../lib/seo';
+import { categorias, productosPorCategoria } from '../../lib/catalogo';
+
+export async function getStaticPaths() {
+  return categorias.map((c) => ({
+    params: { categoria: c.slug },
+    props: { categoria: c },
+  }));
+}
+
+const { categoria } = Astro.props;
+const items = productosPorCategoria(categoria.slug);
+
+const migas: Breadcrumb[] = [
+  { nombre: 'Inicio', href: '/' },
+  { nombre: 'Tienda', href: '/tienda' },
+  { nombre: categoria.nombre, href: `/tienda/${categoria.slug}` },
+];
+
+const title = `${categoria.nombre} — Tienda FEGHADAL`;
+const description =
+  `Compra ${categoria.nombre.toLowerCase()} en FEGHADAL: arma tu pedido y cotiza al ` +
+  `instante por WhatsApp. Materiales y ferretería para empresas y obras en el Perú.`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumbJsonLd(migas, Astro.site!)]}
+>
+  <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-10">
+    <Breadcrumbs items={migas} />
+    <h1 class="mt-6 text-4xl font-bold text-brand-700">{categoria.nombre}</h1>
+    <p class="mt-2 text-muted">{items.length} productos disponibles</p>
+
+    {/* Filtro de categorías */}
+    <nav aria-label="Categorías" class="mt-6">
+      <ul class="flex flex-wrap gap-2">
+        <li>
+          <a href="/tienda" class="inline-block rounded-full border border-line px-4 py-2 text-sm text-accent-600 hover:border-accent-400 hover:bg-accent-50">
+            Todas
+          </a>
+        </li>
+        {
+          categorias.map((c) => (
+            <li>
+              <a
+                href={`/tienda/${c.slug}`}
+                aria-current={c.slug === categoria.slug ? 'page' : undefined}
+                class:list={[
+                  'inline-block rounded-full px-4 py-2 text-sm',
+                  c.slug === categoria.slug
+                    ? 'bg-brand-700 font-medium text-white'
+                    : 'border border-line text-accent-600 hover:border-accent-400 hover:bg-accent-50',
+                ]}
+              >
+                {c.nombre}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <ul class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {
+        items.map((p) => (
+          <li>
+            <ProductoCard producto={p} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <Carrito />
+</BaseLayout>

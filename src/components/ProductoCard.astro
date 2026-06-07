@@ -1,0 +1,52 @@
+---
+/**
+ * Tarjeta de producto del catálogo (CLAUDE.md §tienda).
+ * Muestra imagen, nombre, categoría y precio ("Cotizar" si no hay), con botón
+ * "Agregar al pedido". El botón lleva data-* que el carrito (isla JS) lee.
+ * Imagen remota del catálogo del cliente (sin astro:assets); lazy + fallback.
+ */
+import type { ProductoCatalogo } from '../lib/catalogo';
+import { formatPrecio } from '../lib/catalogo';
+
+interface Props {
+  producto: ProductoCatalogo;
+}
+const { producto: p } = Astro.props;
+---
+
+<article
+  class="hover-lift flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-card"
+>
+  <div class="flex aspect-square items-center justify-center bg-surface-alt p-3">
+    {
+      p.img ? (
+        <img
+          src={p.img}
+          alt={p.nombre}
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-contain mix-blend-multiply"
+          onerror="this.style.display='none'"
+        />
+      ) : (
+        <span class="text-xs text-muted">Sin imagen</span>
+      )
+    }
+  </div>
+  <div class="flex flex-1 flex-col p-4">
+    <p class="text-xs uppercase tracking-wide text-muted">{p.categoria}</p>
+    <h3 class="mt-1 line-clamp-2 text-sm font-semibold text-brand-700">{p.nombre}</h3>
+    <div class="mt-3 flex items-center justify-between gap-2">
+      <span class="font-bold text-ink">{formatPrecio(p.precio)}</span>
+    </div>
+    <button
+      type="button"
+      class="agregar-pedido mt-3 w-full rounded-md bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-accent-700"
+      data-id={p.id}
+      data-nombre={p.nombre}
+      data-precio={p.precio ?? ''}
+    >
+      Agregar al pedido
+    </button>
+  </div>
+</article>

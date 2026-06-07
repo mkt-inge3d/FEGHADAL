@@ -45,7 +45,7 @@ actuales y su razón:
 Si una funcionalidad se puede resolver con HTML/CSS/Astro nativo, **no** se agrega paquete.
 
 ### Islas de JavaScript (excepciones a "cero JS")
-Existen **dos** islas de JS, mínimas, justificadas y documentadas:
+Existen **tres** islas de JS, mínimas, justificadas y documentadas:
 - **`CotizacionForm.astro`** — mejora progresiva del formulario de contacto. Sin JS
   funciona por POST nativo a Web3Forms (con `redirect` a `/gracias`); con JS envía por
   `fetch` y muestra el estado con `aria-live` sin recargar. Es un script pequeño que
@@ -57,6 +57,12 @@ Existen **dos** islas de JS, mínimas, justificadas y documentadas:
   no-preference`. Sin JS o con movimiento reducido, todo es visible desde el inicio.
   Animación corta (<400ms), solo `opacity`/`transform` (no degrada CWV). El contenido
   siempre está en el DOM (los crawlers lo ven).
+- **Carrito de pedido (`Carrito.astro`)** — catálogo de la tienda con "agregar al
+  pedido", drawer accesible (role=dialog, Escape, foco) y estado en `localStorage`
+  (persiste entre páginas). "Realizar pedido" arma un mensaje de WhatsApp con ítems,
+  cantidades, precios y total y abre `wa.me`. Sin backend. Si un producto no tiene
+  precio, el carrito funciona como **solicitud de cotización** (sin total monetario);
+  al cargar precios reales calcula totales automáticamente.
 
 ### Servicios externos y variables de entorno
 - **Web3Forms** (envío de formularios sin servidor) — access key en `PUBLIC_WEB3FORMS_KEY`.
@@ -83,7 +89,12 @@ feghadal/
 ├── src/
 │   ├── config/
 │   │   ├── site.ts            # NAP, datos de empresa, navegación, redes (constantes tipadas)
-│   │   └── home.ts            # copy de marketing de la home (pasos/pilares/ventajas, tipado)
+│   │   ├── home.ts            # copy de marketing de la home (pasos/pilares/ventajas, tipado)
+│   │   └── autores.ts         # ficha de autores del blog (E-E-A-T)
+│   ├── data/
+│   │   └── catalogo.json      # catálogo de la tienda (SKUs); generado del catálogo del cliente
+│   ├── lib/
+│   │   └── catalogo.ts        # tipos y helpers del catálogo (categorías, precio)
 │   ├── content.config.ts      # schemas Zod de las 6 collections (Content Layer API)
 │   ├── content/
 │   │   ├── servicios/         # *.md  (silo SERVICIOS)
@@ -323,6 +334,21 @@ El blog es el motor de **E-E-A-T** (experiencia, pericia, autoridad, confianza).
   vía campo `imagen` cuando exista — nunca stock como trabajo propio.
 - **Honestidad (§8):** no inventar casos, clientes, resultados, años ni certificaciones.
   Donde falte un dato real, dejar **[COMPLETAR]**.
+
+### Tienda (catálogo y pedidos por WhatsApp)
+Sección `/tienda` con catálogo navegable por categoría y **pedido por WhatsApp** (sin
+backend ni pasarela de pago).
+- **Datos:** `src/data/catalogo.json` (SKUs: nombre, categoría, imagen, precio, desc),
+  consumido vía `src/lib/catalogo.ts`. Son datos de tienda, no contenido editorial →
+  excepción acotada (igual que `config/home.ts`), no collection.
+- **Páginas:** `/tienda` (índice + categorías) y `/tienda/[categoria]` (grid estático,
+  bueno para SEO). Tarjeta `ProductoCard.astro` con "agregar al pedido".
+- **Carrito:** isla `Carrito.astro` (ver §2) → mensaje de WhatsApp con ítems/total.
+- **Honestidad de precios (no negociable):** **no inventar precios**. Si la fuente no
+  publica precio, el producto muestra "Cotizar" y el carrito opera como solicitud de
+  cotización. Los precios reales se cargan en `catalogo.json` (campo `precio`) y la UI
+  calcula totales sola. El catálogo inicial se pobló desde el catálogo del cliente
+  (rosita.pe, uso autorizado por el dueño); las imágenes se sirven desde su origen.
 
 ### JSON-LD por tipo de página
 - **servicios** y **cruces** → `Service` (+ `OfferCatalog` del alcance) + `BreadcrumbList`.

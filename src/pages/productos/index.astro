@@ -38,6 +38,22 @@ const description =
       </p>
     </div>
 
+    {/* Acceso a la tienda (catálogo con pedido por WhatsApp) */}
+    <div class="reveal mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-accent-200 bg-accent-50 p-6">
+      <div>
+        <h2 class="text-xl font-bold text-brand-700">Compra en nuestra tienda</h2>
+        <p class="mt-1 text-muted">
+          Explora el catálogo por categorías, arma tu pedido y cotiza al instante por WhatsApp.
+        </p>
+      </div>
+      <a
+        href="/tienda"
+        class="inline-block shrink-0 rounded-md bg-accent-600 px-6 py-3 font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-accent-700"
+      >
+        Ver catálogo →
+      </a>
+    </div>
+
     <ul class="stagger mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         productos.map((producto) => (
