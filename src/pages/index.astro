@@ -17,6 +17,7 @@ import CotizacionForm from '../components/CotizacionForm.astro';
 import { site, whatsappUrl } from '../config/site';
 import { pasos, pilares, ventajas } from '../config/home';
 import { faqJsonLd } from '../lib/seo';
+import { categorias as categoriasTienda } from '../lib/catalogo';
 import heroBg from '../assets/brand/bg-feghadal.webp';
 
 const porOrden = (a: { data: { orden: number } }, b: { data: { orden: number } }) =>
@@ -24,7 +25,6 @@ const porOrden = (a: { data: { orden: number } }, b: { data: { orden: number } }
 
 const servicios = (await getCollection('servicios')).sort(porOrden);
 const sectores = (await getCollection('sectores')).sort(porOrden);
-const productos = (await getCollection('productos')).sort(porOrden);
 const faqs = (await getCollection('faq')).sort(porOrden);
 
 // Mensajes segmentados del hero (cada uno enlaza a su silo).
@@ -288,32 +288,32 @@ const jsonLd = [faqJsonLd(faqs.map((f) => f.data))];
     <div class="mx-auto max-w-[var(--spacing-content)] px-4 py-16">
       <div class="reveal flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 class="text-3xl font-bold text-brand-700">Productos y materiales</h2>
+          <h2 class="text-3xl font-bold text-brand-700">Tienda de materiales y ferretería</h2>
           <p class="mt-2 max-w-2xl text-muted">
-            Comercializamos materiales y ferretería. Junto a nuestros servicios,
-            ofrecemos una solución llave en mano.
+            Comercializamos materiales y ferretería. Explora el catálogo por categorías,
+            arma tu pedido y cotiza al instante por WhatsApp.
           </p>
         </div>
         <a
-          href="/productos"
+          href="/tienda"
           class="text-sm font-semibold text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
         >
-          Ver todos los productos →
+          Ver toda la tienda →
         </a>
       </div>
-      <ul class="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="stagger mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
-          productos.map((producto) => (
-            <li class="reveal hover-lift rounded-xl border border-line bg-surface p-6 shadow-card">
-              <h3 class="text-lg font-semibold text-brand-700">
-                <a
-                  href={`/productos/${producto.id}`}
-                  class="underline-offset-2 hover:text-accent-600 hover:underline"
-                >
-                  {producto.data.titulo}
-                </a>
-              </h3>
-              <p class="mt-2 text-sm text-muted">{producto.data.resumen}</p>
+          categoriasTienda.map((c) => (
+            <li class="reveal">
+              <a
+                href={`/tienda/${c.slug}`}
+                class="hover-lift flex items-center justify-between rounded-xl border border-line bg-surface p-5 shadow-card"
+              >
+                <span class="font-semibold text-brand-700">{c.nombre}</span>
+                <span class="rounded-full bg-accent-50 px-2.5 py-1 text-xs font-medium text-accent-700">
+                  {c.total}
+                </span>
+              </a>
             </li>
           ))
         }

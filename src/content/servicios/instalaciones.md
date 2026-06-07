@@ -22,9 +22,6 @@ sectoresRelacionados:
   - oficinas-retail
   - educacion
   - sector-publico
-productosRelacionados:
-  - fontaneria-gasfiteria
-  - ferreteria
 imagen:
   src: ../../assets/servicios/instalaciones.png
   alt: Técnico de FEGHADAL realizando instalaciones eléctricas en una empresa

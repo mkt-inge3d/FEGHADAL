@@ -99,7 +99,6 @@ feghadal/
 │   ├── content/
 │   │   ├── servicios/         # *.md  (silo SERVICIOS)
 │   │   ├── sectores/          # *.md  (silo SECTORES)
-│   │   ├── productos/         # *.md  (silo PRODUCTOS — materiales/ferretería)
 │   │   ├── cruces/            # *.md  (cruces servicio×sector, contenido único)
 │   │   ├── proyectos/         # *.md  (silo AUTORIDAD)
 │   │   ├── blog/              # *.md  (silo AUTORIDAD)
@@ -119,7 +118,6 @@ feghadal/
 │   │   ├── FAQ.astro                   # acordeón <details> accesible (datos de collection faq)
 │   │   ├── GaleriaTrabajos.astro       # galería con estado vacío honesto (collection galeria)
 │   │   ├── MapaContacto.astro          # mapa Google embebido, carga diferida (LCP)
-│   │   ├── SolucionLlaveEnMano.astro  # bloque reutilizable servicio + materiales
 │   │   ├── CTACotizacion.astro        # CTA reutilizable → /contacto + WhatsApp
 │   │   ├── CotizacionForm.astro       # formulario Web3Forms (isla JS, a11y)
 │   │   └── WhatsAppButton.astro       # botón flotante wa.me (global)
@@ -132,8 +130,8 @@ feghadal/
 │   │   ├── servicios/[servicio]/[sector].astro  # cruces servicio×sector
 │   │   ├── sectores/index.astro
 │   │   ├── sectores/[slug].astro
-│   │   ├── productos/index.astro
-│   │   ├── productos/[slug].astro
+│   │   ├── tienda/index.astro            # catálogo (índice + categorías)
+│   │   ├── tienda/[categoria].astro       # catálogo por categoría
 │   │   ├── proyectos/index.astro
 │   │   ├── proyectos/[slug].astro
 │   │   ├── blog/index.astro
@@ -157,9 +155,9 @@ El sitio se organiza en **cuatro silos** con enlazado interno coherente:
 1. **SERVICIOS** (*qué hacemos*) — pillar pages: mantenimiento de inmuebles, limpieza
    empresarial, instalaciones, acabados y obras menores, áreas verdes, saneamiento ambiental.
 2. **SECTORES** (*para quién*) — oficinas/retail, salud, educación, sector público.
-3. **PRODUCTOS** (*qué vendemos*, CIIU 4663/4752) — materiales de construcción, ferretería,
-   pinturas, fontanería/gasfitería, vidrios. Se enlazan con los servicios que los usan
-   ("solución llave en mano").
+3. **TIENDA** (*qué vendemos*, CIIU 4663/4752) — catálogo de materiales y ferretería por
+   categorías (`/tienda`, `/tienda/[categoria]`) con carrito y pedido por WhatsApp. Unifica
+   y reemplaza al antiguo silo informativo `/productos` (redirigido por 301). Ver §Tienda.
 4. **AUTORIDAD** (*confianza*) — proyectos/portafolio, nosotros (RNP, certificaciones, SST),
    recursos/blog.
 
@@ -169,16 +167,15 @@ cada cruce es un archivo con **contenido único y genuino** (alcance específico
 consideraciones y normativa propias). El `getStaticPaths` genera **solo** los cruces que
 existen como archivo → nunca páginas plantilla (anti doorway pages).
 
-**Enlazado cruzado servicios↔productos**: cada servicio declara `productosRelacionados`
-y el componente `SolucionLlaveEnMano` muestra el bloque "servicio + materiales". Las
-páginas de producto enlazan de vuelta a los servicios que los usan (enlace inverso
-calculado).
+**Solución llave en mano (servicios↔tienda)**: las pillar de servicio y los cruces
+incluyen un bloque que enlaza a la **tienda** (`/tienda`) para suministrar los materiales
+del servicio bajo un mismo proveedor.
 
 ### Convención de URLs (limpias y jerárquicas)
 - `/servicios/[slug]`
 - `/servicios/[servicio]/[sector]`  (cruces)
 - `/sectores/[slug]`
-- `/productos/[slug]`
+- `/tienda` · `/tienda/[categoria]`  (catálogo; `/productos*` redirige aquí)
 - `/proyectos/[slug]`
 - `/blog/[slug]` · `/blog/categoria/[categoria]`
 - `/nosotros` · `/contacto` · `/gracias` (noindex)
@@ -303,10 +300,9 @@ El token `danger` es alias de `error`. `whatsapp`/`whatsapp-700` (#25D366) es el
 - `orden` controla la posición en listados; menor = primero.
 
 ### Schemas (resumen — definición en `src/content.config.ts`)
-- **servicios**: `titulo, keywordPrimaria, descripcionSEO, resumen, alcance[], beneficios[], sectoresRelacionados[], productosRelacionados[], imagen, orden`.
+- **servicios**: `titulo, keywordPrimaria, descripcionSEO, resumen, alcance[], beneficios[], sectoresRelacionados[], imagen, orden`.
 - **sectores**: `titulo, keywordPrimaria, descripcionSEO, resumen, retos[], serviciosRelacionados[], imagen, orden`.
-- **productos**: `titulo, keywordPrimaria, descripcionSEO, resumen, categorias[], imagen, orden`.
-- **cruces**: `servicio (ref), sector (ref), titulo, keywordPrimaria, descripcionSEO, resumen, alcanceEspecifico[], consideraciones[], normativa[], productosRelacionados[], orden` + cuerpo único.
+- **cruces**: `servicio (ref), sector (ref), titulo, keywordPrimaria, descripcionSEO, resumen, alcanceEspecifico[], consideraciones[], normativa[], orden` + cuerpo único.
 - **proyectos**: `titulo, cliente, sector, servicios[], alcance, anio, resultado, imagenes[], descripcionSEO, esPlantilla`.
 - **blog**: `titulo, descripcionSEO, keywordPrimaria?, fecha, actualizado?, categoria, autor (default "Daniel Quintana Toledo"), pillar?, pillarTitulo?, imagen?, draft`.
 - **faq**: `pregunta, respuesta (texto plano), orden`. Alimenta la sección FAQ y el `FAQPage`.
@@ -352,7 +348,6 @@ backend ni pasarela de pago).
 
 ### JSON-LD por tipo de página
 - **servicios** y **cruces** → `Service` (+ `OfferCatalog` del alcance) + `BreadcrumbList`.
-- **productos** → `OfferCatalog` (categorías como `Offer`/`Product`) + `BreadcrumbList`.
 - **sectores**, **proyectos**, **blog índice** → `BreadcrumbList` (entidad = `LocalBusiness` global).
 - **blog [slug]** → `Article` + `BreadcrumbList`.
 - **contacto** → `ContactPoint` (anclado a la organización) + `BreadcrumbList`.

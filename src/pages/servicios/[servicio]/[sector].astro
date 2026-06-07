@@ -13,7 +13,6 @@ import { getCollection, getEntry, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import SolucionLlaveEnMano from '../../../components/SolucionLlaveEnMano.astro';
 import CTACotizacion from '../../../components/CTACotizacion.astro';
 import {
   serviceJsonLd,
@@ -36,9 +35,6 @@ const { Content } = await render(cruce);
 // Entradas relacionadas para el enlazado de silos.
 const servicio = await getEntry(data.servicio);
 const sector = await getEntry(data.sector);
-const productos = (
-  await Promise.all(data.productosRelacionados.map((ref) => getEntry(ref)))
-).filter((p) => p !== undefined);
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -161,10 +157,19 @@ const jsonLd = [
       </aside>
     </div>
 
-    <SolucionLlaveEnMano
-      productos={productos}
-      contexto={`Ejecutamos ${data.titulo.toLowerCase()} y suministramos los materiales necesarios bajo un mismo proveedor.`}
-    />
+    {/* Solución llave en mano: enlace a la tienda de materiales */}
+    <section class="mt-12 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-accent-200 bg-accent-50 p-6 md:p-8">
+      <p class="max-w-2xl text-ink">
+        Ejecutamos {data.titulo.toLowerCase()} y te suministramos los materiales
+        necesarios bajo un mismo proveedor.
+      </p>
+      <a
+        href="/tienda"
+        class="inline-block shrink-0 rounded-md bg-accent-600 px-6 py-3 font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-accent-700"
+      >
+        Ver la tienda →
+      </a>
+    </section>
 
     {/* Navegación de silos */}
     <nav

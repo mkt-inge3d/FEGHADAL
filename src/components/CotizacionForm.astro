@@ -13,12 +13,12 @@
  * El select "interés" se alimenta de las collections (servicios y productos).
  */
 import { getCollection } from 'astro:content';
+import { categorias as categoriasTienda } from '../lib/catalogo';
 
 const porOrden = (a: { data: { orden: number } }, b: { data: { orden: number } }) =>
   a.data.orden - b.data.orden;
 
 const servicios = (await getCollection('servicios')).sort(porOrden);
-const productos = (await getCollection('productos')).sort(porOrden);
 
 const { site } = await import('../config/site');
 const redirectUrl = new URL('/gracias', Astro.site).toString();
@@ -122,8 +122,8 @@ const redirectUrl = new URL('/gracias', Astro.site).toString();
       <optgroup label="Servicios">
         {servicios.map((s) => <option value={s.data.titulo}>{s.data.titulo}</option>)}
       </optgroup>
-      <optgroup label="Productos">
-        {productos.map((p) => <option value={p.data.titulo}>{p.data.titulo}</option>)}
+      <optgroup label="Materiales (tienda)">
+        {categoriasTienda.map((c) => <option value={c.nombre}>{c.nombre}</option>)}
       </optgroup>
       <option value="Varios / No estoy seguro">Varios / No estoy seguro</option>
     </select>

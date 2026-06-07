@@ -22,10 +22,6 @@ consideraciones:
 normativa:
   - Requisitos de seguridad en edificaciones (Inspección Técnica de Seguridad - ITSE)
   - Lineamientos de seguridad y salud en el trabajo (SST)
-productosRelacionados:
-  - ferreteria
-  - pinturas
-  - materiales-construccion
 orden: 2
 ---
 

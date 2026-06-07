@@ -20,4 +20,4 @@ draft: true
 - Detalle de oficio: importancia del imprimante/sellador y la preparación del muro.
 - Contexto Lima: humedad y hongos; pinturas con protección antihongos.
 - Recomendación honesta: cuándo no vale la pena la opción más cara.
-- Enlace a [nuestra línea de pinturas](/productos/pinturas) y CTA al servicio.
+- Enlace a [nuestra línea de pinturas](/tienda/pinturas-y-matizados) y CTA al servicio.

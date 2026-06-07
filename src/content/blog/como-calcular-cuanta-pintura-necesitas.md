@@ -5,7 +5,7 @@ keywordPrimaria: calcular cuánta pintura necesito
 fecha: 2026-06-06
 categoria: Productos
 autor: Daniel Quintana Toledo
-pillar: /productos/pinturas
+pillar: /tienda/pinturas-y-matizados
 pillarTitulo: nuestra línea de pinturas
 draft: false
 ---
@@ -82,4 +82,4 @@ Cuando sí conviene llamar a alguien con experiencia es cuando hay humedad activ
 
 En Lima, el invierno costeño genera condensación constante, especialmente en cocinas, baños y ambientes con poca ventilación. Para esas zonas siempre recomiendo pintura látex lavable con componentes fungicidas. Además, es importante dejar secar bien entre mano y mano —mínimo 4 horas en condiciones normales, pero en días nublados o húmedos puede tomar más— antes de aplicar la segunda capa. Apurar el secado es otro error clásico que arruina el acabado.
 
-Si tienes dudas sobre qué tipo de látex o sellador es el más adecuado para tu proyecto, revisa [nuestra línea de pinturas](/productos/pinturas) o escríbenos por [/contacto](/contacto). En FEGHADAL trabajamos con materiales de servicios generales para Lima Norte y podemos orientarte sin compromiso sobre cantidades y productos según el tipo de superficie que tengas.
+Si tienes dudas sobre qué tipo de látex o sellador es el más adecuado para tu proyecto, revisa [nuestra línea de pinturas](/tienda/pinturas-y-matizados) o escríbenos por [/contacto](/contacto). En FEGHADAL trabajamos con materiales de servicios generales para Lima Norte y podemos orientarte sin compromiso sobre cantidades y productos según el tipo de superficie que tengas.

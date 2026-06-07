@@ -11,7 +11,6 @@ import { getCollection, getEntry, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import SolucionLlaveEnMano from '../../components/SolucionLlaveEnMano.astro';
 import CTACotizacion from '../../components/CTACotizacion.astro';
 import {
   serviceJsonLd,
@@ -35,11 +34,6 @@ const { Content } = await render(servicio);
 const sectoresRelacionados = (
   await Promise.all(data.sectoresRelacionados.map((ref) => getEntry(ref)))
 ).filter((s) => s !== undefined);
-
-// Productos que usa el servicio (solución llave en mano).
-const productosRelacionados = (
-  await Promise.all(data.productosRelacionados.map((ref) => getEntry(ref)))
-).filter((p) => p !== undefined);
 
 // Cruces específicos de este servicio (long-tail).
 const cruces = (await getCollection('cruces')).filter(
@@ -190,8 +184,27 @@ const seoTitle = tituloIncluyeKeyword
       )
     }
 
-    {/* Solución llave en mano (servicio + materiales) */}
-    <SolucionLlaveEnMano productos={productosRelacionados} />
+    {/* Solución llave en mano: enlace a la tienda de materiales */}
+    <section
+      aria-labelledby="llave-en-mano"
+      class="mt-12 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-accent-200 bg-accent-50 p-6 md:p-8"
+    >
+      <div>
+        <h2 id="llave-en-mano" class="text-2xl font-bold text-brand-700">
+          Solución llave en mano
+        </h2>
+        <p class="mt-2 max-w-2xl text-ink">
+          Ejecutamos el servicio y te suministramos los materiales necesarios bajo un
+          mismo proveedor. Arma tu pedido en la tienda y cotiza por WhatsApp.
+        </p>
+      </div>
+      <a
+        href="/tienda"
+        class="inline-block shrink-0 rounded-md bg-accent-600 px-6 py-3 font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-accent-700"
+      >
+        Ver la tienda →
+      </a>
+    </section>
 
     {/* Otros servicios (hermanas del silo) */}
     <nav aria-label="Otros servicios" class="mt-12">

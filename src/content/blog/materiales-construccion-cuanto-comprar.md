@@ -5,7 +5,7 @@ keywordPrimaria: comprar materiales de construcción
 fecha: 2026-06-06
 categoria: Productos
 autor: Daniel Quintana Toledo
-pillar: /productos/materiales-construccion
+pillar: /tienda/construccion
 pillarTitulo: nuestra línea de materiales de construcción
 draft: true
 ---
@@ -20,4 +20,4 @@ draft: true
 - Almacenamiento y cuidado en obra para no perder material.
 - Comprar por lote para mantener tono/calidad uniforme.
 - Recomendación honesta: cuándo conviene comprar por avance y no todo de golpe.
-- CTA a [nuestra línea de materiales de construcción](/productos/materiales-construccion).
+- CTA a [nuestra línea de materiales de construcción](/tienda/construccion).

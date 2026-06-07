@@ -22,10 +22,6 @@ sectoresRelacionados:
   - oficinas-retail
   - educacion
   - sector-publico
-productosRelacionados:
-  - ferreteria
-  - materiales-construccion
-  - pinturas
 imagen:
   src: ../../assets/servicios/mantenimiento-inmuebles.png
   alt: Técnico de FEGHADAL ejecutando mantenimiento preventivo en un inmueble

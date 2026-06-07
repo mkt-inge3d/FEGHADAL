@@ -8,6 +8,7 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import { site } from '../config/site';
 import RedesSociales from './RedesSociales.astro';
+import { categorias as categoriasTienda } from '../lib/catalogo';
 import logo from '../assets/brand/logo-completo.png';
 
 const anio = new Date().getFullYear();
@@ -17,12 +18,16 @@ const porOrden = (a: { data: { orden: number } }, b: { data: { orden: number } }
 
 const servicios = (await getCollection('servicios')).sort(porOrden);
 const sectores = (await getCollection('sectores')).sort(porOrden);
-const productos = (await getCollection('productos')).sort(porOrden);
+// La tienda reemplaza al antiguo silo de productos en el enlazado del footer.
+const tiendaItems = categoriasTienda.map((c) => ({
+  id: c.slug,
+  data: { titulo: c.nombre },
+}));
 
 const columnas = [
   { titulo: 'Servicios', base: '/servicios', items: servicios },
   { titulo: 'Sectores', base: '/sectores', items: sectores },
-  { titulo: 'Productos', base: '/productos', items: productos },
+  { titulo: 'Tienda', base: '/tienda', items: tiendaItems },
 ];
 ---
 

@@ -32,8 +32,6 @@ const servicios = defineCollection({
       // Beneficios de negocio del servicio (para la sección "beneficios").
       beneficios: z.array(z.string()).default([]),
       sectoresRelacionados: z.array(reference('sectores')).default([]),
-      // Enlazado cruzado a productos que usa el servicio (solución llave en mano).
-      productosRelacionados: z.array(reference('productos')).default([]),
       imagen: imagenConAlt(image),
       orden: z.number().int().default(99),
     }),
@@ -49,24 +47,6 @@ const sectores = defineCollection({
       resumen: z.string(),
       retos: z.array(z.string()).min(1),
       serviciosRelacionados: z.array(reference('servicios')).default([]),
-      imagen: imagenConAlt(image),
-      orden: z.number().int().default(99),
-    }),
-});
-
-/*
-  Productos — silo de comercialización de materiales y ferretería (CIIU 4663 y 4752).
-  Cada pillar agrupa categorías; no es un catálogo de SKUs individuales.
-*/
-const productos = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/productos' }),
-  schema: ({ image }) =>
-    z.object({
-      titulo: z.string(),
-      keywordPrimaria: z.string(),
-      descripcionSEO: z.string().min(120).max(160),
-      resumen: z.string(),
-      categorias: z.array(z.string()).min(1),
       imagen: imagenConAlt(image),
       orden: z.number().int().default(99),
     }),
@@ -90,7 +70,6 @@ const cruces = defineCollection({
     alcanceEspecifico: z.array(z.string()).min(1),
     consideraciones: z.array(z.string()).min(1),
     normativa: z.array(z.string()).default([]),
-    productosRelacionados: z.array(reference('productos')).default([]),
     orden: z.number().int().default(99),
   }),
 });
@@ -171,7 +150,6 @@ const galeria = defineCollection({
 export const collections = {
   servicios,
   sectores,
-  productos,
   cruces,
   proyectos,
   blog,
