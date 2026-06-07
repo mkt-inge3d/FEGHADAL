@@ -83,6 +83,7 @@ export const site = {
 
 /** Navegación principal: los silos SEO + conversión (CLAUDE.md §4). */
 export const navPrincipal = [
+  { titulo: 'Inicio', href: '/', descripcion: 'Página principal' },
   { titulo: 'Servicios', href: '/servicios', descripcion: 'Qué hacemos' },
   { titulo: 'Sectores', href: '/sectores', descripcion: 'Para quién trabajamos' },
   { titulo: 'Productos', href: '/productos', descripcion: 'Materiales y ferretería' },
