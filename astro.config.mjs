@@ -29,10 +29,13 @@ export default defineConfig({
       // Excluye páginas noindex del sitemap (confirmación de formulario y
       // proyectos marcados como plantilla). Al añadir una página noindex,
       // agrégala también aquí para mantener la coherencia con Search Console.
+      // OCULTO TEMPORALMENTE: toda la sección /proyectos queda fuera del sitemap
+      // hasta tener casos reales (ver nota en src/config/site.ts). Para reactivar,
+      // restaura el filtro específico `!page.includes('/proyectos/mantenimiento-sede-corporativa')`.
       filter: (page) =>
         !page.includes('/gracias') &&
         !page.includes('/productos') &&
-        !page.includes('/proyectos/mantenimiento-sede-corporativa'),
+        !page.includes('/proyectos'),
     }),
   ],
   vite: {

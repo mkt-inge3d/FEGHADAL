@@ -87,7 +87,10 @@ export const navPrincipal = [
   { titulo: 'Servicios', href: '/servicios', descripcion: 'Qué hacemos' },
   { titulo: 'Sectores', href: '/sectores', descripcion: 'Para quién trabajamos' },
   { titulo: 'Tienda', href: '/tienda', descripcion: 'Materiales y ferretería' },
-  { titulo: 'Proyectos', href: '/proyectos', descripcion: 'Portafolio' },
+  // OCULTO TEMPORALMENTE (§8/§9): la sección Proyectos se muestra solo cuando haya
+  // casos reales documentados. Para reactivarla: descomenta esta entrada y revierte
+  // el `noindex` de src/pages/proyectos/index.astro + el filtro de sitemap en astro.config.mjs.
+  // { titulo: 'Proyectos', href: '/proyectos', descripcion: 'Portafolio' },
   { titulo: 'Nosotros', href: '/nosotros', descripcion: 'RNP, RUC y SST' },
   { titulo: 'Blog', href: '/blog', descripcion: 'Recursos' },
   { titulo: 'Contacto', href: '/contacto', descripcion: 'Cotización' },
