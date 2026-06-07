@@ -297,10 +297,32 @@ El token `danger` es alias de `error`. `whatsapp`/`whatsapp-700` (#25D366) es el
 - **productos**: `titulo, keywordPrimaria, descripcionSEO, resumen, categorias[], imagen, orden`.
 - **cruces**: `servicio (ref), sector (ref), titulo, keywordPrimaria, descripcionSEO, resumen, alcanceEspecifico[], consideraciones[], normativa[], productosRelacionados[], orden` + cuerpo único.
 - **proyectos**: `titulo, cliente, sector, servicios[], alcance, anio, resultado, imagenes[], descripcionSEO, esPlantilla`.
-- **blog**: `titulo, descripcionSEO, fecha, categoria, autor, draft`.
+- **blog**: `titulo, descripcionSEO, keywordPrimaria?, fecha, actualizado?, categoria, autor (default "Daniel Quintana Toledo"), pillar?, pillarTitulo?, imagen?, draft`.
 - **faq**: `pregunta, respuesta (texto plano), orden`. Alimenta la sección FAQ y el `FAQPage`.
 - **galeria**: `titulo, descripcion?, servicio?, imagen{src,alt}, orden`. Vacía hasta tener
   fotos REALES; el componente muestra estado vacío honesto (nunca stock como propio).
+
+### Blog y E-E-A-T (autoría y fórmula obligatoria)
+El blog es el motor de **E-E-A-T** (experiencia, pericia, autoridad, confianza).
+
+- **Autor único:** todos los artículos los firma **Daniel Quintana Toledo**, *Especialista
+  en servicios generales – FEGHADAL*. Su ficha vive en `src/config/autores.ts` (fuente
+  única); el campo `autor` de la collection la referencia por nombre. Foto y LinkedIn son
+  slots **[COMPLETAR]** (mientras no haya foto real se usa un **avatar de iniciales**, nunca
+  stock). La bio está marcada **[REVISAR con datos reales de Daniel]**.
+- **Componente `AutorBio.astro`:** `variant="byline"` (línea al inicio: "Por Daniel
+  Quintana Toledo, especialista de FEGHADAL" + fecha/actualización) y `variant="full"`
+  (ficha al pie con avatar, cargo, bio y LinkedIn si existe).
+- **JSON-LD:** cada artículo emite `Article` con **`author` tipo `Person`** (nombre, cargo,
+  `worksFor` la organización y `sameAs` al LinkedIn cuando exista) + `dateModified` e `image`.
+- **Fórmula E-E-A-T obligatoria en CADA artículo:** voz en **primera persona** y lenguaje de
+  campo; al menos un **detalle concreto del oficio** (herramienta, material, error, cifra);
+  una **recomendación honesta** (incluso cuándo NO contratar); **contexto peruano/Lima**
+  (humedad, normativa, sanidad); **enlace interno a su pillar** (`pillar`/`pillarTitulo`) y
+  **CTA** de cotización; fecha de publicación y de actualización. Imagen propia (FOTO REAL)
+  vía campo `imagen` cuando exista — nunca stock como trabajo propio.
+- **Honestidad (§8):** no inventar casos, clientes, resultados, años ni certificaciones.
+  Donde falte un dato real, dejar **[COMPLETAR]**.
 
 ### JSON-LD por tipo de página
 - **servicios** y **cruces** → `Service` (+ `OfferCatalog` del alcance) + `BreadcrumbList`.

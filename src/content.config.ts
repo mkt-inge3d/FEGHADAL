@@ -116,14 +116,24 @@ const proyectos = defineCollection({
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
-  schema: z.object({
-    titulo: z.string(),
-    descripcionSEO: z.string().min(120).max(160),
-    fecha: z.coerce.date(),
-    categoria: z.string(),
-    autor: z.string(),
-    draft: z.boolean().default(false),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      descripcionSEO: z.string().min(120).max(160),
+      keywordPrimaria: z.string().optional(),
+      fecha: z.coerce.date(),
+      // Fecha de última actualización (E-E-A-T: frescura del contenido).
+      actualizado: z.coerce.date().optional(),
+      categoria: z.string(),
+      // Autoría real (E-E-A-T). Por defecto, el especialista de FEGHADAL.
+      autor: z.string().default('Daniel Quintana Toledo'),
+      // Enlace interno a la pillar relacionada (silo SEO + CTA contextual).
+      pillar: z.string().optional(),
+      pillarTitulo: z.string().optional(),
+      // Imagen propia del artículo (FOTO REAL). Opcional hasta tenerla; nunca stock.
+      imagen: imagenConAlt(image).optional(),
+      draft: z.boolean().default(false),
+    }),
 });
 
 /*

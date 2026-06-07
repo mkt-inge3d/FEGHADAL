@@ -1,0 +1,77 @@
+---
+/**
+ * Ficha / byline del autor (E-E-A-T, CLAUDE.md §blog).
+ * - variant="byline": línea compacta al inicio del artículo
+ *   ("Por Daniel Quintana Toledo, especialista de FEGHADAL" + fechas).
+ * - variant="full": tarjeta al pie (avatar, nombre, cargo, bio, LinkedIn si existe).
+ * Mientras no haya FOTO REAL, se usa un avatar con iniciales (nunca stock).
+ */
+import { Image } from 'astro:assets';
+import { getAutor } from '../config/autores';
+
+interface Props {
+  autor?: string;
+  variant?: 'byline' | 'full';
+  fecha?: Date;
+  actualizado?: Date;
+}
+
+const { autor, variant = 'full', fecha, actualizado } = Astro.props;
+const a = getAutor(autor);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+{
+  variant === 'byline' ? (
+    <p class="mt-3 text-sm text-muted">
+      Por <span class="font-medium text-ink">{a.nombre}</span>, especialista de FEGHADAL
+      {fecha && (
+        <>
+          {' · '}
+          <time datetime={fecha.toISOString()}>{fmt(fecha)}</time>
+        </>
+      )}
+      {actualizado && (
+        <span> · Actualizado <time datetime={actualizado.toISOString()}>{fmt(actualizado)}</time></span>
+      )}
+    </p>
+  ) : (
+    <aside class="mt-12 flex flex-col gap-4 rounded-xl border border-line bg-surface-alt p-6 sm:flex-row sm:items-start">
+      {a.foto ? (
+        <Image
+          src={a.foto}
+          alt={`Foto de ${a.nombre}`}
+          width={72}
+          height={72}
+          class="h-18 w-18 shrink-0 rounded-full object-cover"
+        />
+      ) : (
+        /* Avatar placeholder con iniciales — [COMPLETAR foto real de Daniel] */
+        <span
+          aria-hidden="true"
+          class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand-700 text-lg font-bold text-white"
+        >
+          {a.iniciales}
+        </span>
+      )}
+      <div>
+        <p class="text-xs uppercase tracking-wide text-muted">Autor</p>
+        <p class="text-lg font-semibold text-brand-700">{a.nombre}</p>
+        <p class="text-sm font-medium text-muted">{a.cargo}</p>
+        <p class="mt-2 text-sm leading-relaxed text-ink">{a.bio}</p>
+        {a.linkedin && (
+          <a
+            href={a.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-3 inline-block text-sm font-medium text-accent-600 underline-offset-2 hover:text-accent-700 hover:underline"
+          >
+            Perfil de LinkedIn →
+          </a>
+        )}
+      </div>
+    </aside>
+  )
+}

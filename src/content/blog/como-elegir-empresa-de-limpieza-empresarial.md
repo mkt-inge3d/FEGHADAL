@@ -1,9 +1,13 @@
 ---
 titulo: Cómo elegir una empresa de limpieza empresarial en el Perú
 descripcionSEO: "Guía para elegir una empresa de limpieza empresarial en el Perú: criterios de calidad, personal capacitado, SST y supervisión que debes evaluar."
+keywordPrimaria: cómo elegir empresa de limpieza empresarial
 fecha: 2025-01-15
+actualizado: 2026-06-06
 categoria: Limpieza
-autor: Equipo FEGHADAL
+autor: Daniel Quintana Toledo
+pillar: /servicios/limpieza-empresarial
+pillarTitulo: nuestro servicio de limpieza empresarial
 draft: false
 ---
 

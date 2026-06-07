@@ -75,17 +75,20 @@ export function contactPointJsonLd(siteUrl: URL | string) {
 }
 
 /**
- * Article para una entrada de blog. Datos desde la collection `blog`.
+ * Article para una entrada de blog (E-E-A-T). El autor es una Person real con
+ * cargo y, si existe, sameAs a su LinkedIn. Incluye dateModified e image.
  */
 export function articleJsonLd(
   post: {
     titulo: string;
     descripcionSEO: string;
     fecha: Date;
-    autor: string;
+    actualizado?: Date;
+    imagen?: { src: { src: string } };
   },
   pageUrl: URL | string,
   siteUrl: URL | string,
+  autor: { nombre: string; cargo: string; linkedin: string },
 ) {
   return {
     '@context': 'https://schema.org',
@@ -93,8 +96,18 @@ export function articleJsonLd(
     headline: post.titulo,
     description: post.descripcionSEO,
     datePublished: post.fecha.toISOString(),
-    author: { '@type': 'Organization', name: post.autor },
+    ...(post.actualizado
+      ? { dateModified: post.actualizado.toISOString() }
+      : {}),
+    author: {
+      '@type': 'Person',
+      name: autor.nombre,
+      jobTitle: autor.cargo,
+      worksFor: { '@id': absoluteUrl('/#organization', siteUrl) },
+      ...(autor.linkedin ? { sameAs: [autor.linkedin] } : {}),
+    },
     publisher: { '@id': absoluteUrl('/#organization', siteUrl) },
+    image: absoluteUrl(post.imagen?.src?.src ?? site.ogImagen, siteUrl),
     mainEntityOfPage: pageUrl.toString(),
     inLanguage: 'es-PE',
   };
