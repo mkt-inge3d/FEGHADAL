@@ -250,6 +250,7 @@ en componentes; consumir siempre los tokens. Paleta derivada del logo:
 |---|---|---|
 | **Marca / navy primario** | `brand-700` | `#152C50` |
 | **Navy profundo (texto/oscuro)** | `brand-800` / `ink` | `#0F1B2D` |
+| **Navy abismal (header/navbar)** | `brand-950` | `#050A12` |
 | **Acento / acción** | `accent-600` | `#1036D9` |
 | **Acento hover** | `accent-700` | `#0C2BAE` |
 | **Acento soft (realces)** | `accent-50` | `#E8EDFD` |
@@ -267,6 +268,9 @@ El token `danger` es alias de `error`. `whatsapp`/`whatsapp-700` (#25D366) es el
 - **Azul acento = solo ACCIÓN**: botones, enlaces, foco visible, iconos/detalles. **Nunca**
   como fondo de secciones grandes (para fondos oscuros grandes se usa navy).
 - **Navy**: header/footer, títulos (`text-brand-700`), fondos oscuros grandes (hero, CTA).
+  El **header/navbar** usa fondo oscuro `brand-950` (#050A12) con el **wordmark blanco**
+  (`wordmark-blanco.png`); enlaces en `brand-100`, activo/hover en `accent-300` (azul
+  legible sobre oscuro). Bordes sobre oscuro con `white/10`–`white/20` (no `line`).
 - **Cuerpo de texto**: `text-ink` (#0F1B2D) sobre blanco; texto secundario `text-muted`.
 - **Foco visible** (`:focus-visible`): anillo de 3px en `accent-600`, offset 2px.
 - **Contraste**: todas las combinaciones cumplen WCAG 2.1 AA (la mayoría AAA). No degradar

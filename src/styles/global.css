@@ -24,6 +24,7 @@
   --color-brand-700: #152c50;   /* PRIMARIO navy — contraste 12.2:1 sobre blanco (AAA) */
   --color-brand-800: #0f1b2d;   /* navy-deep (texto/fondos muy oscuros) */
   --color-brand-900: #0a1320;
+  --color-brand-950: #050a12;   /* navy abismal — header/navbar (fondo oscuro de marca) */
 
   /* Acento: AZUL de acción (primario #1036D9 en -600; hover #0C2BAE en -700; soft #E8EDFD en -50) */
   --color-accent-50: #e8edfd;   /* soft: callouts/realces sutiles */

@@ -12,10 +12,15 @@ interface Props {
   class?: string;
   /** Tamaño del icono (clase Tailwind). */
   iconClass?: string;
+  /** Clase del enlace/icono (default: estilo sobre fondo claro; override para oscuro). */
+  linkClass?: string;
 }
 
-const { class: className = 'flex items-center gap-1', iconClass = 'h-5 w-5' } =
-  Astro.props;
+const {
+  class: className = 'flex items-center gap-1',
+  iconClass = 'h-5 w-5',
+  linkClass = 'text-muted hover:bg-surface-alt hover:text-brand-700',
+} = Astro.props;
 
 const redes = site.redes;
 ---
@@ -30,7 +35,10 @@ const redes = site.redes;
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`FEGHADAL en ${red.nombre}`}
-            class="flex h-11 w-11 items-center justify-center rounded-md text-muted transition hover:bg-surface-alt hover:text-brand-700"
+            class:list={[
+              'flex h-11 w-11 items-center justify-center rounded-md transition',
+              linkClass,
+            ]}
           >
             <Icon name={red.icono} class={iconClass} />
           </a>
