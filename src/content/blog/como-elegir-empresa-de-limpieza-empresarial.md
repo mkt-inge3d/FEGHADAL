@@ -27,8 +27,8 @@ productos y **supervisión permanente** con checklists y reportes.
 
 ## 3. Capacidad de integración de servicios
 
-Contar con un proveedor que ofrezca **limpieza integral**, mantenimiento y
-saneamiento ambiental simplifica la gestión y la facturación.
+Contar con un proveedor que ofrezca **limpieza integral**, mantenimiento y demás
+servicios generales simplifica la gestión y la facturación.
 
 ## 4. Experiencia y referencias verificables
 

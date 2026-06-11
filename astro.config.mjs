@@ -21,6 +21,10 @@ export default defineConfig({
     '/productos/pinturas': '/tienda/pinturas-y-matizados',
     '/productos/fontaneria-gasfiteria': '/tienda/banos-y-gasfiteria',
     '/productos/vidrios': '/tienda',
+    // Saneamiento ambiental se retiró del catálogo de servicios. Redirige las
+    // URLs antiguas (indexadas) al índice de servicios para no perder SEO (301).
+    '/servicios/saneamiento-ambiental': '/servicios',
+    '/servicios/saneamiento-ambiental/salud': '/servicios',
   },
   integrations: [
     sitemap({

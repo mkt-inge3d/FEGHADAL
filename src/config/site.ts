@@ -4,7 +4,7 @@
  *
  * Variables de entorno (prefijo PUBLIC_, expuestas en build estático):
  * - PUBLIC_WEB3FORMS_KEY     → access key del formulario de cotización (Web3Forms).
- * - PUBLIC_WHATSAPP_NUMERO   → WhatsApp en formato internacional sin "+", ej. 51932262669.
+ * - PUBLIC_WHATSAPP_NUMERO   → WhatsApp en formato internacional sin "+", ej. 51938514148.
  * - PUBLIC_FACEBOOK_URL      → URL del perfil de Facebook (opcional; se oculta si vacío).
  * - PUBLIC_INSTAGRAM_URL     → URL del perfil de Instagram (opcional; se oculta si vacío).
  * - PUBLIC_GOOGLE_BUSINESS_URL → URL del Perfil de Empresa de Google (opcional).
@@ -13,7 +13,7 @@
 
 // Número real comercial. `telefono` en formato +51 … para `tel:`/JSON-LD; el
 // display se muestra sin prefijo internacional (uso local en Perú).
-const WHATSAPP_NUMERO = import.meta.env.PUBLIC_WHATSAPP_NUMERO ?? '51932262669';
+const WHATSAPP_NUMERO = import.meta.env.PUBLIC_WHATSAPP_NUMERO ?? '51938514148';
 const WEB3FORMS_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 
 // Redes sociales por entorno: solo se incluyen las que tengan URL configurada
@@ -28,12 +28,12 @@ export const site = {
   nombreLegal: 'FEGHADAL E.I.R.L.',
   descripcion:
     'Empresa peruana de servicios generales: mantenimiento, limpieza integral, ' +
-    'instalaciones y saneamiento ambiental para el sector privado y público.',
+    'instalaciones y acabados para el sector privado y público.',
   url: 'https://feghadal.com',
 
   // NAP — debe ser idéntico en todo el sitio y en directorios externos (SEO local).
-  telefono: '+51 932 262 669', // formato internacional para tel: y JSON-LD
-  telefonoDisplay: '932 262 669', // formato local que se muestra al usuario
+  telefono: '+51 938 514 148', // formato internacional para tel: y JSON-LD
+  telefonoDisplay: '938 514 148', // formato local que se muestra al usuario
   email: 'contacto@feghadal.com',
   direccion: {
     calle: 'Puente Piedra', // [COMPLETAR] calle y número exactos de la sede comercial

@@ -48,6 +48,6 @@ operación.
 
 ### Un solo proveedor de servicios generales
 
-Integramos el mantenimiento con **limpieza empresarial** y **saneamiento ambiental**,
+Integramos el mantenimiento con **limpieza empresarial** y demás servicios generales,
 ofreciendo una gestión unificada ideal para el **sector privado** y para
 **licitaciones con el Estado**.

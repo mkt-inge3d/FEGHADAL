@@ -1,11 +1,11 @@
 ---
 titulo: Sector público
 keywordPrimaria: servicios generales para entidades del Estado
-descripcionSEO: "Servicios generales para entidades del Estado en el Perú: limpieza, mantenimiento y saneamiento con RNP, homologación de proveedores y cumplimiento de SST."
+descripcionSEO: "Servicios generales para entidades del Estado en el Perú: limpieza, mantenimiento e instalaciones con RNP, homologación de proveedores y cumplimiento de SST."
 resumen: >-
-  Servicios generales para entidades del Estado: limpieza, mantenimiento,
-  instalaciones y saneamiento con respaldo documentario, RNP y cumplimiento de
-  seguridad y salud en el trabajo (SST).
+  Servicios generales para entidades del Estado: limpieza, mantenimiento e
+  instalaciones con respaldo documentario, RNP y cumplimiento de seguridad y
+  salud en el trabajo (SST).
 retos:
   - Cumplimiento de las bases y términos de referencia de cada proceso
   - Sustento documentario y trazabilidad del servicio
@@ -15,7 +15,6 @@ serviciosRelacionados:
   - limpieza-empresarial
   - mantenimiento-inmuebles
   - instalaciones
-  - saneamiento-ambiental
   - areas-verdes
 imagen:
   src: ../../assets/sectores/sector-publico.png
@@ -45,6 +44,6 @@ los términos de referencia y a la fiscalización propia de la contratación pú
 
 ### Por qué elegir a FEGHADAL
 
-Integramos limpieza, mantenimiento, instalaciones y saneamiento bajo un mismo
-proveedor, con trazabilidad y reportes, facilitando la gestión y el cumplimiento
-contractual en el marco de las contrataciones del Estado.
+Integramos limpieza, mantenimiento e instalaciones bajo un mismo proveedor, con
+trazabilidad y reportes, facilitando la gestión y el cumplimiento contractual en el
+marco de las contrataciones del Estado.

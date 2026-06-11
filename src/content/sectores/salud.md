@@ -1,11 +1,10 @@
 ---
 titulo: Sector salud
-keywordPrimaria: limpieza y saneamiento para el sector salud
-descripcionSEO: "Limpieza, desinfección y saneamiento ambiental para clínicas y centros de salud en el Perú, con protocolos de bioseguridad y personal capacitado en SST."
+keywordPrimaria: limpieza hospitalaria para el sector salud
+descripcionSEO: "Limpieza hospitalaria y desinfección para clínicas y centros de salud en el Perú, con protocolos de bioseguridad y personal capacitado en SST."
 resumen: >-
-  Limpieza hospitalaria, desinfección y saneamiento ambiental para clínicas,
-  consultorios y centros de salud, con protocolos de bioseguridad estrictos y
-  manejo adecuado de residuos.
+  Limpieza hospitalaria y desinfección para clínicas, consultorios y centros de
+  salud, con protocolos de bioseguridad estrictos y manejo adecuado de residuos.
 retos:
   - Control de infecciones y riesgo biológico
   - Protocolos de bioseguridad y desinfección de alto nivel
@@ -13,7 +12,6 @@ retos:
   - Operación continua sin afectar la atención al paciente
 serviciosRelacionados:
   - limpieza-empresarial
-  - saneamiento-ambiental
   - mantenimiento-inmuebles
 imagen:
   src: ../../assets/sectores/salud.png
@@ -21,12 +19,12 @@ imagen:
 orden: 2
 ---
 
-## Limpieza y saneamiento para el sector salud
+## Limpieza hospitalaria para el sector salud
 
 Los entornos de salud requieren los más altos estándares de higiene y control de
-infecciones. **FEGHADAL** ofrece **limpieza hospitalaria**, **desinfección** y
-**saneamiento ambiental** con protocolos de **bioseguridad** y personal capacitado en
-seguridad y salud en el trabajo (SST).
+infecciones. **FEGHADAL** ofrece **limpieza hospitalaria** y **desinfección** con
+protocolos de **bioseguridad** y personal capacitado en seguridad y salud en el
+trabajo (SST).
 
 ### Retos del sector
 

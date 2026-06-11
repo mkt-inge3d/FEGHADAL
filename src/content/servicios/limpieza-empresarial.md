@@ -53,6 +53,6 @@ turnos nocturnos y fines de semana.
 ### Por qué elegir a FEGHADAL
 
 Como empresa de **servicios generales**, integramos la limpieza con
-**mantenimiento**, **saneamiento ambiental** y otros servicios bajo un mismo
-proveedor, simplificando la gestión y la facturación. Estamos preparados para
-atender contratos del **sector privado** y procesos de **contratación pública**.
+**mantenimiento** y otros servicios bajo un mismo proveedor, simplificando la gestión
+y la facturación. Estamos preparados para atender contratos del **sector privado** y
+procesos de **contratación pública**.

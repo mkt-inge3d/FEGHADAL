@@ -1,9 +1,9 @@
 ---
 titulo: Educación
 keywordPrimaria: mantenimiento para colegios y universidades
-descripcionSEO: "Mantenimiento para colegios y universidades en el Perú: limpieza, áreas verdes y saneamiento para entornos educativos seguros y bien conservados."
+descripcionSEO: "Mantenimiento para colegios y universidades en el Perú: limpieza y áreas verdes para entornos educativos seguros, saludables y bien conservados."
 resumen: >-
-  Limpieza, mantenimiento, áreas verdes y saneamiento para colegios, institutos y
+  Limpieza, mantenimiento y áreas verdes para colegios, institutos y
   universidades. Entornos seguros, saludables y bien conservados para estudiantes
   y personal.
 retos:
@@ -15,7 +15,6 @@ serviciosRelacionados:
   - mantenimiento-inmuebles
   - limpieza-empresarial
   - areas-verdes
-  - saneamiento-ambiental
 imagen:
   src: ../../assets/sectores/educacion.png
   alt: Campus educativo atendido por los servicios generales de FEGHADAL
@@ -26,7 +25,7 @@ orden: 3
 
 Colegios, institutos y universidades requieren instalaciones seguras, limpias y bien
 conservadas. FEGHADAL ofrece **mantenimiento para colegios y universidades** que
-integra limpieza, conservación de infraestructura, áreas verdes y saneamiento.
+integra limpieza, conservación de infraestructura y áreas verdes.
 
 ### Retos del sector
 
